@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-import { build, files, version } from '$service-worker';
+import { build, files } from '$service-worker';
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 
 cleanupOutdatedCaches();
