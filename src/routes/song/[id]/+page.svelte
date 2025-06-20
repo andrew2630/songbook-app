@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let params: { id: string };
+	import { page } from '$app/stores';
 </script>
 
-<p>Song {params.id}</p>
+<p>Song {$page.params.id}</p>

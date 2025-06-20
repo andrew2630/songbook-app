@@ -27,13 +27,17 @@
 		"svelte-check": "^4.2.2",
 		"tailwindcss": "^4.1.10",
 		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.34.1",
 		"vite": "^6.3.5",
 		"vite-plugin-devtools-json": "^0.2.0"
 	},
 	"dependencies": {
+		"@eslint/js": "^9.29.0",
 		"@supabase/supabase-js": "^2.50.0",
 		"@vite-pwa/sveltekit": "^1.0.0",
+		"eslint-plugin-svelte": "^3.9.3",
 		"framer-motion": "^12.18.1",
+		"globals": "^16.2.0",
 		"idb": "^8.0.3",
 		"svelte-headlessui": "^0.0.46",
 		"svelte-i18n": "^4.0.1",
