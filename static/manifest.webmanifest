@@ -1,0 +1,7 @@
+{
+	"name": "Songbook",
+	"short_name": "Songbook",
+	"start_url": "/",
+	"display": "standalone",
+	"icons": []
+}

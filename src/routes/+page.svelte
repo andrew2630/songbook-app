@@ -1,2 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import { supabase } from '$lib/supabase/client';
+	import { t } from 'svelte-i18n';
+</script>
+
+<h1 class="text-2xl font-bold">{$t('hello')}</h1>
