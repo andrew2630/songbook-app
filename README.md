@@ -9,6 +9,12 @@ npm install
 npm run dev
 ```
 
+If you see a TypeScript error about a missing `.svelte-kit/tsconfig.json`, run:
+
+```bash
+npm run prepare
+```
+
 ## Build
 
 ```bash
