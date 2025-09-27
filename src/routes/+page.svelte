@@ -12,6 +12,7 @@
   let query = '';
   let menuView: 'index' | 'favourites' = 'index';
   let pageFilter: number | null = null;
+  let filtersOpen = false;
 
   const viewTabs = createTabs({ defaultValue: get(viewMode) });
   const { elements: viewTabElements, states: viewTabStates } = viewTabs;
@@ -44,6 +45,7 @@
     query = '';
     pageFilter = null;
     menuView = 'index';
+    filtersOpen = false;
   }
 
   function openSong(song: Song) {
@@ -56,15 +58,29 @@
   }
 </script>
 
-<section class="grid gap-8 lg:grid-cols-[320px,1fr]">
-  <aside class="glass-panel p-6">
+<section class="grid gap-6 lg:grid-cols-[320px,1fr] lg:gap-10">
+  <div class="lg:space-y-0">
+    <button
+      class="flex w-full items-center justify-between rounded-2xl border border-[rgb(var(--border-muted))] bg-[rgb(var(--surface))]/80 px-4 py-3 text-sm font-semibold text-[rgb(var(--text-primary))] shadow-sm transition hover:border-[rgb(var(--accent))] hover:text-[rgb(var(--accent))] lg:hidden"
+      on:click={() => (filtersOpen = !filtersOpen)}
+      aria-expanded={filtersOpen}
+      aria-controls="songbook-filters"
+    >
+      <span>{$t('app.page_index')}</span>
+      <span class="text-xs text-[rgb(var(--text-secondary))]">{filtersOpen ? '▲' : '▼'}</span>
+    </button>
+    <aside
+      id="songbook-filters"
+      class="glass-panel mt-2 p-6 transition-all lg:mt-0 lg:block"
+      class:hidden={!filtersOpen}
+    >
     <div class="flex items-center justify-between">
       <h2 class="text-lg font-semibold text-[rgb(var(--text-primary))]">{$t('app.page_index')}</h2>
       <button
-        class="text-xs font-medium text-[rgb(var(--accent))]"
+        class="text-xs font-semibold uppercase tracking-wide text-[rgb(var(--accent))] hover:underline"
         on:click={handleClearFilters}
       >
-        Reset
+        {$t('app.reset_filters')}
       </button>
     </div>
     <div class="mt-4 space-y-4">
@@ -93,7 +109,7 @@
 
       {#if menuView === 'favourites'}
         {#if favouriteSongs.length === 0}
-          <p class="text-sm text-[rgb(var(--text-secondary))]">No favourites yet.</p>
+          <p class="text-sm text-[rgb(var(--text-secondary))]">{$t('app.no_favourites')}</p>
         {:else}
           <ul class="space-y-3 text-sm">
             {#each favouriteSongs as favSong (favSong.id + '-' + favSong.language)}
@@ -139,7 +155,8 @@
         </div>
       {/if}
     </div>
-  </aside>
+    </aside>
+  </div>
 
   <section class="space-y-6">
     <div class="glass-panel flex flex-col gap-4 p-6">
@@ -157,7 +174,12 @@
             bind:value={query}
           />
           {#if query}
-            <button class="text-sm text-[rgb(var(--text-secondary))]" on:click={() => (query = '')}>Clear</button>
+            <button
+              class="text-sm font-medium text-[rgb(var(--accent))] hover:underline"
+              on:click={() => (query = '')}
+            >
+              {$t('app.clear_query')}
+            </button>
           {/if}
         </div>
       </div>
@@ -173,7 +195,7 @@
         <div class="flex items-center gap-2" use:melt={$viewTabsRoot}>
           <div class="surface-pill flex gap-2 rounded-full p-1" use:melt={$viewTabsList}>
             <button
-              class={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+              class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 $viewTabValue === 'basic'
                   ? 'bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] shadow'
                   : 'text-[rgb(var(--text-secondary))]'
@@ -183,7 +205,7 @@
               {$t('app.view.basic')}
             </button>
             <button
-              class={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+              class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 $viewTabValue === 'chords'
                   ? 'bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] shadow'
                   : 'text-[rgb(var(--text-secondary))]'

@@ -57,7 +57,7 @@
       <div class="flex justify-center gap-2" use:melt={$viewTabsRoot}>
         <div class="surface-pill flex gap-2 rounded-full p-1" use:melt={$viewTabsList}>
           <button
-            class={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+            class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
               $viewTabValue === 'basic'
                 ? 'bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] shadow'
                 : 'text-[rgb(var(--text-secondary))]'
@@ -67,7 +67,7 @@
             {$t('app.view.basic')}
           </button>
           <button
-            class={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+            class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
               $viewTabValue === 'chords'
                 ? 'bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] shadow'
                 : 'text-[rgb(var(--text-secondary))]'

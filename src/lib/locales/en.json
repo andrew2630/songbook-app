@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Songbook",
-    "tagline": "Find every song in a heartbeat",
+    "tagline": "Global worship songs at your fingertips",
     "search_placeholder": "Search by title, lyric, page or index…",
     "language_label": "Language",
     "theme_label": "Theme",
@@ -15,6 +15,9 @@
     "favourites": "Favourites",
     "all_songs": "All songs",
     "page_index": "Page index",
+    "reset_filters": "Reset filters",
+    "clear_query": "Clear",
+    "no_favourites": "No favourites yet.",
     "empty_state": "No songs match the current filters",
     "offline_ready": "Offline ready",
     "syncing": "Syncing library…",
@@ -27,6 +30,8 @@
     "page_label": "Page",
     "source_label": "Source",
     "external_index": "Index",
-    "view_song": "View song"
+    "view_song": "View song",
+    "brand_global": "Worldwide worship family",
+    "brand_available_offline": "Offline ready"
   }
 }
