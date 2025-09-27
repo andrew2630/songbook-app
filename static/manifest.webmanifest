@@ -1,7 +1,16 @@
 {
-	"name": "Songbook",
-	"short_name": "Songbook",
-	"start_url": "/",
-	"display": "standalone",
-	"icons": []
+  "name": "Songbook",
+  "short_name": "Songbook",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#caa545",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

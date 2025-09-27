@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Śpiewnik",
-    "tagline": "Znajdź każdą pieśń w okamgnieniu",
+    "tagline": "Globalny śpiewnik zawsze pod ręką",
     "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
     "language_label": "Język",
     "theme_label": "Motyw",
@@ -15,6 +15,9 @@
     "favourites": "Ulubione",
     "all_songs": "Wszystkie pieśni",
     "page_index": "Spis stron",
+    "reset_filters": "Wyczyść filtry",
+    "clear_query": "Wyczyść",
+    "no_favourites": "Brak ulubionych.",
     "empty_state": "Brak pieśni spełniających kryteria",
     "offline_ready": "Dostępne offline",
     "syncing": "Synchronizacja biblioteki…",
@@ -27,6 +30,8 @@
     "page_label": "Strona",
     "source_label": "Źródło",
     "external_index": "Indeks",
-    "view_song": "Zobacz pieśń"
+    "view_song": "Zobacz pieśń",
+    "brand_global": "Globalna rodzina uwielbienia",
+    "brand_available_offline": "Działa offline"
   }
 }

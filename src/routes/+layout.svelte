@@ -35,6 +35,6 @@
 </script>
 
 <AppHeader />
-<main class="mx-auto min-h-[calc(100vh-6rem)] w-full max-w-7xl px-6 py-10">
+<main class="mx-auto min-h-[calc(100vh-6rem)] w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
   <slot />
 </main>

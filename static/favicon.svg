@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="gold" cx="50%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#ffe9a3" />
+      <stop offset="50%" stop-color="#f4ca58" />
+      <stop offset="100%" stop-color="#b8841a" />
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#gold)" />
+  <path
+    fill="#f7f9fb"
+    d="M29 8h6c1.7 0 3 1.3 3 3v15h15c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H38v23c0 1.7-1.3 3-3 3h-6c-1.7 0-3-1.3-3-3V38H11c-1.7 0-3-1.3-3-3v-6c0-1.7 1.3-3 3-3h15V11c0-1.7 1.3-3 3-3z"
+  />
+</svg>
