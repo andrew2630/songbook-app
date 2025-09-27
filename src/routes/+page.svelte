@@ -7,6 +7,7 @@
   import { listTransition } from '$lib/actions/listTransition';
   import type { Song } from '$lib/types/song';
   import { createTabs, melt } from '@melt-ui/svelte';
+  import { Search, ChevronDown, ChevronUp, Dot } from 'lucide-svelte';
   import { get } from 'svelte/store';
 
   let query = '';
@@ -67,7 +68,16 @@
       aria-controls="songbook-filters"
     >
       <span>{$t('app.page_index')}</span>
-      <span class="text-xs text-[rgb(var(--text-secondary))]">{filtersOpen ? '▲' : '▼'}</span>
+      <span
+        class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[rgb(var(--surface))]/80 text-[rgb(var(--text-secondary))] shadow-sm"
+        aria-hidden="true"
+      >
+        {#if filtersOpen}
+          <ChevronUp class="h-4 w-4" />
+        {:else}
+          <ChevronDown class="h-4 w-4" />
+        {/if}
+      </span>
     </button>
     <aside
       id="songbook-filters"
@@ -165,7 +175,12 @@
           {$t('app.search_placeholder')}
         </label>
         <div class="mt-2 flex items-center gap-3 rounded-2xl border-soft surface-pill px-4 py-3 shadow-inner">
-          <span>🔍</span>
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[rgb(var(--surface))]/70 text-[rgb(var(--accent))] shadow"
+            aria-hidden="true"
+          >
+            <Search class="h-5 w-5" />
+          </span>
           <input
             id="song-search"
             class="w-full bg-transparent text-base outline-none"
@@ -187,7 +202,12 @@
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 text-sm text-[rgb(var(--text-secondary))]">
           <span>{filteredSongs.length} / {availableSongs.length}</span>
-          <span>•</span>
+          <span
+            aria-hidden="true"
+            class="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[rgb(var(--accent))]/20 text-[rgb(var(--accent))]"
+          >
+            <Dot class="h-2 w-2" />
+          </span>
           {#if pageFilter}
             <span>{$t('app.page_label')} {pageFilter}</span>
           {/if}
