@@ -1,18 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
-	import { getAllSongs, type Song } from '$lib/db/songs';
-
-	const songs = writable<Song[]>([]);
-
-	onMount(async () => {
-		songs.set(await getAllSongs());
-	});
+  import { songs } from '$lib/stores/songStore';
+  import { t } from 'svelte-i18n';
 </script>
 
-<h1>Offline songs</h1>
-<ul>
-	{#each $songs as song (song.id)}
-		<li>{song.title}</li>
-	{/each}
-</ul>
+<section class="glass-panel mx-auto mt-10 max-w-3xl space-y-4 p-8 text-center">
+  <h1 class="text-2xl font-semibold heading-gradient">{$t('app.offline_ready')}</h1>
+  <p class="text-sm text-[rgb(var(--text-secondary))]">
+    {$t('app.tagline')}
+  </p>
+  <p class="text-xs text-[rgb(var(--text-secondary))]">{$songs.length} {$t('app.all_songs').toLowerCase()}</p>
+</section>

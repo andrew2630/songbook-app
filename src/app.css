@@ -1,3 +1,129 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --surface: 255 255 255;
+    --surface-subtle: 244 244 245;
+    --surface-strong: 15 23 42;
+    --text-primary: 15 23 42;
+    --text-secondary: 71 85 105;
+    --accent: 79 70 229;
+    --accent-foreground: 255 255 255;
+    --border-muted: 226 232 240;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+    --surface: 15 23 42;
+    --surface-subtle: 30 41 59;
+    --surface-strong: 226 232 240;
+    --text-primary: 226 232 240;
+    --text-secondary: 148 163 184;
+    --accent: 129 140 248;
+    --accent-foreground: 15 23 42;
+    --border-muted: 71 85 105;
+  }
+
+  body {
+    @apply bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] min-h-screen antialiased;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-image: radial-gradient(circle at top, rgba(79, 70, 229, 0.18), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(14, 116, 144, 0.22), transparent 45%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: rgba(79, 70, 229, 0.35);
+    color: rgb(var(--accent-foreground));
+  }
+
+  a {
+    @apply text-[rgb(var(--accent))] underline-offset-2 hover:underline;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background-color: rgb(var(--surface) / 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 45px -35px rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(24px);
+  }
+
+  .dark .glass-panel {
+    background-color: rgb(var(--surface-subtle) / 0.72);
+    border-color: rgba(71, 85, 105, 0.6);
+    box-shadow: 0 20px 45px -35px rgba(15, 23, 42, 0.85);
+  }
+
+  .surface-pill {
+    background-color: rgb(var(--surface) / 0.8);
+  }
+
+  .dark .surface-pill {
+    background-color: rgb(var(--surface-subtle) / 0.8);
+  }
+
+  .surface-pill:hover {
+    background-color: rgb(var(--surface) / 0.92);
+  }
+
+  .dark .surface-pill:hover {
+    background-color: rgb(var(--surface-subtle) / 0.92);
+  }
+
+  .surface-soft {
+    background-color: rgb(var(--surface) / 0.6);
+  }
+
+  .dark .surface-soft {
+    background-color: rgb(var(--surface-subtle) / 0.6);
+  }
+
+  .surface-overlay {
+    background-color: rgb(var(--surface) / 0.65);
+  }
+
+  .dark .surface-overlay {
+    background-color: rgb(var(--surface-subtle) / 0.65);
+  }
+
+  .backdrop-strong {
+    backdrop-filter: blur(24px);
+  }
+
+  .border-soft {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .border-soft {
+    border: 1px solid rgba(71, 85, 105, 0.6);
+  }
+
+  .header-border {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .dark .header-border {
+    border-bottom: 1px solid rgba(71, 85, 105, 0.45);
+  }
+
+  .chip {
+    @apply px-2.5 py-1 rounded-full text-xs font-medium;
+    background-color: rgb(var(--surface) / 0.6);
+    color: rgb(var(--text-secondary));
+  }
+
+  .dark .chip {
+    background-color: rgb(var(--surface-subtle) / 0.6);
+    color: rgb(var(--text-primary));
+  }
+
+  .heading-gradient {
+    @apply bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-400 bg-clip-text text-transparent;
+  }
+  }

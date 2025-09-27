@@ -1,3 +1,32 @@
 {
-	"hello": "Hello"
+  "app": {
+    "title": "Songbook",
+    "tagline": "Find every song in a heartbeat",
+    "search_placeholder": "Search by title, lyric, page or index…",
+    "language_label": "Language",
+    "theme_label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "view": {
+      "basic": "Lyrics",
+      "chords": "Chords view"
+    },
+    "favourites": "Favourites",
+    "all_songs": "All songs",
+    "page_index": "Page index",
+    "empty_state": "No songs match the current filters",
+    "offline_ready": "Offline ready",
+    "syncing": "Syncing library…",
+    "last_synced": "Last synced",
+    "toggle_index": "Index",
+    "toggle_favourites": "Favourites",
+    "add_favourite": "Add to favourites",
+    "remove_favourite": "Remove from favourites",
+    "go_to_song": "Open song",
+    "page_label": "Page",
+    "source_label": "Source",
+    "external_index": "Index",
+    "view_song": "View song"
+  }
 }

@@ -1,19 +1,40 @@
 <script lang="ts">
-	import '../app.css';
-	import { onMount } from 'svelte';
-	import { init, register, getLocaleFromNavigator } from 'svelte-i18n';
-	import { theme } from '$lib/stores/theme';
-	import { syncSongs } from '$lib/utils/syncSongs';
+  import '../app.css';
+  import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
+  import { register, init } from 'svelte-i18n';
+  import { get } from 'svelte/store';
+  import AppHeader from '$lib/components/layout/AppHeader.svelte';
+  import { loadSongs } from '$lib/stores/songStore';
+  import { language } from '$lib/stores/preferences';
 
-	register('en', () => import('$lib/locales/en.json'));
-	register('pl', () => import('$lib/locales/pl.json'));
+  register('pl', () => import('$lib/locales/pl.json'));
+  register('en', () => import('$lib/locales/en.json'));
 
-	onMount(() => {
-		init({ fallbackLocale: 'en', initialLocale: getLocaleFromNavigator() });
-		syncSongs();
-	});
+  init({ fallbackLocale: 'pl', initialLocale: get(language).toLowerCase() });
+
+  onMount(() => {
+    loadSongs();
+
+    const handleOnline = () => loadSongs(true);
+
+    if (browser) {
+      window.addEventListener('online', handleOnline);
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js');
+      }
+    }
+
+    return () => {
+      if (browser) {
+        window.removeEventListener('online', handleOnline);
+      }
+    };
+  });
 </script>
 
-<div class={$theme}>
-	<slot />
-</div>
+<AppHeader />
+<main class="mx-auto min-h-[calc(100vh-6rem)] w-full max-w-7xl px-6 py-10">
+  <slot />
+</main>
