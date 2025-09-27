@@ -1,3 +1,32 @@
 {
-	"hello": "Cze\u015b\u0107"
+  "app": {
+    "title": "Śpiewnik",
+    "tagline": "Znajdź każdą pieśń w okamgnieniu",
+    "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
+    "language_label": "Język",
+    "theme_label": "Motyw",
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "system": "Systemowy",
+    "view": {
+      "basic": "Tekst",
+      "chords": "Akordy"
+    },
+    "favourites": "Ulubione",
+    "all_songs": "Wszystkie pieśni",
+    "page_index": "Spis stron",
+    "empty_state": "Brak pieśni spełniających kryteria",
+    "offline_ready": "Dostępne offline",
+    "syncing": "Synchronizacja biblioteki…",
+    "last_synced": "Ostatnia synchronizacja",
+    "toggle_index": "Indeks",
+    "toggle_favourites": "Ulubione",
+    "add_favourite": "Dodaj do ulubionych",
+    "remove_favourite": "Usuń z ulubionych",
+    "go_to_song": "Otwórz pieśń",
+    "page_label": "Strona",
+    "source_label": "Źródło",
+    "external_index": "Indeks",
+    "view_song": "Zobacz pieśń"
+  }
 }
