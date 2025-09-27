@@ -2,8 +2,6 @@
 
 A modern, bilingual worship songbook for the Bretheren Fellowship. The app ships with an offline-first experience, polished gold-and-navy branding, and installable PWA support for phones, tablets, and desktops.
 
-![Songbook brand mark](static/logo.svg)
-
 ## Features
 
 - ✨ **Responsive worship library** – adaptive layout keeps search, filters, and song cards easy to use from small phones to large displays.
