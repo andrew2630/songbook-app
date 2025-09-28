@@ -1,5 +1,7 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+@plugin "@tailwindcss/typography";
+@reference "tailwindcss";
 @tailwind utilities;
 
 @layer base {
