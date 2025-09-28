@@ -8,6 +8,8 @@ const DB_NAME = 'songbook';
 const DB_VERSION = 1;
 const STORE_NAME = 'songs';
 const META_STORE = 'meta';
+const SUPABASE_PAGE_SIZE = 1000;
+type SupabaseClient = NonNullable<typeof supabase>;
 
 interface SongRecord {
   key: string;
@@ -58,19 +60,10 @@ async function readLastSynced(): Promise<string | null> {
 
 async function fetchSongsFromSupabase(): Promise<Song[]> {
   if (!supabase) return [];
-  const { data: headers, error: headersError } = await supabase
-    .from('songsHeaders')
-    .select('*')
-    .eq('isPublic', true)
-    .order('page');
 
-  if (headersError) throw headersError;
-  const { data: items, error: itemsError } = await supabase
-    .from('songsItems')
-    .select('*')
-    .order('lineNumber');
-
-  if (itemsError) throw itemsError;
+  const client = supabase;
+  const headers = await fetchAllHeaders(client);
+  const items = await fetchAllItems(client);
 
   const groupedItems = new Map<string, SongItem[]>();
   for (const item of items ?? []) {
@@ -89,6 +82,45 @@ async function fetchSongsFromSupabase(): Promise<Song[]> {
       items: songItems.sort((a, b) => a.lineNumber - b.lineNumber)
     } satisfies Song;
   });
+}
+
+async function fetchAllHeaders(client: SupabaseClient) {
+  const rows: Record<string, unknown>[] = [];
+  let from = 0;
+  while (true) {
+    const { data, error } = await client
+      .from('songsHeaders')
+      .select('*')
+      .eq('isPublic', true)
+      .order('page')
+      .range(from, from + SUPABASE_PAGE_SIZE - 1);
+
+    if (error) throw error;
+    if (!data?.length) break;
+    rows.push(...data);
+    if (data.length < SUPABASE_PAGE_SIZE) break;
+    from += SUPABASE_PAGE_SIZE;
+  }
+  return rows;
+}
+
+async function fetchAllItems(client: SupabaseClient) {
+  const rows: Record<string, unknown>[] = [];
+  let from = 0;
+  while (true) {
+    const { data, error } = await client
+      .from('songsItems')
+      .select('*')
+      .order('lineNumber')
+      .range(from, from + SUPABASE_PAGE_SIZE - 1);
+
+    if (error) throw error;
+    if (!data?.length) break;
+    rows.push(...data);
+    if (data.length < SUPABASE_PAGE_SIZE) break;
+    from += SUPABASE_PAGE_SIZE;
+  }
+  return rows;
 }
 
 function normalise(text: string) {
