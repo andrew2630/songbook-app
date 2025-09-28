@@ -32,6 +32,36 @@
     "external_index": "Index",
     "view_song": "View song",
     "brand_global": "Worldwide worship family",
-    "brand_available_offline": "Offline ready"
+    "brand_available_offline": "Offline ready",
+    "sort": {
+      "label": "Sort by",
+      "page": "Songbook order",
+      "alpha": "A to Z",
+      "recent": "Recently updated",
+      "dense": "Chord rich"
+    },
+    "filters": {
+      "active": "Active filters",
+      "none": "No filters applied",
+      "search": "Search: {query}",
+      "page": "Page {page}",
+      "favourites": "Favourites only"
+    },
+    "density_label": "Chord density",
+    "density_caption": "{chords} of {total} lines use chords",
+    "updated_label": "Updated",
+    "copy_link": "Copy share link",
+    "copied_link": "Link copied!",
+    "copy_failed": "Copy failed",
+    "preview": "Preview lyrics",
+    "hide_preview": "Hide preview",
+    "preview_remaining": "{count} more lines hidden",
+    "search_hint": "Try combining filters and view modes to surface songs faster.",
+    "cta": {
+      "title": "Practice anywhere",
+      "subtitle": "Save sets, practise offline, and stay in sync across teams.",
+      "primary": "Plan a setlist",
+      "secondary": "Learn about the app"
+    }
   }
 }
