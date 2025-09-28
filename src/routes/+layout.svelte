@@ -2,16 +2,24 @@
   import '../app.css';
   import { browser } from '$app/environment';
   import { onMount } from 'svelte';
-  import { register, init } from 'svelte-i18n';
+  import { addMessages, init, locale as i18nLocale } from 'svelte-i18n';
   import { get } from 'svelte/store';
   import AppHeader from '$lib/components/layout/AppHeader.svelte';
   import { loadSongs } from '$lib/stores/songStore';
   import { language } from '$lib/stores/preferences';
+  import pl from '$lib/locales/pl.json';
+  import en from '$lib/locales/en.json';
 
-  register('pl', () => import('$lib/locales/pl.json'));
-  register('en', () => import('$lib/locales/en.json'));
+  addMessages('pl', pl);
+  addMessages('en', en);
 
-  init({ fallbackLocale: 'pl', initialLocale: get(language).toLowerCase() });
+  const initialLocale = (browser ? get(language) : 'PL').toLowerCase();
+
+  init({ fallbackLocale: 'pl', initialLocale });
+
+  if (!browser) {
+    i18nLocale.set(initialLocale);
+  }
 
   onMount(() => {
     loadSongs();
@@ -34,7 +42,12 @@
   });
 </script>
 
-<AppHeader />
-<main class="mx-auto min-h-[calc(100vh-6rem)] w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-  <slot />
-</main>
+<div class="app-shell">
+  <div class="app-shell__inner">
+    <AppHeader />
+    <main class="app-shell__content">
+      <slot />
+    </main>
+  </div>
+  <div class="app-shell__glow" aria-hidden="true"></div>
+</div>

@@ -7,122 +7,200 @@
 @layer base {
   :root {
     color-scheme: light;
-    --surface: 248 246 241;
-    --surface-subtle: 236 230 214;
-    --surface-strong: 24 33 45;
-    --text-primary: 23 32 46;
-    --text-secondary: 94 104 122;
-    --accent: 202 165 69;
-    --accent-foreground: 23 32 46;
-    --border-muted: 221 205 169;
-    --glow-primary: 11 16 32;
+    --background: 242 245 255;
+    --foreground: 14 23 42;
+    --muted: 99 111 142;
+    --muted-foreground: 142 152 182;
+    --accent: 99 102 241;
+    --accent-foreground: 255 255 255;
+    --secondary: 80 205 255;
+    --surface: 255 255 255;
+    --surface-muted: 228 233 255;
+    --surface-border: 213 222 255;
+    --shadow: 14 23 42;
   }
 
   :root[data-theme='dark'] {
     color-scheme: dark;
-    --surface: 11 16 32;
-    --surface-subtle: 20 28 45;
-    --surface-strong: 244 236 214;
-    --text-primary: 244 236 214;
-    --text-secondary: 191 178 146;
-    --accent: 210 172 82;
-    --accent-foreground: 15 20 34;
-    --border-muted: 80 94 120;
-    --glow-primary: 202 165 69;
+    --background: 7 12 24;
+    --foreground: 237 242 255;
+    --muted: 163 177 214;
+    --muted-foreground: 104 120 171;
+    --accent: 129 140 248;
+    --accent-foreground: 12 17 32;
+    --secondary: 56 189 248;
+    --surface: 19 26 48;
+    --surface-muted: 16 21 40;
+    --surface-border: 45 55 99;
+    --shadow: 3 7 18;
   }
 
   body {
-    @apply bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] min-h-screen antialiased;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))] min-h-screen antialiased;
     background-image:
-      radial-gradient(circle at 15% 15%, rgb(var(--glow-primary) / 0.22), transparent 55%),
-      radial-gradient(circle at 80% 0%, rgba(202, 165, 69, 0.18), transparent 60%),
-      radial-gradient(circle at 50% 85%, rgba(29, 43, 64, 0.16), transparent 55%);
+      radial-gradient(circle at 10% 20%, rgb(var(--secondary) / 0.35), transparent 60%),
+      radial-gradient(circle at 85% 15%, rgb(var(--accent) / 0.25), transparent 55%),
+      radial-gradient(circle at 50% 80%, rgb(94 101 235 / 0.18), transparent 55%);
     background-attachment: fixed;
+    scroll-behavior: smooth;
   }
 
   ::selection {
-    background-color: rgb(var(--accent) / 0.25);
+    background-color: rgb(var(--accent) / 0.2);
     color: rgb(var(--accent-foreground));
   }
 
   a {
-    @apply text-[rgb(var(--accent))] underline-offset-4 hover:underline;
+    @apply underline-offset-4 hover:underline;
+    color: rgb(var(--accent));
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--muted-foreground) / 0.45);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--surface-muted) / 0.4);
   }
 }
 
 @layer components {
-  .glass-panel {
-    background-color: rgb(var(--surface) / 0.82);
-    border: 1px solid rgb(var(--border-muted) / 0.55);
-    border-radius: 1.5rem;
-    box-shadow: 0 24px 55px -35px rgba(12, 18, 36, 0.5);
+  .app-shell {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .app-shell__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    min-height: 100vh;
+  }
+
+  .app-shell__content {
+    @apply mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-10;
+  }
+
+  .app-shell__glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 20% 20%, rgb(var(--secondary) / 0.18), transparent 55%),
+      radial-gradient(circle at 80% 10%, rgb(var(--accent) / 0.24), transparent 65%),
+      radial-gradient(circle at 50% 85%, rgb(56 189 248 / 0.22), transparent 55%);
+    opacity: 0.6;
+    filter: blur(55px);
+  }
+
+  .card {
+    background: rgb(var(--surface) / 0.88);
+    border: 1px solid rgb(var(--surface-border) / 0.7);
+    border-radius: 1.75rem;
+    box-shadow: 0 28px 80px -35px rgb(var(--shadow) / 0.55);
     backdrop-filter: blur(24px);
   }
 
-  .dark .glass-panel {
-    background-color: rgb(var(--surface-subtle) / 0.85);
-    border-color: rgb(var(--border-muted) / 0.55);
-    box-shadow: 0 24px 55px -35px rgba(7, 10, 20, 0.75);
+  .card-muted {
+    background: rgb(var(--surface-muted) / 0.82);
+    border: 1px solid rgb(var(--surface-border) / 0.5);
   }
 
-  .surface-pill {
-    background-color: rgb(var(--surface) / 0.86);
+  .card-outline {
+    border: 1px solid rgb(var(--surface-border) / 0.9);
   }
 
-  .dark .surface-pill {
-    background-color: rgb(var(--surface-subtle) / 0.86);
+  .toolbar {
+    background: rgb(var(--surface) / 0.75);
+    border-radius: 9999px;
+    border: 1px solid rgb(var(--surface-border) / 0.8);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 18px 45px -28px rgb(var(--shadow) / 0.4);
   }
 
-  .surface-pill:hover {
-    background-color: rgb(var(--surface) / 0.95);
+  .badge {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
+    background: rgb(var(--surface-muted) / 0.7);
+    color: rgb(var(--muted));
   }
 
-  .dark .surface-pill:hover {
-    background-color: rgb(var(--surface-subtle) / 0.95);
+  .stat {
+    @apply flex items-center gap-3 rounded-2xl px-5 py-4;
+    background: rgb(var(--surface) / 0.85);
+    border: 1px solid rgb(var(--surface-border) / 0.65);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
   }
 
-  .surface-soft {
-    background-color: rgb(var(--surface) / 0.7);
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition;
   }
 
-  .dark .surface-soft {
-    background-color: rgb(var(--surface-subtle) / 0.7);
+  .btn-primary {
+    background: linear-gradient(135deg, rgb(var(--accent) / 1) 0%, rgb(var(--secondary) / 1) 100%);
+    color: rgb(var(--accent-foreground));
+    box-shadow: 0 18px 40px -20px rgb(var(--accent) / 0.65);
   }
 
-  .surface-overlay {
-    background-color: rgb(var(--surface) / 0.7);
+  .btn-primary:hover {
+    box-shadow: 0 22px 44px -18px rgb(var(--accent) / 0.75);
+    transform: translateY(-1px);
   }
 
-  .dark .surface-overlay {
-    background-color: rgb(var(--surface-subtle) / 0.72);
-  }
-
-  .backdrop-strong {
-    backdrop-filter: blur(22px);
-  }
-
-  .border-soft {
-    border: 1px solid rgb(var(--border-muted) / 0.65);
-  }
-
-  .header-border {
-    border-bottom: 1px solid rgb(var(--border-muted) / 0.45);
+  .btn-ghost {
+    background: rgb(var(--surface-muted) / 0.65);
+    color: rgb(var(--muted));
   }
 
   .chip {
-    @apply rounded-full text-xs font-medium;
-    padding: 0.35rem 0.75rem;
-    background-color: rgb(var(--surface) / 0.7);
-    color: rgb(var(--text-secondary));
+    @apply rounded-full px-3 py-1 text-xs font-medium;
+    background: rgb(var(--surface-muted) / 0.75);
+    color: rgb(var(--muted));
   }
 
-  .dark .chip {
-    background-color: rgb(var(--surface-subtle) / 0.65);
-    color: rgb(var(--text-primary));
+  .glass-line {
+    position: relative;
+    overflow: hidden;
   }
 
-  .heading-gradient {
-    @apply bg-gradient-to-r from-[#f6d77a] via-[#d7b454] to-[#8c6b25] bg-clip-text text-transparent;
+  .glass-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.3), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 6s infinite;
+  }
+
+  .card-hero {
+    background: linear-gradient(135deg, rgb(var(--surface) / 0.96), rgb(var(--surface-muted) / 0.88));
+    position: relative;
+  }
+
+  .dark .card,
+  .dark .card-muted,
+  .dark .toolbar,
+  .dark .stat {
+    backdrop-filter: blur(30px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
