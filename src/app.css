@@ -1,4 +1,4 @@
-@import '@skeletonlabs/skeleton/styles/all.css';
+@import '@skeletonlabs/skeleton';
 @import 'tailwindcss';
 
 @layer base {
