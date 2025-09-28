@@ -173,13 +173,16 @@ export const searchableSongs = derived(songs, ($songs) =>
   $songs.map((song) => ({ key: `${song.id}-${song.language}`, song, search: mapSearchable(song) }))
 );
 
+export type SongSortMode = 'page' | 'alpha' | 'recent' | 'dense';
+
 export function filterSongs(
   collection: { key: string; song: Song; search: string }[],
   query: string,
   language: SongLanguage,
   favouritesOnly: boolean,
   favouritesList: string[],
-  pageFilter?: number | null
+  pageFilter?: number | null,
+  sortMode: SongSortMode = 'page'
 ) {
   const normalisedQuery = normalise(query.trim());
   return collection
@@ -191,7 +194,31 @@ export function filterSongs(
       return search.includes(normalisedQuery);
     })
     .map(({ song }) => song)
-    .sort((a, b) => a.page - b.page || a.title.localeCompare(b.title));
+    .sort((a, b) => {
+      if (sortMode === 'alpha') {
+        return a.title.localeCompare(b.title);
+      }
+
+      if (sortMode === 'recent') {
+        const aTime = a.lastUpdatedAt ? new Date(a.lastUpdatedAt).getTime() : 0;
+        const bTime = b.lastUpdatedAt ? new Date(b.lastUpdatedAt).getTime() : 0;
+        return bTime - aTime || a.title.localeCompare(b.title);
+      }
+
+      if (sortMode === 'dense') {
+        const aDensity = chordDensityScore(a.items);
+        const bDensity = chordDensityScore(b.items);
+        return bDensity - aDensity || a.page - b.page || a.title.localeCompare(b.title);
+      }
+
+      return a.page - b.page || a.title.localeCompare(b.title);
+    });
+}
+
+function chordDensityScore(items: SongItem[]) {
+  if (!items.length) return 0;
+  const chordLines = items.filter((item) => item.type === 'CHORD').length;
+  return chordLines / items.length;
 }
 
 export async function getSongByKey(key: string): Promise<Song | null> {

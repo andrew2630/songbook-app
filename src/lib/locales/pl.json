@@ -32,6 +32,36 @@
     "external_index": "Indeks",
     "view_song": "Zobacz pieśń",
     "brand_global": "Globalna rodzina uwielbienia",
-    "brand_available_offline": "Działa offline"
+    "brand_available_offline": "Działa offline",
+    "sort": {
+      "label": "Sortuj według",
+      "page": "Kolejność śpiewnika",
+      "alpha": "A do Z",
+      "recent": "Ostatnio aktualizowane",
+      "dense": "Najwięcej akordów"
+    },
+    "filters": {
+      "active": "Aktywne filtry",
+      "none": "Brak filtrów",
+      "search": "Szukaj: {query}",
+      "page": "Strona {page}",
+      "favourites": "Tylko ulubione"
+    },
+    "density_label": "Gęstość akordów",
+    "density_caption": "Linie z akordami: {chords} / {total}",
+    "updated_label": "Aktualizacja",
+    "copy_link": "Kopiuj link do udostępnienia",
+    "copied_link": "Skopiowano link!",
+    "copy_failed": "Nie udało się skopiować",
+    "preview": "Podgląd tekstu",
+    "hide_preview": "Ukryj podgląd",
+    "preview_remaining": "Ukryto {count} linie",
+    "search_hint": "Łącz filtry i tryby widoku, aby szybciej znaleźć pieśni.",
+    "cta": {
+      "title": "Ćwicz w dowolnym miejscu",
+      "subtitle": "Zapisuj zestawy, ćwicz offline i bądź w kontakcie z zespołem.",
+      "primary": "Zaplanuj setlistę",
+      "secondary": "Dowiedz się więcej"
+    }
   }
 }
