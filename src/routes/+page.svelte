@@ -204,7 +204,7 @@
     </div>
 
     <div class="space-y-4">
-      <input
+      <!-- <input
         id="page-search"
         class="w-full rounded-xl border border-surface-200/70 bg-white px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-100"
         type="text"
@@ -213,7 +213,7 @@
         placeholder={$t('app.page_search.placeholder')}
         bind:value={pageSearch}
         aria-label={$t('app.page_search.placeholder')}
-      />
+      /> -->
 
       {#if menuView === 'favourites'}
         {#if favouriteSongs.length === 0}
