@@ -6,8 +6,11 @@
     "language_label": "Język",
     "theme_label": "Motyw",
     "theme": {
-        "light": "Jasny",
-        "dark": "Ciemny"
+      "light": "Jasny",
+      "dark": "Ciemny",
+      "sunset": "Zachód",
+      "forest": "Las",
+      "ocean": "Ocean"
     },
     "light": "Jasny",
     "dark": "Ciemny",
