@@ -4,17 +4,6 @@
     "tagline": "Zborowy śpiewnik zawsze pod ręką",
     "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
     "language_label": "Język",
-    "theme_label": "Motyw",
-    "theme": {
-      "light": "Jasny",
-      "dark": "Ciemny",
-      "sunset": "Zachód",
-      "forest": "Las",
-      "ocean": "Ocean"
-    },
-    "light": "Jasny",
-    "dark": "Ciemny",
-    "system": "Systemowy",
     "view": {
       "basic": "Tekst",
       "chords": "Akordy"

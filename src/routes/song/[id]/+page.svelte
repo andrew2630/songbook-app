@@ -66,7 +66,7 @@
   <div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">{$t('app.syncing')}</div>
 {:else if song}
   <article
-    class="relative mx-auto max-w-4xl space-y-7 overflow-hidden rounded-2xl border border-primary-500/20 bg-white/90 p-5 shadow-2xl backdrop-blur-xl dark:border-surface-700/40 dark:bg-surface-900/80 sm:space-y-8 sm:rounded-[2.5rem] sm:p-8 lg:p-10"
+    class="relative mx-auto max-w-4xl space-y-7 overflow-hidden rounded-2xl border border-primary-500/20 bg-white/90 p-5 shadow-2xl backdrop-blur-xl sm:space-y-8 sm:rounded-[2.5rem] sm:p-8 lg:p-10"
   >
     <div class="pointer-events-none absolute inset-0 -z-10">
       <div class="absolute -top-24 left-10 h-48 w-48 rounded-full bg-primary-500/15 blur-[120px]"></div>
@@ -77,14 +77,14 @@
       <div class="flex flex-1 flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5">
           <button
-            class="inline-flex items-center gap-2 rounded-full border border-primary-500/20 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500 transition hover:-translate-y-0.5 hover:border-primary-500 hover:text-primary-500 dark:border-surface-700/40 dark:bg-surface-900/70"
+            class="inline-flex items-center gap-2 rounded-full border border-primary-500/20 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500 transition hover:-translate-y-0.5 hover:border-primary-500 hover:text-primary-500"
             type="button"
             on:click={goBack}
           >
             {$t('app.back_action')}
           </button>
           <button
-            class="inline-flex items-center gap-2 rounded-full border border-primary-500/20 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500 transition hover:-translate-y-0.5 hover:border-primary-500 hover:text-primary-500 dark:border-surface-700/40 dark:bg-surface-900/70"
+            class="inline-flex items-center gap-2 rounded-full border border-primary-500/20 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500 transition hover:-translate-y-0.5 hover:border-primary-500 hover:text-primary-500"
             type="button"
             on:click={() => goto('/')}
           >
@@ -95,7 +95,7 @@
           class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
             $favourites.includes(favouriteKey)
               ? 'bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
-              : 'border border-primary-500/25 bg-white/70 text-surface-600 hover:border-primary-500 hover:text-primary-500 dark:border-surface-700/40 dark:bg-surface-900/70 dark:text-surface-200'
+              : 'border border-primary-500/25 bg-white/70 text-surface-600 hover:border-primary-500 hover:text-primary-500'
           }`}
           type="button"
           aria-pressed={$favourites.includes(favouriteKey)}
@@ -107,21 +107,21 @@
 
       <div class="space-y-3">
         <div class="space-y-2">
-          <h1 class="text-balance text-2xl font-semibold text-surface-900 dark:text-surface-50 sm:text-3xl lg:text-4xl">{song.title}</h1>
+          <h1 class="text-balance text-2xl font-semibold text-surface-900 sm:text-3xl lg:text-4xl">{song.title}</h1>
           {#if lastUpdatedLabel}
             <p class="text-[11px] uppercase tracking-[0.2em] text-primary-400/80">
               {$t('app.updated_label')}: {lastUpdatedLabel}
             </p>
           {/if}
         </div>
-        <div class="flex flex-wrap justify-center gap-2 text-xs text-surface-500 dark:text-surface-300 lg:justify-start">
+        <div class="flex flex-wrap justify-center gap-2 text-xs text-surface-500 lg:justify-start">
           <span class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-500">
             {$t('app.page_label')} {song.page}
           </span>
-          <span class="rounded-full bg-white/80 px-3 py-1 text-[11px] text-surface-600 dark:bg-surface-900/70 dark:text-surface-200">
+          <span class="rounded-full bg-white/80 px-3 py-1 text-[11px] text-surface-600">
             {$t('app.source_label')} {song.source}
           </span>
-          <span class="rounded-full bg-white/80 px-3 py-1 text-[11px] text-surface-600 dark:bg-surface-900/70 dark:text-surface-200">
+          <span class="rounded-full bg-white/80 px-3 py-1 text-[11px] text-surface-600">
             {$t('app.external_index')} {song.externalIndex}
           </span>
         </div>
@@ -136,7 +136,7 @@
           class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
             activeViewMode === 'basic'
               ? 'bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
-              : 'border border-primary-500/20 bg-white/70 text-surface-600 dark:border-surface-700/40 dark:bg-surface-800/70 dark:text-surface-200'
+              : 'border border-primary-500/20 bg-white/70 text-surface-600'
           }`}
           type="button"
           role="tab"
@@ -151,7 +151,7 @@
           class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
             activeViewMode === 'chords'
               ? 'bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
-              : 'border border-primary-500/20 bg-white/70 text-surface-600 dark:border-surface-700/40 dark:bg-surface-800/70 dark:text-surface-200'
+              : 'border border-primary-500/20 bg-white/70 text-surface-600'
           }`}
           type="button"
           role="tab"
@@ -166,7 +166,7 @@
     </header>
 
     <section
-      class={`relative space-y-3 rounded-xl border border-primary-500/10 bg-white/80 p-4 text-left text-sm leading-relaxed shadow-inner dark:border-surface-700/40 dark:bg-surface-900/60 sm:rounded-2xl sm:p-6 sm:text-base ${
+      class={`relative space-y-3 rounded-xl border border-primary-500/10 bg-white/80 p-4 text-left text-sm leading-relaxed shadow-inner sm:rounded-2xl sm:p-6 sm:text-base ${
         activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
       }`}
     >
@@ -179,7 +179,7 @@
                 : item.alignment === 'RIGHT'
                 ? 'text-right'
                 : 'text-left'
-            } ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''} text-surface-700 dark:text-surface-200`}
+            } ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''} text-surface-700`}
           >
             {#if activeViewMode === 'chords' && item.type === 'CHORD'}
               <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-400/80">CHORDS</span>
