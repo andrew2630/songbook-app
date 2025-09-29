@@ -5,7 +5,9 @@ const ASSETS = ['/', ...build, ...files];
 const ASSET_URLS = ASSETS.map((path) => new URL(path, self.location.origin).toString());
 const ASSET_SET = new Set(ASSET_URLS);
 const CACHE = `songbook-cache-${version}`;
+const DATA_CACHE = `songbook-data-${version}`;
 const APP_SHELL = new URL('/', self.location.origin).toString();
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? '';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -21,7 +23,9 @@ self.addEventListener('activate', (event) => {
     caches
       .keys()
       .then((keys) =>
-        Promise.all(keys.map((key) => (key === CACHE ? Promise.resolve() : caches.delete(key))))
+        Promise.all(
+          keys.map((key) => (key === CACHE || key === DATA_CACHE ? Promise.resolve() : caches.delete(key)))
+        )
       )
       .then(() => self.clients.claim())
   );
@@ -33,6 +37,25 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   const serialized = url.toString();
+
+  if (SUPABASE_URL && serialized.startsWith(SUPABASE_URL)) {
+    event.respondWith(
+      caches.open(DATA_CACHE).then(async (cache) => {
+        try {
+          const response = await fetch(request);
+          cache.put(request, response.clone());
+          return response;
+        } catch (error) {
+          const cachedResponse = await cache.match(request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          throw error;
+        }
+      })
+    );
+    return;
+  }
 
   if (request.mode === 'navigate') {
     event.respondWith(

@@ -4,7 +4,6 @@ import { defineConfig } from 'vite';
 
 const optimizeDepsExclude = [
         'svelte-i18n',
-        '@melt-ui/svelte',
         'lucide-svelte',
         'idb',
         'motion',

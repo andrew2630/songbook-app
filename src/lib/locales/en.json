@@ -15,6 +15,11 @@
     "favourites": "Favourites",
     "all_songs": "All songs",
     "page_index": "Page index",
+    "page_search": {
+      "label": "Filter pages",
+      "hint": "Narrow the index by typing a page number or range.",
+      "placeholder": "e.g. 120"
+    },
     "reset_filters": "Reset filters",
     "clear_query": "Clear",
     "no_favourites": "No favourites yet.",
@@ -27,6 +32,8 @@
     "add_favourite": "Add to favourites",
     "remove_favourite": "Remove from favourites",
     "go_to_song": "Open song",
+    "back_action": "Back",
+    "back_to_index": "Back to song list",
     "page_label": "Page",
     "source_label": "Source",
     "external_index": "Index",
@@ -45,7 +52,9 @@
       "none": "No filters applied",
       "search": "Search: {query}",
       "page": "Page {page}",
-      "favourites": "Favourites only"
+      "favourites": "Favourites only",
+      "page_search": "Page search: {query}",
+      "no_page_results": "No pages match this search"
     },
     "density_label": "Chord density",
     "density_caption": "{chords} of {total} lines use chords",
@@ -53,6 +62,7 @@
     "copy_link": "Copy share link",
     "copied_link": "Link copied!",
     "copy_failed": "Copy failed",
+    "scroll_to_top": "Back to top",
     "preview": "Preview lyrics",
     "hide_preview": "Hide preview",
     "preview_remaining": "{count} more lines hidden",
