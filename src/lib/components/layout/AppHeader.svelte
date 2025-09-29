@@ -6,6 +6,7 @@
   import { derived } from 'svelte/store';
   import { Languages, Search } from 'lucide-svelte';
   import type { SongLanguage } from '$lib/types/song';
+  import ThemeSelector from '$lib/components/preferences/ThemeSelector.svelte';
 
   type LanguageOption = {
     code: SongLanguage;
@@ -52,6 +53,7 @@
           </p> -->
         </div>
         <div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end sm:gap-4">
+          <ThemeSelector />
           <div class="flex items-center gap-3 rounded-full border border-surface-200/80 bg-white px-3 py-1.5 text-xs font-semibold text-surface-600 shadow-sm">
             <Languages class="h-4 w-4 text-primary-500" />
             <span class="hidden text-[11px] uppercase tracking-[0.18em] text-surface-500 sm:inline">

@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import { writable, derived } from 'svelte/store';
 import { locale } from 'svelte-i18n';
 import type { SongLanguage, SongViewMode } from '$lib/types/song';
+import { defaultTheme } from '$lib/config/themes';
 
 const LANGUAGE_KEY = 'songbook-language';
 const VIEW_KEY = 'songbook-view-mode';
@@ -10,6 +11,7 @@ const THEME_KEY = 'songbook-theme';
 
 const defaultLanguage: SongLanguage = 'PL';
 const defaultViewMode: SongViewMode = 'basic';
+const defaultThemeName = defaultTheme.id;
 
 function createPersistedStore<T>(key: string, initial: T) {
   const store = writable<T>(initial, (set) => {
@@ -37,15 +39,16 @@ function createPersistedStore<T>(key: string, initial: T) {
 export const language = createPersistedStore<SongLanguage>(LANGUAGE_KEY, defaultLanguage);
 export const viewMode = createPersistedStore<SongViewMode>(VIEW_KEY, defaultViewMode);
 export const favourites = createPersistedStore<string[]>(FAV_KEY, []);
+export const themeName = createPersistedStore<string>(THEME_KEY, defaultThemeName);
 
 if (browser) {
-  window.localStorage.removeItem(THEME_KEY);
-  document.documentElement.dataset.theme = 'light';
-  document.documentElement.classList.remove('dark');
-
   language.subscribe(($language) => {
     locale.set($language.toLowerCase());
     document.documentElement.lang = $language.toLowerCase();
+  });
+
+  themeName.subscribe(($theme) => {
+    document.documentElement.dataset.theme = $theme;
   });
 }
 

@@ -4,6 +4,12 @@
     "tagline": "Zborowy śpiewnik zawsze pod ręką",
     "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
     "language_label": "Język",
+    "theme_label": "Motyw",
+    "themes": {
+      "aurora": "Zorza",
+      "forest": "Leśna Polana",
+      "sunrise": "Poranny Blask"
+    },
     "view": {
       "basic": "Tekst",
       "chords": "Akordy"

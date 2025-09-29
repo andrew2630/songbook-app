@@ -4,6 +4,12 @@
     "tagline": "Church worship songs at your fingertips",
     "search_placeholder": "Search by title, lyric, page or index…",
     "language_label": "Language",
+    "theme_label": "Theme",
+    "themes": {
+      "aurora": "Aurora Glow",
+      "forest": "Forest Canopy",
+      "sunrise": "Sunrise Bloom"
+    },
     "view": {
       "basic": "Lyrics",
       "chords": "Chords view"
