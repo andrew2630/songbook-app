@@ -49,9 +49,12 @@
                 }
         }
 
-        function handleSelect(song: Song) {
-                handleClose();
-                goto(`/song/${song.id}?lang=${song.language}`);
+        async function handleSelect(song: Song) {
+                try {
+                        await goto(`/song/${song.id}?lang=${song.language}`);
+                } finally {
+                        handleClose();
+                }
         }
 
         $: if (!$isSearchOverlayOpen) {
