@@ -23,8 +23,6 @@
     "all_songs": "All songs",
     "page_index": "Page index",
     "page_search": {
-      "label": "Filter pages",
-      "hint": "Narrow the index by typing a page number or range.",
       "placeholder": "e.g. 120"
     },
     "reset_filters": "Reset filters",
@@ -51,8 +49,7 @@
       "label": "Sort by",
       "page": "Songbook order",
       "alpha": "A to Z",
-      "recent": "Recently updated",
-      "dense": "Chord rich"
+      "recent": "Recently updated"
     },
     "filters": {
       "active": "Active filters",
