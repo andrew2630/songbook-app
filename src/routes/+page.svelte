@@ -8,9 +8,7 @@
   import SongCard from '$lib/components/song/SongCard.svelte';
   import { fadeSlide } from '$lib/actions/fadeSlide';
   import { inView } from '$lib/actions/inView';
-  import { createTabs, melt } from '@melt-ui/svelte';
   import { onMount } from 'svelte';
-  import { get } from 'svelte/store';
   import {
     Search,
     Filter,
@@ -35,6 +33,8 @@
   let activeViewMode: 'basic' | 'chords' = 'basic';
   let sortMode: SongSortMode = 'page';
   let searchRef: HTMLInputElement | null = null;
+  let pageSearch = '';
+  let openGroup: string | null = null;
 
   const sortOptions: { value: SongSortMode; label: string; icon: typeof MapPinned }[] = [
     { value: 'page', label: 'app.sort.page', icon: MapPinned },
@@ -55,18 +55,7 @@
     return () => window.removeEventListener('resize', update);
   });
 
-  const viewTabs = createTabs({ defaultValue: get(viewMode) });
-  const { elements: viewTabElements, states: viewTabStates } = viewTabs;
-  const viewTabsRoot = viewTabElements.root;
-  const viewTabsList = viewTabElements.list;
-  const viewTabsTrigger = viewTabElements.trigger;
-  const viewTabValue = viewTabStates.value;
-
-  $: viewTabStates.value.set($viewMode);
-  $: if ($viewTabValue && $viewTabValue !== $viewMode) {
-    viewMode.set($viewTabValue as 'basic' | 'chords');
-  }
-  $: activeViewMode = (($viewTabValue as 'basic' | 'chords') ?? 'basic');
+  $: activeViewMode = $viewMode;
 
   $: availableSongs = $songs.filter((song) => song.language === $language);
   $: groupedByPage = songsByPage(availableSongs);
@@ -86,14 +75,39 @@
   $: filterBadges = [
     query ? $t('app.filters.search', { values: { query } }) : null,
     menuView === 'favourites' ? $t('app.filters.favourites') : null,
-    pageFilter ? $t('app.filters.page', { values: { page: pageFilter } }) : null
+    pageFilter ? $t('app.filters.page', { values: { page: pageFilter } }) : null,
+    pageSearch.trim() ? $t('app.filters.page_search', { values: { query: pageSearch.trim() } }) : null
   ].filter((badge): badge is string => Boolean(badge));
+
+  $: {
+    if (pageGroups.length === 0) {
+      openGroup = null;
+    } else if (!openGroup || !pageGroups.some((group) => group.label === openGroup)) {
+      openGroup = pageGroups[0]?.label ?? null;
+    }
+  }
+
+  function matchesPageSearch(pageNumber: number) {
+    const trimmed = pageSearch.trim();
+    if (!trimmed) return true;
+    return String(pageNumber).includes(trimmed);
+  }
+
+  function pagesForGroup(group: { label: string; pages: number[] }) {
+    return group.pages.filter((pageNumber) => matchesPageSearch(pageNumber));
+  }
+
+  function toggleGroup(label: string) {
+    openGroup = openGroup === label ? null : label;
+  }
 
   function handleClearFilters() {
     query = '';
     pageFilter = null;
     menuView = 'index';
     filtersOpen = isDesktop;
+    pageSearch = '';
+    openGroup = pageGroups[0]?.label ?? null;
   }
 
   function openSong(song: Song) {
@@ -118,6 +132,16 @@
     menuView = 'favourites';
     if (!browser) return;
     document.getElementById('songbook-filters')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function handleViewTabKeydown(event: KeyboardEvent, mode: 'basic' | 'chords') {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown') {
+      return;
+    }
+
+    event.preventDefault();
+    const next = mode === 'basic' ? 'chords' : 'basic';
+    viewMode.set(next);
   }
 </script>
 
@@ -250,6 +274,39 @@
           {/if}
         </div>
 
+        <div class="rounded-2xl border border-primary-500/15 bg-white/65 p-4 shadow-inner dark:border-surface-700/40 dark:bg-surface-800/70">
+          <label
+            class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-surface-500 dark:text-surface-400"
+            for="page-search"
+          >
+            {$t('app.page_search.label')}
+            <span class="text-[10px] normal-case tracking-normal text-surface-400 dark:text-surface-500">
+              {$t('app.page_search.hint')}
+            </span>
+          </label>
+          <div class="flex items-center gap-2 rounded-full border border-primary-500/15 bg-white/70 px-4 py-2 text-sm shadow-inner dark:border-surface-700/50 dark:bg-surface-900/60">
+            <MapPinned class="h-4 w-4 text-primary-500" />
+            <input
+              id="page-search"
+              class="w-full bg-transparent text-sm text-surface-700 placeholder:text-surface-400 focus:outline-none dark:text-surface-100"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              placeholder={$t('app.page_search.placeholder')}
+              bind:value={pageSearch}
+            />
+            {#if pageSearch.trim()}
+              <button
+                class="text-xs font-semibold uppercase tracking-[0.28em] text-primary-500 transition hover:text-primary-400"
+                on:click={() => (pageSearch = '')}
+                type="button"
+              >
+                {$t('app.clear_query')}
+              </button>
+            {/if}
+          </div>
+        </div>
+
         <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
           <button
             class={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition ${
@@ -297,35 +354,61 @@
             </ul>
           {/if}
         {:else}
-          <div class="space-y-4">
-            {#each pageGroups as group}
-              <details class="overflow-hidden rounded-2xl border border-primary-500/15 bg-white/70 p-0 dark:border-surface-700/40 dark:bg-surface-800/70" open>
-                <summary class="flex cursor-pointer items-center justify-between px-5 py-3 text-sm font-semibold text-surface-700 dark:text-surface-200">
+          <div class="space-y-3">
+            {#each pageGroups as group (group.label)}
+              {@const visiblePages = pagesForGroup(group)}
+              <div class="overflow-hidden rounded-2xl border border-primary-500/15 bg-white/70 dark:border-surface-700/40 dark:bg-surface-800/70">
+                <button
+                  class="flex w-full items-center justify-between gap-3 px-5 py-3 text-sm font-semibold text-surface-700 transition hover:text-primary-500 dark:text-surface-200"
+                  type="button"
+                  on:click={() => toggleGroup(group.label)}
+                  aria-expanded={openGroup === group.label}
+                  aria-controls={`page-group-${group.label}`}
+                >
                   <span class="inline-flex items-center gap-2">
                     <MapPinned class="h-4 w-4 text-primary-500" />
                     {group.label}
                   </span>
                   <span class="rounded-full bg-primary-500/10 px-3 py-1 text-xs font-semibold text-primary-500">
-                    {group.pages.length}
+                    {visiblePages.length}
                   </span>
-                </summary>
-                <div class="divide-y divide-primary-500/10">
-                  {#each group.pages as pageNumber}
-                    <button
-                      class={`flex w-full items-center justify-between px-5 py-2 text-left text-sm transition ${
-                        pageFilter === pageNumber ? 'text-primary-500' : 'hover:text-primary-500'
-                      }`}
-                      on:click={() => handlePageSelect(pageNumber)}
-                      type="button"
-                    >
-                      <span>{$t('app.page_label')} {pageNumber}</span>
-                      <span class="text-xs text-surface-500 dark:text-surface-300">
-                        {(groupedByPage[pageNumber] ?? []).length}
-                      </span>
-                    </button>
-                  {/each}
+                </button>
+                <div
+                  id={`page-group-${group.label}`}
+                  class={`border-t border-primary-500/10 bg-white/60 transition-[max-height,opacity] duration-200 ease-out dark:border-surface-700/40 dark:bg-surface-900/60 ${
+                    openGroup === group.label ? 'block opacity-100' : 'hidden opacity-0'
+                  }`}
+                  role="region"
+                  aria-live="polite"
+                >
+                  {#if visiblePages.length}
+                    <div class="flex flex-wrap gap-2 px-5 py-4">
+                      {#each visiblePages as pageNumber}
+                        <button
+                          class={`group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition ${
+                            pageFilter === pageNumber
+                              ? 'border-transparent bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
+                              : 'border-primary-500/20 bg-white/70 text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700/40 dark:bg-surface-900/50 dark:text-surface-200'
+                          }`}
+                          type="button"
+                          on:click={() => handlePageSelect(pageNumber)}
+                        >
+                          <span>{$t('app.page_label')} {pageNumber}</span>
+                          <span class={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                            pageFilter === pageNumber
+                              ? 'bg-white/20 text-white'
+                              : 'bg-primary-500/10 text-primary-500'
+                          }`}>
+                            {(groupedByPage[pageNumber] ?? []).length}
+                          </span>
+                        </button>
+                      {/each}
+                    </div>
+                  {:else}
+                    <p class="px-5 py-4 text-xs text-surface-500 dark:text-surface-300">{$t('app.filters.no_page_results')}</p>
+                  {/if}
                 </div>
-              </details>
+              </div>
             {/each}
           </div>
         {/if}
@@ -333,7 +416,7 @@
     </aside>
 
     <section class="space-y-6" use:fadeSlide={{ axis: 'y', from: 30, delay: 0.05 }}>
-      <div class="space-y-4 rounded-3xl border border-primary-500/20 bg-white/80 px-5 py-5 text-sm shadow-lg backdrop-blur-xl dark:border-surface-700/40 dark:bg-surface-900/80" use:melt={$viewTabsRoot}>
+      <div class="space-y-4 rounded-3xl border border-primary-500/20 bg-white/80 px-5 py-5 text-sm shadow-lg backdrop-blur-xl dark:border-surface-700/40 dark:bg-surface-900/80">
         <div class="flex flex-wrap items-center justify-between gap-4 text-surface-500 dark:text-surface-300">
           <div class="flex items-center gap-3">
             <span class="text-lg font-semibold text-surface-800 dark:text-surface-100">{filteredSongs.length}</span>
@@ -359,26 +442,38 @@
           {/if}
         </div>
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex flex-wrap gap-2" use:melt={$viewTabsList}>
+          <div
+            class="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label={$t('app.view_song')}
+          >
             <button
               class={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition ${
-                $viewTabValue === 'basic'
+                $viewMode === 'basic'
                   ? 'bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
                   : 'border border-primary-500/20 bg-white/70 text-surface-600 dark:border-surface-700/40 dark:bg-surface-800/70 dark:text-surface-200'
               }`}
-              use:melt={$viewTabsTrigger({ value: 'basic' })}
               type="button"
+              role="tab"
+              aria-selected={$viewMode === 'basic'}
+              tabindex={$viewMode === 'basic' ? 0 : -1}
+              on:click={() => viewMode.set('basic')}
+              on:keydown={(event) => handleViewTabKeydown(event, 'basic')}
             >
               {$t('app.view.basic')}
             </button>
             <button
               class={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition ${
-                $viewTabValue === 'chords'
+                $viewMode === 'chords'
                   ? 'bg-gradient-to-r from-primary-500 to-secondary-400 text-white shadow-lg'
                   : 'border border-primary-500/20 bg-white/70 text-surface-600 dark:border-surface-700/40 dark:bg-surface-800/70 dark:text-surface-200'
               }`}
-              use:melt={$viewTabsTrigger({ value: 'chords' })}
               type="button"
+              role="tab"
+              aria-selected={$viewMode === 'chords'}
+              tabindex={$viewMode === 'chords' ? 0 : -1}
+              on:click={() => viewMode.set('chords')}
+              on:keydown={(event) => handleViewTabKeydown(event, 'chords')}
             >
               {$t('app.view.chords')}
             </button>
