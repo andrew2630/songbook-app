@@ -23,8 +23,7 @@
   const sortOptions: { value: SongSortMode; label: string }[] = [
     { value: 'page', label: 'app.sort.page' },
     { value: 'alpha', label: 'app.sort.alpha' },
-    { value: 'recent', label: 'app.sort.recent' },
-    { value: 'dense', label: 'app.sort.dense' }
+    { value: 'recent', label: 'app.sort.recent' }
   ];
 
   onMount(() => {
@@ -85,16 +84,6 @@
   function handlePageSelect(pageNumber: number) {
     pageFilter = pageNumber;
     menuView = 'index';
-  }
-
-  function handleViewTabKeydown(event: KeyboardEvent, mode: 'basic' | 'chords') {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown') {
-      return;
-    }
-
-    event.preventDefault();
-    const next = mode === 'basic' ? 'chords' : 'basic';
-    viewMode.set(next);
   }
 
   function scrollToTop() {
@@ -198,40 +187,8 @@
       </button>
     </div>
 
-    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-      <div class="flex items-center gap-2" role="tablist" aria-label={$t('app.view_song')}>
-        <button
-          class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            $viewMode === 'basic'
-              ? 'bg-surface-900 text-white dark:bg-surface-50 dark:text-surface-900'
-              : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200'
-          }`}
-          type="button"
-          role="tab"
-          aria-selected={$viewMode === 'basic'}
-          tabindex={$viewMode === 'basic' ? 0 : -1}
-          on:click={() => viewMode.set('basic')}
-          on:keydown={(event) => handleViewTabKeydown(event, 'basic')}
-        >
-          {$t('app.view.basic')}
-        </button>
-        <button
-          class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            $viewMode === 'chords'
-              ? 'bg-surface-900 text-white dark:bg-surface-50 dark:text-surface-900'
-              : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200'
-          }`}
-          type="button"
-          role="tab"
-          aria-selected={$viewMode === 'chords'}
-          tabindex={$viewMode === 'chords' ? 0 : -1}
-          on:click={() => viewMode.set('chords')}
-          on:keydown={(event) => handleViewTabKeydown(event, 'chords')}
-        >
-          {$t('app.view.chords')}
-        </button>
-      </div>
-      <label class="flex items-center gap-3 text-sm font-medium text-surface-600 dark:text-surface-300">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-end">
+      <label class="flex items-center gap-3 text-sm font-medium text-surface-600 dark:text-surface-300 lg:ml-auto">
         <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 dark:text-surface-400">
           {$t('app.sort.label')}
         </span>
@@ -247,23 +204,16 @@
     </div>
 
     <div class="space-y-4">
-      <div class="space-y-2">
-        <label
-          class="text-xs font-semibold uppercase tracking-[0.28em] text-surface-500 dark:text-surface-400"
-          for="page-search"
-        >
-          {$t('app.page_search.label')}
-        </label>
-        <input
-          id="page-search"
-          class="w-full rounded-xl border border-surface-200/70 bg-white px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-100"
-          type="text"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          placeholder={$t('app.page_search.placeholder')}
-          bind:value={pageSearch}
-        />
-      </div>
+      <input
+        id="page-search"
+        class="w-full rounded-xl border border-surface-200/70 bg-white px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-100"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        placeholder={$t('app.page_search.placeholder')}
+        bind:value={pageSearch}
+        aria-label={$t('app.page_search.placeholder')}
+      />
 
       {#if menuView === 'favourites'}
         {#if favouriteSongs.length === 0}
@@ -352,6 +302,6 @@
     type="button"
   >
     <ArrowUp class="h-4 w-4" />
-    <span>Up to top</span>
+    <span>{$t('app.scroll_to_top')}</span>
   </button>
 {/if}

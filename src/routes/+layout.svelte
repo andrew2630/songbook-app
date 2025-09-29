@@ -66,8 +66,20 @@
       <slot />
     </main>
     <footer class="mt-10 border-t border-surface-200/60 py-5 text-xs text-surface-500 dark:border-surface-800 dark:text-surface-400 sm:text-sm">
-      <p class="font-semibold uppercase tracking-[0.18em] text-[11px] text-primary-500/80">Songbook</p>
-      <p class="mt-2 max-w-xl leading-relaxed">Designed for musicians who need a simple, dependable song companion offline.</p>
+      <p class="font-semibold uppercase tracking-[0.18em] text-[11px] text-primary-500/80">Kościół Wrocław Chrześcijańska</p>
+      <p class="mt-2 max-w-xl leading-relaxed">
+        Wspólnota Biblijna KWCh – żywa społeczność uczniów Jezusa w sercu Wrocławia. Więcej informacji o nabożeństwach,
+        grupach i wydarzeniach znajdziesz na
+        <a
+          class="font-semibold text-primary-500 underline-offset-4 transition hover:text-primary-400 hover:underline"
+          href="https://kwch.wroclaw.pl/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          kwch.wroclaw.pl
+        </a>
+        .
+      </p>
     </footer>
   </div>
 </div>

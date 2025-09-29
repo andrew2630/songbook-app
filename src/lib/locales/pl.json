@@ -23,8 +23,6 @@
     "all_songs": "Wszystkie pieśni",
     "page_index": "Spis stron",
     "page_search": {
-      "label": "Filtruj strony",
-      "hint": "Zawęź spis, wpisując numer strony lub zakres.",
       "placeholder": "np. 120"
     },
     "reset_filters": "Wyczyść filtry",
@@ -51,8 +49,7 @@
       "label": "Sortuj według",
       "page": "Kolejność śpiewnika",
       "alpha": "A do Z",
-      "recent": "Ostatnio aktualizowane",
-      "dense": "Najwięcej akordów"
+      "recent": "Ostatnio aktualizowane"
     },
     "filters": {
       "active": "Aktywne filtry",

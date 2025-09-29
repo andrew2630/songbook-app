@@ -173,7 +173,7 @@ export const searchableSongs = derived(songs, ($songs) =>
   $songs.map((song) => ({ key: `${song.id}-${song.language}`, song, search: mapSearchable(song) }))
 );
 
-export type SongSortMode = 'page' | 'alpha' | 'recent' | 'dense';
+export type SongSortMode = 'page' | 'alpha' | 'recent';
 
 export function filterSongs(
   collection: { key: string; song: Song; search: string }[],
@@ -205,20 +205,8 @@ export function filterSongs(
         return bTime - aTime || a.title.localeCompare(b.title);
       }
 
-      if (sortMode === 'dense') {
-        const aDensity = chordDensityScore(a.items);
-        const bDensity = chordDensityScore(b.items);
-        return bDensity - aDensity || a.page - b.page || a.title.localeCompare(b.title);
-      }
-
       return a.page - b.page || a.title.localeCompare(b.title);
     });
-}
-
-function chordDensityScore(items: SongItem[]) {
-  if (!items.length) return 0;
-  const chordLines = items.filter((item) => item.type === 'CHORD').length;
-  return chordLines / items.length;
 }
 
 export async function getSongByKey(key: string): Promise<Song | null> {
