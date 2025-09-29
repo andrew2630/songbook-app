@@ -110,12 +110,12 @@
 				class="flex items-center gap-2.5 rounded-xl border border-surface-200/60 bg-surface-100/70 px-3.5 py-2.5 shadow-inner"
 			>
 				<Search class="h-4 w-4 text-primary-500" />
-				<input
-					id="song-search"
-					class="w-full bg-transparent text-sm text-surface-800 outline-none placeholder:text-surface-400 sm:text-base"
-					type="search"
-					placeholder={$t('app.search_placeholder')}
-					bind:value={query}
+                                <input
+                                        id="song-search"
+                                        class="w-full bg-transparent text-sm text-on-surface outline-none placeholder:text-on-surface-muted sm:text-base"
+                                        type="search"
+                                        placeholder={$t('app.search_placeholder')}
+                                        bind:value={query}
 					bind:this={searchRef}
 				/>
 				{#if query}
@@ -131,16 +131,16 @@
 			<!-- <p class="text-xs text-surface-500">{$t('app.search_hint')}</p> -->
 		</div>
 
-		<div class="flex flex-wrap items-center gap-3 text-sm text-surface-600">
-			<span class="font-semibold text-surface-900">{filteredSongs.length}</span>
+                <div class="flex flex-wrap items-center gap-3 text-sm text-on-surface-soft">
+                        <span class="font-semibold text-on-surface">{filteredSongs.length}</span>
 			<span>/</span>
 			<span>{availableSongs.length}</span>
 			{#if pageFilter}
 				<span
-					class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500"
-				>
-					{$t('app.page_label')}
-					{pageFilter}
+                                        class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500"
+                                >
+                                        {$t('app.page_label')}
+                                        {pageFilter}
 				</span>
 			{/if}
 		</div>
@@ -226,26 +226,25 @@
 
 			{#if menuView === 'favourites'}
 				{#if favouriteSongs.length === 0}
-					<p
-						class="rounded-xl border border-surface-200/60 bg-surface-50/80 px-4 py-4 text-sm text-surface-500"
-					>
-						{$t('app.no_favourites')}
-					</p>
-				{:else}
-					<ul class="grid gap-3 sm:grid-cols-2">
-						{#each favouriteSongs as favSong (favSong.id + '-' + favSong.language)}
-							<li>
-								<button
-									class="w-full rounded-xl border border-surface-200/60 bg-surface-100/70 px-4 py-3 text-left text-sm font-semibold text-surface-700 transition hover:border-primary-400 hover:text-primary-500"
-									on:click={() => openSong(favSong)}
-									type="button"
-								>
-									<span class="block text-base font-semibold text-surface-900">{favSong.title}</span
-									>
-									<span class="text-xs uppercase tracking-[0.28em] text-surface-500">
-										{$t('app.page_label')}
-										{favSong.page}
-									</span>
+                                        <p
+                                                class="rounded-xl border border-surface-200/60 bg-surface-50/80 px-4 py-4 text-sm text-on-surface-subtle"
+                                        >
+                                                {$t('app.no_favourites')}
+                                        </p>
+                                {:else}
+                                        <ul class="grid gap-3 sm:grid-cols-2">
+                                                {#each favouriteSongs as favSong (favSong.id + '-' + favSong.language)}
+                                                        <li>
+                                                                <button
+                                                                        class="w-full rounded-xl border border-surface-200/60 bg-surface-100/70 px-4 py-3 text-left text-sm font-semibold text-on-surface transition hover:border-primary-400 hover:text-primary-500"
+                                                                        on:click={() => openSong(favSong)}
+                                                                        type="button"
+                                                                >
+                                                                        <span class="block text-base font-semibold text-on-surface">{favSong.title}</span>
+                                                                        <span class="text-xs uppercase tracking-[0.28em] text-on-surface-subtle">
+                                                                                {$t('app.page_label')}
+                                                                                {favSong.page}
+                                                                        </span>
 								</button>
 							</li>
 						{/each}

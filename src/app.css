@@ -17,16 +17,17 @@
 		color-scheme: dark;
 	}
 
-	body {
-		font-family:
-			Inter,
-			'SF Pro Display',
-			-apple-system,
-			BlinkMacSystemFont,
-			'Segoe UI',
-			sans-serif;
-		@apply min-h-screen bg-surface-50 text-surface-900 antialiased transition-colors duration-500;
-	}
+        body {
+                font-family:
+                        Inter,
+                        'SF Pro Display',
+                        -apple-system,
+                        BlinkMacSystemFont,
+                        'Segoe UI',
+                        sans-serif;
+                color: rgb(var(--on-surface));
+                @apply min-h-screen bg-surface-50 antialiased transition-colors duration-500;
+        }
 
 	body.is-lenis {
 		overflow: hidden;
@@ -83,16 +84,32 @@
 		position: relative;
 	}
 
-	.gradient-border::before {
-		content: '';
-		position: absolute;
-		inset: -1px;
-		border-radius: inherit;
-		background: linear-gradient(130deg, rgba(129, 140, 248, 0.8), rgba(56, 189, 248, 0.7));
-		mask:
-			linear-gradient(#fff, #fff) padding-box,
-			linear-gradient(#fff, #fff);
-		mask-composite: exclude;
-		pointer-events: none;
-	}
+        .gradient-border::before {
+                content: '';
+                position: absolute;
+                inset: -1px;
+                border-radius: inherit;
+                background: linear-gradient(130deg, rgba(129, 140, 248, 0.8), rgba(56, 189, 248, 0.7));
+                mask:
+                        linear-gradient(#fff, #fff) padding-box,
+                        linear-gradient(#fff, #fff);
+                mask-composite: exclude;
+                pointer-events: none;
+        }
+
+        .text-on-surface {
+                color: rgb(var(--on-surface));
+        }
+
+        .text-on-surface-soft {
+                color: rgb(var(--on-surface) / 0.75);
+        }
+
+        .text-on-surface-muted {
+                color: rgb(var(--on-surface) / 0.6);
+        }
+
+        .text-on-surface-subtle {
+                color: rgb(var(--on-surface) / 0.45);
+        }
 }

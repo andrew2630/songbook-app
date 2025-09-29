@@ -4,9 +4,10 @@
 	import { language } from '$lib/stores/preferences';
 	import { isSyncing, lastSynced } from '$lib/stores/songStore';
 	import { derived } from 'svelte/store';
-	import { Languages, Search } from 'lucide-svelte';
-	import type { SongLanguage } from '$lib/types/song';
-	import ThemeSelector from '$lib/components/preferences/ThemeSelector.svelte';
+        import { Languages, Search } from 'lucide-svelte';
+        import type { SongLanguage } from '$lib/types/song';
+        import ThemeSelector from '$lib/components/preferences/ThemeSelector.svelte';
+        import { openSearchOverlay } from '$lib/stores/ui';
 
 	type LanguageOption = {
 		code: SongLanguage;
@@ -27,16 +28,19 @@
 		language.set(code);
 	}
 
-	function focusSearch() {
-		if (!browser) return;
+        function focusSearch() {
+                if (!browser) return;
 
-		const searchField = document.getElementById('song-search') as HTMLInputElement | null;
-		if (searchField) {
-			searchField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			searchField.focus({ preventScroll: true });
-			searchField.select();
-		}
-	}
+                const searchField = document.getElementById('song-search') as HTMLInputElement | null;
+                if (searchField) {
+                        searchField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        searchField.focus({ preventScroll: true });
+                        searchField.select();
+                        return;
+                }
+
+                openSearchOverlay();
+        }
 </script>
 
 <section class="pt-6 sm:pt-10 lg:pt-12">
@@ -49,9 +53,9 @@
 					<p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-500">
 						{$t('app.brand_global')}
 					</p>
-					<h1 class="text-balance text-2xl font-semibold text-surface-900 sm:text-3xl lg:text-4xl">
-						{$t('app.title')}
-					</h1>
+                                        <h1 class="text-balance text-2xl font-semibold text-on-surface sm:text-3xl lg:text-4xl">
+                                                {$t('app.title')}
+                                        </h1>
 					<!-- <p class="max-w-2xl text-sm leading-relaxed text-surface-600">
             {$t('app.tagline')}
           </p> -->
@@ -60,21 +64,21 @@
 					class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end sm:gap-4"
 				>
 					<ThemeSelector />
-					<div
-						class="flex items-center gap-3 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 text-xs font-semibold text-surface-600 shadow-sm"
-					>
-						<Languages class="h-4 w-4 text-primary-500" />
-						<span class="hidden text-[11px] uppercase tracking-[0.18em] text-surface-500 sm:inline">
-							{$t('app.language_label')}
-						</span>
+                                        <div
+                                                class="flex items-center gap-3 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 text-xs font-semibold text-on-surface-soft shadow-sm"
+                                        >
+                                                <Languages class="h-4 w-4 text-primary-500" />
+                                                <span class="hidden text-[11px] uppercase tracking-[0.18em] text-on-surface-subtle sm:inline">
+                                                        {$t('app.language_label')}
+                                                </span>
 						<div class="grid grid-cols-2 gap-1 rounded-full bg-surface-50/80 p-1 shadow-inner">
 							{#each languageOptions as option}
 								<button
 									class={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] transition ${
 										$language === option.code
 											? 'bg-primary-500 text-white shadow'
-											: 'text-surface-500 hover:text-primary-500'
-									}`}
+                                                                                        : 'text-on-surface-subtle hover:text-primary-500'
+                                                                        }`}
 									type="button"
 									aria-pressed={$language === option.code}
 									on:click={() => setLanguage(option.code)}
@@ -96,21 +100,21 @@
 					<Search class="h-4 w-4" />
 					{$t('app.search_placeholder')}
 				</button>
-				<div class="flex flex-col gap-2 text-xs text-surface-600 sm:flex-row sm:items-center">
-					<p
-						class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 uppercase tracking-[0.18em]"
-					>
-						<span class="text-surface-900">{$syncStatus}</span>
-					</p>
-					<p
-						class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 uppercase tracking-[0.18em]"
-					>
-						<span class="text-surface-500">{$t('app.last_synced')}</span>
-						<span class="text-surface-900"
-							>{$lastSynced ? new Date($lastSynced).toLocaleString() : '—'}</span
-						>
-					</p>
-				</div>
+                                <div class="flex flex-col gap-2 text-xs text-on-surface-soft sm:flex-row sm:items-center">
+                                        <p
+                                                class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 uppercase tracking-[0.18em]"
+                                        >
+                                                <span class="text-on-surface">{$syncStatus}</span>
+                                        </p>
+                                        <p
+                                                class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-surface-100/70 px-3 py-1.5 uppercase tracking-[0.18em]"
+                                        >
+                                                <span class="text-on-surface-subtle">{$t('app.last_synced')}</span>
+                                                <span class="text-on-surface"
+                                                        >{$lastSynced ? new Date($lastSynced).toLocaleString() : '—'}</span
+                                                >
+                                        </p>
+                                </div>
 			</div>
 		</div>
 	</div>

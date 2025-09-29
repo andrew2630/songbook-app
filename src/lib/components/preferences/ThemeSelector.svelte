@@ -1,61 +1,71 @@
 <script lang="ts">
-	import { t } from 'svelte-i18n';
-	import { Palette } from 'lucide-svelte';
-	import { themeName } from '$lib/stores/preferences';
-	import { defaultTheme, themeOptions } from '$lib/config/themes';
+        import { t } from 'svelte-i18n';
+        import { Check, Palette } from 'lucide-svelte';
+        import { themeName } from '$lib/stores/preferences';
+        import { defaultTheme, themeOptions } from '$lib/config/themes';
 
-	let selectElement: HTMLSelectElement | null = null;
+        $: activeTheme = themeOptions.find((option) => option.id === $themeName) ?? defaultTheme;
 
-	$: activeTheme = themeOptions.find((option) => option.id === $themeName) ?? defaultTheme;
-	$: if (selectElement) {
-		selectElement.value = $themeName;
-	}
-
-	function handleChange(event: Event) {
-		const target = event.currentTarget as HTMLSelectElement | null;
-		if (!target) return;
-		themeName.set(target.value);
-	}
+        function selectTheme(themeId: string) {
+                themeName.set(themeId);
+        }
 </script>
 
 <div
-	class="group flex items-center gap-3 rounded-2xl border border-surface-200/70 bg-surface-50/80 px-4 py-2.5 text-xs font-semibold text-surface-600 shadow-sm backdrop-blur"
+        class="space-y-3 rounded-2xl border border-surface-200/70 bg-surface-50/80 px-4 py-3 text-xs font-semibold text-on-surface-soft shadow-sm backdrop-blur"
 >
-	<Palette
-		class="h-4 w-4 text-primary-500 transition group-hover:text-primary-400"
-		aria-hidden="true"
-	/>
-	<div class="flex flex-col gap-2">
-		<label class="text-[11px] uppercase tracking-[0.18em] text-surface-500" for="theme-select">
-			{$t('app.theme_label')}
-		</label>
-		<div class="flex items-center gap-3">
-			<div class="relative">
-				<select
-					id="theme-select"
-					class="appearance-none rounded-xl border border-surface-200/70 bg-surface-100/80 px-3 py-2 pr-8 text-xs font-semibold uppercase tracking-[0.2em] text-surface-700 shadow-sm outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-200/60"
-					bind:this={selectElement}
-					value={$themeName}
-					on:change={handleChange}
-				>
-					{#each themeOptions as option}
-						<option value={option.id}>{$t(`app.themes.${option.labelKey}`)}</option>
-					{/each}
-				</select>
-				<span
-					aria-hidden="true"
-					class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-[10px] text-primary-400"
-				>
-					▼
-				</span>
-			</div>
-			<span
-				class="flex h-7 w-16 overflow-hidden rounded-full border border-surface-200/70 bg-surface-100 shadow-sm"
-			>
-				{#each activeTheme.preview as color}
-					<span class="flex-1" style={`background:${color}`}></span>
-				{/each}
-			</span>
-		</div>
-	</div>
+        <div class="flex items-center gap-3">
+                <span class="flex h-9 w-9 items-center justify-center rounded-full border border-primary-200/60 bg-primary-50/70 text-primary-500 shadow-sm">
+                        <Palette class="h-4 w-4" aria-hidden="true" />
+                </span>
+                <div>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-on-surface-subtle">
+                                {$t('app.theme_label')}
+                        </p>
+                        <p class="text-sm font-semibold text-on-surface">
+                                {$t(`app.themes.${activeTheme.labelKey}`)}
+                        </p>
+                </div>
+        </div>
+        <div class="grid gap-2 sm:grid-cols-2">
+                {#each themeOptions as option}
+                        {#key option.id}
+                                <button
+                                        class={`group/theme relative flex items-center gap-3 rounded-2xl border px-3.5 py-2.5 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-400 ${
+                                                option.id === $themeName
+                                                        ? 'border-primary-400 bg-primary-50/60 text-on-surface shadow-sm'
+                                                        : 'border-surface-200/70 bg-surface-100/60 text-on-surface-soft hover:border-primary-300 hover:text-primary-500'
+                                        }`}
+                                        type="button"
+                                        aria-pressed={option.id === $themeName}
+                                        on:click={() => selectTheme(option.id)}
+                                >
+                                        <span
+                                                class={`flex h-9 w-16 overflow-hidden rounded-full border shadow-inner ${
+                                                        option.id === $themeName
+                                                                ? 'border-primary-300'
+                                                                : 'border-surface-200/70'
+                                                }`}
+                                        >
+                                                {#each option.preview as color}
+                                                        <span class="flex-1" style={`background:${color}`}></span>
+                                                {/each}
+                                        </span>
+                                        <span class="flex flex-1 flex-col text-left">
+                                                <span class="text-sm font-semibold text-on-surface">
+                                                        {$t(`app.themes.${option.labelKey}`)}
+                                                </span>
+                                                <span class="text-[11px] uppercase tracking-[0.18em] text-on-surface-subtle">
+                                                        {$t(`app.theme_scheme.${option.scheme}`)}
+                                                </span>
+                                        </span>
+                                        {#if option.id === $themeName}
+                                                <span class="text-primary-500">
+                                                        <Check class="h-4 w-4" aria-hidden="true" />
+                                                </span>
+                                        {/if}
+                                </button>
+                        {/key}
+                {/each}
+        </div>
 </div>

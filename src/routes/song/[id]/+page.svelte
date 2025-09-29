@@ -117,30 +117,30 @@
 
 			<div class="space-y-3">
 				<div class="space-y-2">
-					<h1 class="text-balance text-2xl font-semibold text-surface-900 sm:text-3xl lg:text-4xl">
-						{song.title}
-					</h1>
+                                        <h1 class="text-balance text-2xl font-semibold text-on-surface sm:text-3xl lg:text-4xl">
+                                                {song.title}
+                                        </h1>
 					{#if lastUpdatedLabel}
 						<p class="text-[11px] uppercase tracking-[0.2em] text-primary-400/80">
 							{$t('app.updated_label')}: {lastUpdatedLabel}
 						</p>
 					{/if}
 				</div>
-				<div class="flex flex-wrap justify-center gap-2 text-xs text-surface-500 lg:justify-start">
+                                <div class="flex flex-wrap justify-center gap-2 text-xs text-on-surface-subtle lg:justify-start">
 					<span
 						class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-500"
 					>
 						{$t('app.page_label')}
 						{song.page}
 					</span>
-					<span class="rounded-full bg-surface-100/70 px-3 py-1 text-[11px] text-surface-600">
-						{$t('app.source_label')}
-						{song.source}
-					</span>
-					<span class="rounded-full bg-surface-100/70 px-3 py-1 text-[11px] text-surface-600">
-						{$t('app.external_index')}
-						{song.externalIndex}
-					</span>
+                                        <span class="rounded-full bg-surface-100/70 px-3 py-1 text-[11px] text-on-surface-soft">
+                                                {$t('app.source_label')}
+                                                {song.source}
+                                        </span>
+                                        <span class="rounded-full bg-surface-100/70 px-3 py-1 text-[11px] text-on-surface-soft">
+                                                {$t('app.external_index')}
+                                                {song.externalIndex}
+                                        </span>
 				</div>
 			</div>
 
@@ -196,7 +196,7 @@
 								: item.alignment === 'RIGHT'
 									? 'text-right'
 									: 'text-left'
-						} ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''} text-surface-700`}
+                                                } ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''} text-on-surface`}
 					>
 						{#if activeViewMode === 'chords' && item.type === 'CHORD'}
 							<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-400/80"

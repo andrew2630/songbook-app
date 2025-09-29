@@ -100,41 +100,41 @@
 				<div class="flex flex-col gap-3.5 lg:flex-row lg:items-start lg:justify-between">
 					<div class="space-y-3">
 						<div class="space-y-2">
-							<h3 class="text-lg font-semibold text-surface-900 sm:text-xl">{song.title}</h3>
-							{#if lastUpdatedLabel}
-								<p class="text-xs text-surface-500">
-									{$t('app.updated_label')}: {lastUpdatedLabel}
-								</p>
-							{/if}
-						</div>
-						<div class="flex flex-wrap items-center gap-2 text-xs text-surface-500">
-							<span
-								class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 font-medium text-surface-700"
-							>
-								{$t('app.page_label')}
-								{song.page}
-							</span>
-							<span
-								class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-surface-600"
-							>
-								{$t('app.source_label')}
-								{song.source}
-							</span>
-							<span
-								class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-surface-600"
-							>
-								{$t('app.external_index')}
-								{song.externalIndex}
-							</span>
-						</div>
+                                                        <h3 class="text-lg font-semibold text-on-surface sm:text-xl">{song.title}</h3>
+                                                        {#if lastUpdatedLabel}
+                                                                <p class="text-xs text-on-surface-subtle">
+                                                                        {$t('app.updated_label')}: {lastUpdatedLabel}
+                                                                </p>
+                                                        {/if}
+                                                </div>
+                                                <div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-subtle">
+                                                        <span
+                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 font-medium text-on-surface"
+                                                        >
+                                                                {$t('app.page_label')}
+                                                                {song.page}
+                                                        </span>
+                                                        <span
+                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-on-surface-soft"
+                                                        >
+                                                                {$t('app.source_label')}
+                                                                {song.source}
+                                                        </span>
+                                                        <span
+                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-on-surface-soft"
+                                                        >
+                                                                {$t('app.external_index')}
+                                                                {song.externalIndex}
+                                                        </span>
+                                                </div>
 					</div>
 					<div class="flex flex-wrap justify-end gap-2 text-sm">
 						<button
 							class={`inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3.5 py-1.5 text-sm font-medium transition hover:border-primary-400 hover:text-primary-500 ${
-								isFavourite
-									? 'bg-primary-500/10 text-primary-600 shadow-inner shadow-primary-500/20'
-									: 'text-surface-700'
-							}`}
+                                                                isFavourite
+                                                                        ? 'bg-primary-500/10 text-primary-600 shadow-inner shadow-primary-500/20'
+                                                                        : 'text-on-surface'
+                                                        }`}
 							on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
 							type="button"
 						>
@@ -188,7 +188,7 @@
                     style:transition={prefersReducedMotion ? 'none' : 'transform 420ms cubic-bezier(0.22, 1, 0.36, 1)'}
                   />
                 </span>
-                <span class="text-sm font-semibold text-surface-700">{densityPercentage}%</span>
+                <span class="text-sm font-semibold text-on-surface">{densityPercentage}%</span>
               </div>
             </div>
             <p class="text-xs text-surface-500">
@@ -197,7 +197,7 @@
           </div>
         </div> -->
 
-				<div class="space-y-3 text-sm leading-relaxed text-surface-700">
+                            <div class="space-y-3 text-sm leading-relaxed text-on-surface">
 					{#each previewItems as item}
 						<p
 							class={`whitespace-pre-line ${alignmentClass(item.alignment)} ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''}`}
@@ -218,7 +218,7 @@
 				</div>
 
 				{#if remainingItems.length && expanded}
-					<div class="space-y-3 text-sm leading-relaxed text-surface-700" transition:fade>
+                                    <div class="space-y-3 text-sm leading-relaxed text-on-surface" transition:fade>
 						{#each remainingItems as item}
 							<p
 								class={`whitespace-pre-line ${alignmentClass(item.alignment)} ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''}`}
