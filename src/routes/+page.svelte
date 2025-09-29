@@ -290,7 +290,7 @@
         {/if}
       {:else}
         <div class="space-y-4">
-          {#each pageGroups as group (group.label)}
+          <!-- {#each pageGroups as group (group.label)}
             {@const pages = pagesForGroup(group)}
             {#if pages.length}
               <div class="space-y-2">
@@ -319,7 +319,7 @@
                 </div>
               </div>
             {/if}
-          {/each}
+          {/each} -->
         </div>
       {/if}
     </div>
