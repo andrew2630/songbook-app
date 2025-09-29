@@ -38,23 +38,23 @@
     stopOrbAnimation?.();
   });
 
-  const highlightCards = [
-    {
-      icon: Music3,
-      label: 'app.brand_available_offline',
-      description: 'app.toggle_index'
-    },
-    {
-      icon: Sun,
-      label: 'app.theme_label',
-      description: 'app.system'
-    },
-    {
-      icon: Orbit,
-      label: 'app.view_song',
-      description: 'app.tagline'
-    }
-  ];
+  // const highlightCards = [
+  //   {
+  //     icon: Music3,
+  //     label: 'app.brand_available_offline',
+  //     description: 'app.toggle_index'
+  //   },
+  //   {
+  //     icon: Sun,
+  //     label: 'app.theme_label',
+  //     description: 'app.system'
+  //   },
+  //   {
+  //     icon: Orbit,
+  //     label: 'app.view_song',
+  //     description: 'app.tagline'
+  //   }
+  // ];
 </script>
 
 <section class="relative pt-12 sm:pt-16 lg:pt-20">
@@ -85,9 +85,9 @@
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary-400/80">
               {$t('app.brand_available_offline')}
             </p>
-            <p class="mt-2 max-w-xl text-sm text-surface-500 dark:text-surface-200">
+            <!-- <p class="mt-2 max-w-xl text-sm text-surface-500 dark:text-surface-200">
               {$t('app.search_placeholder')}
-            </p>
+            </p> -->
           </div>
           <div class="flex items-center gap-3 text-sm text-surface-500 dark:text-surface-200">
             <span class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary-500/15">
@@ -162,7 +162,7 @@
     </div>
   </div>
 
-  <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <!-- <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {#each highlightCards as card, index}
       <div
         class="group relative overflow-hidden rounded-3xl border border-primary-500/10 bg-white/75 p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-xl dark:border-surface-700/40 dark:bg-surface-800/80"
@@ -179,5 +179,5 @@
         </div>
       </div>
     {/each}
-  </div>
+  </div> -->
 </section>
