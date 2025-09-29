@@ -5,6 +5,10 @@
     "search_placeholder": "Search by title, lyric, page or index…",
     "language_label": "Language",
     "theme_label": "Theme",
+    "theme": {
+        "light": "Light",
+        "dark": "Dark"
+    },
     "light": "Light",
     "dark": "Dark",
     "system": "System",

@@ -5,6 +5,10 @@
     "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
     "language_label": "Język",
     "theme_label": "Motyw",
+    "theme": {
+        "light": "Jasny",
+        "dark": "Ciemny"
+    },
     "light": "Jasny",
     "dark": "Ciemny",
     "system": "Systemowy",
