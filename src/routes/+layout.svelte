@@ -60,13 +60,13 @@
 </script>
 
 <div class="min-h-screen bg-gradient-to-b from-surface-50 via-surface-100 to-surface-50 text-surface-900 dark:from-surface-950 dark:via-surface-900 dark:to-surface-950">
-  <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-16 sm:px-6 lg:px-8">
+  <div class="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 pb-12 sm:px-5 lg:max-w-6xl lg:px-8">
     <AppHeader />
-    <main class="flex-1 py-8 sm:py-10 lg:py-12">
+    <main class="flex-1 py-6 sm:py-8 lg:py-10">
       <slot />
     </main>
-    <footer class="mt-12 border-t border-surface-200/60 py-6 text-sm text-surface-500 dark:border-surface-800 dark:text-surface-400">
-      <p class="font-semibold uppercase tracking-[0.2em] text-xs text-primary-500/80">Songbook</p>
+    <footer class="mt-10 border-t border-surface-200/60 py-5 text-xs text-surface-500 dark:border-surface-800 dark:text-surface-400 sm:text-sm">
+      <p class="font-semibold uppercase tracking-[0.18em] text-[11px] text-primary-500/80">Songbook</p>
       <p class="mt-2 max-w-xl leading-relaxed">Designed for musicians who need a simple, dependable song companion offline.</p>
     </footer>
   </div>

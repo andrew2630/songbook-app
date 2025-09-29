@@ -27,7 +27,11 @@
 
   const PREVIEW_LENGTH = 3;
 
-  $: printableItems = song.items.filter((item) => item.text.trim().length);
+  function itemText(item: Song['items'][number]) {
+    return typeof item.text === 'string' ? item.text : '';
+  }
+
+  $: printableItems = song.items.filter((item) => itemText(item).trim().length);
   $: previewItems = printableItems.slice(0, PREVIEW_LENGTH);
   $: remainingItems = printableItems.slice(PREVIEW_LENGTH);
   $: totalLines = printableItems.length;
@@ -89,14 +93,14 @@
 <div use:inView on:enterViewport={handleEnter}>
   {#if visible}
     <article
-      class="rounded-2xl border border-surface-200/70 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-surface-700 dark:bg-surface-900/70"
+      class="rounded-xl border border-surface-200/70 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-surface-700 dark:bg-surface-900/70 sm:rounded-2xl sm:p-5"
       use:listTransition={index}
     >
-      <div class="flex flex-col gap-6">
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div class="space-y-4">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-3.5 lg:flex-row lg:items-start lg:justify-between">
+          <div class="space-y-3">
             <div class="space-y-2">
-              <h3 class="text-xl font-semibold text-surface-900 dark:text-surface-50">{song.title}</h3>
+              <h3 class="text-lg font-semibold text-surface-900 dark:text-surface-50 sm:text-xl">{song.title}</h3>
               {#if lastUpdatedLabel}
                 <p class="text-xs text-surface-500 dark:text-surface-400">
                   {$t('app.updated_label')}: {lastUpdatedLabel}
@@ -117,7 +121,7 @@
           </div>
           <div class="flex flex-wrap justify-end gap-2 text-sm">
             <button
-              class={`inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-4 py-2 font-medium transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200 ${
+              class={`inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3.5 py-1.5 text-sm font-medium transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200 ${
                 isFavourite ? 'bg-primary-500/10 text-primary-600 dark:text-primary-300' : 'text-surface-700'
               }`}
               on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
@@ -127,7 +131,7 @@
               {isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
             </button>
             <button
-              class="inline-flex items-center gap-2 rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
+              class="inline-flex items-center gap-2 rounded-full bg-primary-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
               on:click={() => dispatch('open', song)}
               type="button"
             >
@@ -136,7 +140,7 @@
             </button>
             {#if remainingItems.length}
               <button
-                class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-4 py-2 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200"
+                class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3.5 py-1.5 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200"
                 on:click={() => (expanded = !expanded)}
                 type="button"
                 aria-expanded={expanded}
@@ -151,7 +155,7 @@
               </button>
             {/if}
             <button
-              class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-4 py-2 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200"
+              class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3.5 py-1.5 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200"
               on:click={copyShareLink}
               type="button"
             >
@@ -189,9 +193,9 @@
             >
               {#if viewMode === 'chords' && item.type === 'CHORD'}
                 <span class="block text-[11px] font-semibold text-primary-500">CHORDS</span>
-                <span class="mt-1 block text-base font-medium">{item.text}</span>
+                <span class="mt-1 block text-base font-medium">{itemText(item)}</span>
               {:else}
-                {item.text}
+                {itemText(item)}
               {/if}
             </p>
           {/each}
@@ -210,9 +214,9 @@
               >
                 {#if viewMode === 'chords' && item.type === 'CHORD'}
                   <span class="block text-[11px] font-semibold text-primary-500">CHORDS</span>
-                  <span class="mt-1 block text-base font-medium">{item.text}</span>
+                  <span class="mt-1 block text-base font-medium">{itemText(item)}</span>
                 {:else}
-                  {item.text}
+                  {itemText(item)}
                 {/if}
               </p>
             {/each}

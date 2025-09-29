@@ -6,8 +6,11 @@
     "language_label": "Language",
     "theme_label": "Theme",
     "theme": {
-        "light": "Light",
-        "dark": "Dark"
+      "light": "Light",
+      "dark": "Dark",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean"
     },
     "light": "Light",
     "dark": "Dark",
