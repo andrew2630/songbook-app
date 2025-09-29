@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import { writable, derived } from 'svelte/store';
 import { locale } from 'svelte-i18n';
 import type { SongLanguage, SongViewMode } from '$lib/types/song';
-import { defaultTheme } from '$lib/config/themes';
+import { defaultTheme, themeMap } from '$lib/config/themes';
 
 const LANGUAGE_KEY = 'songbook-language';
 const VIEW_KEY = 'songbook-view-mode';
@@ -14,26 +14,26 @@ const defaultViewMode: SongViewMode = 'basic';
 const defaultThemeName = defaultTheme.id;
 
 function createPersistedStore<T>(key: string, initial: T) {
-  const store = writable<T>(initial, (set) => {
-    if (!browser) return;
-    const stored = window.localStorage.getItem(key);
-    if (stored) {
-      try {
-        set(JSON.parse(stored));
-      } catch (error) {
-        console.error('Failed to parse stored value', error);
-      }
-    }
-    return () => undefined;
-  });
+	const store = writable<T>(initial, (set) => {
+		if (!browser) return;
+		const stored = window.localStorage.getItem(key);
+		if (stored) {
+			try {
+				set(JSON.parse(stored));
+			} catch (error) {
+				console.error('Failed to parse stored value', error);
+			}
+		}
+		return () => undefined;
+	});
 
-  if (browser) {
-    store.subscribe((value) => {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    });
-  }
+	if (browser) {
+		store.subscribe((value) => {
+			window.localStorage.setItem(key, JSON.stringify(value));
+		});
+	}
 
-  return store;
+	return store;
 }
 
 export const language = createPersistedStore<SongLanguage>(LANGUAGE_KEY, defaultLanguage);
@@ -42,22 +42,29 @@ export const favourites = createPersistedStore<string[]>(FAV_KEY, []);
 export const themeName = createPersistedStore<string>(THEME_KEY, defaultThemeName);
 
 if (browser) {
-  language.subscribe(($language) => {
-    locale.set($language.toLowerCase());
-    document.documentElement.lang = $language.toLowerCase();
-  });
+	language.subscribe(($language) => {
+		locale.set($language.toLowerCase());
+		document.documentElement.lang = $language.toLowerCase();
+	});
 
-  themeName.subscribe(($theme) => {
-    document.documentElement.dataset.theme = $theme;
-  });
+	themeName.subscribe(($theme) => {
+		const theme = themeMap.get($theme) ?? defaultTheme;
+		document.documentElement.dataset.theme = theme.id;
+		document.documentElement.style.colorScheme = theme.scheme;
+
+		const metaThemeColor = document.querySelector("meta[name='theme-color']");
+		if (metaThemeColor instanceof HTMLMetaElement) {
+			metaThemeColor.content = theme.metaColor;
+		}
+	});
 }
 
 export function toggleFavourite(key: string) {
-  favourites.update((list) =>
-    list.includes(key) ? list.filter((item) => item !== key) : [...list, key]
-  );
+	favourites.update((list) =>
+		list.includes(key) ? list.filter((item) => item !== key) : [...list, key]
+	);
 }
 
 export const isFavourite = derived(favourites, ($favourites) => {
-  return (key: string) => $favourites.includes(key);
+	return (key: string) => $favourites.includes(key);
 });
