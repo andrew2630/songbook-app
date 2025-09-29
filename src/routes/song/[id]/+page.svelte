@@ -12,7 +12,6 @@
   let loading = true;
   let activeViewMode: 'basic' | 'chords' = 'basic';
   let lastUpdatedLabel: string | null = null;
-  let showScrollTop = false;
 
   onMount(async () => {
     const $page = get(page);
@@ -23,19 +22,6 @@
     }
     song = await getSongByKey(`${$page.params.id}-${activeLang}`);
     loading = false;
-  });
-
-  onMount(() => {
-    const updateScrollIndicator = () => {
-      showScrollTop = typeof window !== 'undefined' && window.scrollY > 240;
-    };
-
-    updateScrollIndicator();
-    window.addEventListener('scroll', updateScrollIndicator, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', updateScrollIndicator);
-    };
   });
 
   $: favouriteKey = song ? `${song.id}-${song.language}` : '';
@@ -66,11 +52,6 @@
     }
   }
 
-  function scrollToTop() {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
 </script>
 
 <svelte:head>
@@ -207,16 +188,6 @@
       {/each}
     </section>
   </article>
-  {#if showScrollTop}
-    <button
-      class="fixed bottom-6 right-6 inline-flex items-center gap-2 rounded-full border border-primary-500/20 bg-white/80 px-5 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500 shadow-lg backdrop-blur transition hover:-translate-y-0.5 hover:border-primary-500 hover:text-primary-500 dark:border-surface-700/40 dark:bg-surface-900/80"
-      type="button"
-      on:click={scrollToTop}
-      aria-label={$t('app.scroll_to_top')}
-    >
-      {$t('app.scroll_to_top')}
-    </button>
-  {/if}
 {:else}
   <div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">Song not found.</div>
 {/if}

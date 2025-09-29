@@ -7,7 +7,6 @@
   import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
   import SongCard from '$lib/components/song/SongCard.svelte';
   import { fadeSlide } from '$lib/actions/fadeSlide';
-  import { inView } from '$lib/actions/inView';
   import { onMount } from 'svelte';
   import {
     Search,
@@ -29,7 +28,6 @@
   let pageFilter: number | null = null;
   let filtersOpen = browser ? false : true;
   let isDesktop = false;
-  let statsVisible = false;
   let activeViewMode: 'basic' | 'chords' = 'basic';
   let sortMode: SongSortMode = 'page';
   let searchRef: HTMLInputElement | null = null;
@@ -146,32 +144,41 @@
 </script>
 
 <section class="space-y-16 pb-12">
-  <div class="relative overflow-hidden rounded-[2.5rem] border border-primary-500/20 bg-white/80 px-6 py-8 shadow-2xl backdrop-blur-xl dark:border-surface-700/40 dark:bg-surface-900/80 sm:px-10" use:fadeSlide>
-    <div class="pointer-events-none absolute inset-0 -z-10">
-      <div class="absolute -left-10 top-0 h-64 w-64 rounded-full bg-primary-500/15 blur-[120px]"></div>
-      <div class="absolute bottom-0 right-0 h-52 w-52 rounded-full bg-secondary-400/20 blur-[110px]"></div>
-    </div>
-    <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+  <div class="rounded-3xl border border-primary-500/15 bg-white/90 px-6 py-8 shadow-xl backdrop-blur-sm dark:border-surface-700/40 dark:bg-surface-900/80 sm:px-10" use:fadeSlide>
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
       <div class="space-y-6">
-        <div class="inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-primary-500">
-          <Sparkles class="h-4 w-4" />
-          <span>{$t('app.search_placeholder')}</span>
-        </div>
+        <p class="inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary-500">
+          {$t('app.brand_available_offline')}
+        </p>
         <div class="space-y-3">
-          <h2 class="text-balance text-3xl font-semibold sm:text-4xl">
+          <h2 class="text-balance text-3xl font-semibold text-surface-900 dark:text-surface-50 sm:text-4xl">
             {$t('app.toggle_index')}
           </h2>
           <p class="max-w-2xl text-base text-surface-600 dark:text-surface-300">
             {$t('app.tagline')}
           </p>
         </div>
+        <div class="grid gap-3 sm:grid-cols-3">
+          <div class="rounded-2xl border border-primary-500/10 bg-white/80 p-4 text-sm shadow-sm dark:border-surface-700/40 dark:bg-surface-900/70">
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-primary-400/80">{$t('app.page_index')}</p>
+            <p class="mt-2 text-2xl font-semibold text-surface-900 dark:text-surface-50">{filteredSongs.length} / {availableSongs.length}</p>
+          </div>
+          <div class="rounded-2xl border border-primary-500/10 bg-white/80 p-4 text-sm shadow-sm dark:border-surface-700/40 dark:bg-surface-900/70">
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-primary-400/80">{$t('app.toggle_favourites')}</p>
+            <p class="mt-2 text-2xl font-semibold text-surface-900 dark:text-surface-50">{favouriteSongs.length}</p>
+          </div>
+          <div class="rounded-2xl border border-primary-500/10 bg-white/80 p-4 text-sm shadow-sm dark:border-surface-700/40 dark:bg-surface-900/70">
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-primary-400/80">{$t('app.view_song')}</p>
+            <p class="mt-2 text-2xl font-semibold text-surface-900 dark:text-surface-50">{$viewMode === 'basic' ? $t('app.view.basic') : $t('app.view.chords')}</p>
+          </div>
+        </div>
       </div>
-      <div class="w-full max-w-xl space-y-3">
+      <div id="songbook-search" class="space-y-3 rounded-2xl border border-primary-500/15 bg-white/85 p-6 shadow-inner dark:border-surface-700/40 dark:bg-surface-900/70">
         <label class="text-xs font-semibold uppercase tracking-[0.28em] text-surface-500 dark:text-surface-400" for="song-search">
           {$t('app.search_placeholder')}
         </label>
-        <div class="flex items-center gap-3 rounded-[1.75rem] border border-primary-500/20 bg-white/90 px-4 py-3 shadow-inner dark:border-surface-700/40 dark:bg-surface-800/80">
-          <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-500/10 text-primary-500">
+        <div class="flex items-center gap-3 rounded-full border border-primary-500/20 bg-white/95 px-4 py-3 shadow-sm dark:border-surface-700/40 dark:bg-surface-800/80">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-500/10 text-primary-500">
             <Search class="h-5 w-5" />
           </span>
           <input
@@ -193,28 +200,6 @@
           {/if}
         </div>
         <p class="text-xs text-surface-500 dark:text-surface-300">{$t('app.search_hint')}</p>
-      </div>
-    </div>
-    <div class="mt-10 grid gap-4 md:grid-cols-3" use:inView on:enterViewport={() => (statsVisible = true)}>
-      <div class="rounded-3xl border border-primary-500/15 bg-white/75 p-5 shadow-lg transition-all duration-500 dark:border-surface-700/40 dark:bg-surface-900/80" class:opacity-0={!statsVisible} class:translate-y-4={!statsVisible} class:opacity-100={statsVisible} class:translate-y-0={statsVisible}>
-        <p class="text-xs font-semibold uppercase tracking-[0.32em] text-primary-400/80">
-          {$t('app.page_index')}
-        </p>
-        <p class="mt-2 text-2xl font-semibold text-surface-800 dark:text-surface-100">{filteredSongs.length} / {availableSongs.length}</p>
-      </div>
-      <div class="rounded-3xl border border-primary-500/15 bg-white/75 p-5 shadow-lg transition-all duration-500 dark:border-surface-700/40 dark:bg-surface-900/80" class:opacity-0={!statsVisible} class:translate-y-4={!statsVisible} class:opacity-100={statsVisible} class:translate-y-0={statsVisible}>
-        <p class="text-xs font-semibold uppercase tracking-[0.32em] text-primary-400/80">
-          {$t('app.toggle_favourites')}
-        </p>
-        <p class="mt-2 text-2xl font-semibold text-surface-800 dark:text-surface-100">{favouriteSongs.length}</p>
-      </div>
-      <div class="rounded-3xl border border-primary-500/15 bg-white/75 p-5 shadow-lg transition-all duration-500 dark:border-surface-700/40 dark:bg-surface-900/80" class:opacity-0={!statsVisible} class:translate-y-4={!statsVisible} class:opacity-100={statsVisible} class:translate-y-0={statsVisible}>
-        <p class="text-xs font-semibold uppercase tracking-[0.32em] text-primary-400/80">
-          {$t('app.view_song')}
-        </p>
-        <p class="mt-2 text-2xl font-semibold text-surface-800 dark:text-surface-100">
-          {$viewMode === 'basic' ? $t('app.view.basic') : $t('app.view.chords')}
-        </p>
       </div>
     </div>
   </div>
