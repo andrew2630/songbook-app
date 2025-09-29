@@ -4,14 +4,18 @@
 		"tagline": "Zborowy śpiewnik zawsze pod ręką",
 		"search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
 		"language_label": "Język",
-		"theme_label": "Motyw",
-		"themes": {
-			"dawn": "Świt",
-			"meadow": "Łąkowy Wiatr",
-			"aurora": "Zorza",
-			"dusk": "Zmierzch",
-			"midnight": "Północna Cisza"
-		},
+                "theme_label": "Motyw",
+                "themes": {
+                        "dawn": "Ciepłe światło",
+                        "meadow": "Leśny",
+                        "aurora": "Indygo",
+                        "dusk": "Zmierzch",
+                        "midnight": "Północ"
+                },
+                "theme_scheme": {
+                        "light": "Jasny",
+                        "dark": "Ciemny"
+                },
 		"view": {
 			"basic": "Tekst",
 			"chords": "Akordy"

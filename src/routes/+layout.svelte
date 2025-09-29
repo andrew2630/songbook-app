@@ -4,7 +4,8 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { addMessages, init, locale as i18nLocale } from 'svelte-i18n';
 	import { get } from 'svelte/store';
-	import AppHeader from '$lib/components/layout/AppHeader.svelte';
+        import AppHeader from '$lib/components/layout/AppHeader.svelte';
+        import SearchOverlay from '$lib/components/search/SearchOverlay.svelte';
 	import { loadSongs } from '$lib/stores/songStore';
 	import { language } from '$lib/stores/preferences';
 	import pl from '$lib/locales/pl.json';
@@ -59,7 +60,7 @@
 	});
 </script>
 
-<div class="relative min-h-screen overflow-hidden text-surface-900">
+<div class="relative min-h-screen overflow-hidden text-on-surface">
 	<div class="pointer-events-none absolute inset-0 -z-10">
 		<div
 			class="absolute inset-0 bg-gradient-to-b from-surface-50 via-surface-100/80 to-surface-50"
@@ -74,25 +75,26 @@
 	<div
 		class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 pb-12 sm:px-5 lg:max-w-6xl lg:px-8"
 	>
-		<AppHeader />
-		<main class="flex-1 py-6 sm:py-8 lg:py-10">
-			<slot />
-		</main>
-		<footer class="mt-10 border-t border-surface-200/60 py-5 text-xs text-surface-500 sm:text-sm">
-			<p class="font-semibold uppercase tracking-[0.18em] text-[11px] text-primary-500/80">
-				Wspólnota Biblijna KWCh
-			</p>
-			<p class="mt-2 max-w-xl leading-relaxed">
-				<a
-					class="font-semibold text-primary-500 underline-offset-4 transition hover:text-primary-400 hover:underline"
-					href="https://kwch.wroclaw.pl/"
-					rel="noreferrer"
-					target="_blank"
-				>
-					kwch.wroclaw.pl
-				</a>
-				.
-			</p>
-		</footer>
-	</div>
+                <AppHeader />
+                <main class="flex-1 py-6 sm:py-8 lg:py-10">
+                        <slot />
+                </main>
+                <footer class="mt-10 border-t border-surface-200/60 py-5 text-xs text-on-surface-muted sm:text-sm">
+                        <p class="font-semibold uppercase tracking-[0.18em] text-[11px] text-primary-500/80">
+                                Wspólnota Biblijna KWCh
+                        </p>
+                        <p class="mt-2 max-w-xl leading-relaxed text-on-surface">
+                                <a
+                                        class="font-semibold text-primary-500 underline-offset-4 transition hover:text-primary-400 hover:underline"
+                                        href="https://kwch.wroclaw.pl/"
+                                        rel="noreferrer"
+                                        target="_blank"
+                                >
+                                        kwch.wroclaw.pl
+                                </a>
+                                .
+                        </p>
+                </footer>
+        </div>
+        <SearchOverlay />
 </div>
