@@ -94,21 +94,21 @@
 
 <section class="space-y-8 pb-16">
   <div
-    class="space-y-5 rounded-xl border border-surface-200/70 bg-white/80 p-5 shadow-sm dark:border-surface-800/60 dark:bg-surface-900/70 sm:rounded-2xl sm:p-6"
+    class="space-y-5 rounded-xl border border-surface-200/70 bg-white/80 p-5 shadow-sm sm:rounded-2xl sm:p-6"
     use:fadeSlide
   >
     <div class="space-y-2">
       <!-- <label
-        class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 dark:text-surface-400"
+        class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500"
         for="song-search"
       >
         {$t('app.search_placeholder')}
       </label> -->
-      <div class="flex items-center gap-2.5 rounded-xl border border-surface-200/70 bg-white px-3.5 py-2.5 shadow-inner dark:border-surface-800/60 dark:bg-surface-900/80">
+      <div class="flex items-center gap-2.5 rounded-xl border border-surface-200/70 bg-white px-3.5 py-2.5 shadow-inner">
         <Search class="h-4 w-4 text-primary-500" />
         <input
           id="song-search"
-          class="w-full bg-transparent text-sm text-surface-800 outline-none placeholder:text-surface-400 dark:text-surface-100 sm:text-base"
+          class="w-full bg-transparent text-sm text-surface-800 outline-none placeholder:text-surface-400 sm:text-base"
           type="search"
           placeholder={$t('app.search_placeholder')}
           bind:value={query}
@@ -124,11 +124,11 @@
           </button>
         {/if}
       </div>
-      <!-- <p class="text-xs text-surface-500 dark:text-surface-400">{$t('app.search_hint')}</p> -->
+      <!-- <p class="text-xs text-surface-500">{$t('app.search_hint')}</p> -->
     </div>
 
-    <div class="flex flex-wrap items-center gap-3 text-sm text-surface-600 dark:text-surface-300">
-      <span class="font-semibold text-surface-900 dark:text-surface-50">{filteredSongs.length}</span>
+    <div class="flex flex-wrap items-center gap-3 text-sm text-surface-600">
+      <span class="font-semibold text-surface-900">{filteredSongs.length}</span>
       <span>/</span>
       <span>{availableSongs.length}</span>
       {#if pageFilter}
@@ -141,7 +141,7 @@
     {#if filterBadges.length}
       <div class="flex flex-wrap gap-2">
         {#each filterBadges as badge}
-          <span class="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-600 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300">
+          <span class="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-600">
             {badge}
           </span>
         {/each}
@@ -150,50 +150,50 @@
   </div>
 
   <div
-    class="space-y-5 rounded-xl border border-surface-200/70 bg-white/80 p-5 shadow-sm dark:border-surface-800/60 dark:bg-surface-900/70 sm:rounded-2xl sm:p-6"
+    class="space-y-5 rounded-xl border border-surface-200/70 bg-white/80 p-5 shadow-sm sm:rounded-2xl sm:p-6"
     use:fadeSlide={{ axis: 'y', from: 30, delay: 0.05 }}
   >
-    <div class="flex flex-wrap gap-2">
-      <button
-        class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-          menuView === 'index'
-            ? 'bg-primary-500 text-white shadow-sm'
-            : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200'
-        }`}
-        on:click={() => (menuView = 'index')}
-        type="button"
-      >
-        <LayoutList class="h-4 w-4" />
-        {$t('app.toggle_index')}
-      </button>
-      <button
-        class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-          menuView === 'favourites'
-            ? 'bg-primary-500 text-white shadow-sm'
-            : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200'
-        }`}
-        on:click={() => (menuView = 'favourites')}
-        type="button"
-      >
-        <Heart class="h-4 w-4" />
-        {$t('app.toggle_favourites')}
-      </button>
-      <button
-        class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-300"
-        on:click={handleClearFilters}
-        type="button"
-      >
-        {$t('app.reset_filters')}
-      </button>
-    </div>
+    <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <button
+          class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+            menuView === 'index'
+              ? 'bg-primary-500 text-white shadow-sm'
+              : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500'
+          }`}
+          on:click={() => (menuView = 'index')}
+          type="button"
+        >
+          <LayoutList class="h-4 w-4" />
+          {$t('app.toggle_index')}
+        </button>
+        <button
+          class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+            menuView === 'favourites'
+              ? 'bg-primary-500 text-white shadow-sm'
+              : 'border border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500'
+          }`}
+          on:click={() => (menuView = 'favourites')}
+          type="button"
+        >
+          <Heart class="h-4 w-4" />
+          {$t('app.toggle_favourites')}
+        </button>
+        <button
+          class="inline-flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 transition hover:border-primary-400 hover:text-primary-500"
+          on:click={handleClearFilters}
+          type="button"
+        >
+          {$t('app.reset_filters')}
+        </button>
+      </div>
 
-    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-end">
-      <label class="flex items-center gap-3 text-sm font-medium text-surface-600 dark:text-surface-300 lg:ml-auto">
-        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 dark:text-surface-400">
+      <label class="flex items-center gap-3 text-sm font-medium text-surface-600 lg:ml-auto">
+        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500">
           {$t('app.sort.label')}
         </span>
         <select
-          class="rounded-full border border-surface-200/70 bg-white px-3 py-2 text-sm font-semibold text-surface-700 outline-none dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-100"
+          class="rounded-full border border-surface-200/70 bg-white px-3 py-2 text-sm font-semibold text-surface-700 outline-none"
           bind:value={sortMode}
         >
           {#each sortOptions as option}
@@ -206,7 +206,7 @@
     <div class="space-y-4">
       <!-- <input
         id="page-search"
-        class="w-full rounded-xl border border-surface-200/70 bg-white px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-100"
+        class="w-full rounded-xl border border-surface-200/70 bg-white px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400"
         type="text"
         inputmode="numeric"
         pattern="[0-9]*"
@@ -217,7 +217,7 @@
 
       {#if menuView === 'favourites'}
         {#if favouriteSongs.length === 0}
-          <p class="rounded-xl border border-surface-200/70 bg-white px-4 py-4 text-sm text-surface-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-300">
+          <p class="rounded-xl border border-surface-200/70 bg-white px-4 py-4 text-sm text-surface-500">
             {$t('app.no_favourites')}
           </p>
         {:else}
@@ -225,12 +225,12 @@
             {#each favouriteSongs as favSong (favSong.id + '-' + favSong.language)}
               <li>
                 <button
-                  class="w-full rounded-xl border border-surface-200/70 bg-white px-4 py-3 text-left text-sm font-semibold text-surface-700 transition hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200"
+                  class="w-full rounded-xl border border-surface-200/70 bg-white px-4 py-3 text-left text-sm font-semibold text-surface-700 transition hover:border-primary-400 hover:text-primary-500"
                   on:click={() => openSong(favSong)}
                   type="button"
                 >
-                  <span class="block text-base font-semibold text-surface-900 dark:text-surface-50">{favSong.title}</span>
-                  <span class="text-xs uppercase tracking-[0.28em] text-surface-500 dark:text-surface-400">
+                  <span class="block text-base font-semibold text-surface-900">{favSong.title}</span>
+                  <span class="text-xs uppercase tracking-[0.28em] text-surface-500">
                     {$t('app.page_label')} {favSong.page}
                   </span>
                 </button>
@@ -244,14 +244,14 @@
             {@const pages = pagesForGroup(group)}
             {#if pages.length}
               <div class="space-y-2">
-                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-surface-500 dark:text-surface-400">{group.label}</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-surface-500">{group.label}</p>
                 <div class="flex flex-wrap gap-2">
                   {#each pages as pageNumber}
                     <button
                       class={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                         pageFilter === pageNumber
                           ? 'border-transparent bg-primary-500 text-white shadow-sm'
-                          : 'border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500 dark:border-surface-700 dark:bg-surface-800/80 dark:text-surface-200'
+                          : 'border-surface-200/70 bg-white text-surface-600 hover:border-primary-400 hover:text-primary-500'
                       }`}
                       type="button"
                       on:click={() => handlePageSelect(pageNumber)}
@@ -276,7 +276,7 @@
   </div>
 
   {#if filteredSongs.length === 0}
-    <div class="rounded-2xl border border-dashed border-surface-200/70 bg-white/70 px-6 py-12 text-center text-sm text-surface-500 dark:border-surface-700 dark:bg-surface-900/70 dark:text-surface-300">
+    <div class="rounded-2xl border border-dashed border-surface-200/70 bg-white/70 px-6 py-12 text-center text-sm text-surface-500">
       {$t('app.empty_state')}
     </div>
   {:else}

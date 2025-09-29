@@ -36,143 +36,9 @@
     --color-surface-900: 55 48 163;
   }
 
-  :root[data-theme='dark'] {
-    color-scheme: dark;
-    --color-primary-50: 224 231 255;
-    --color-primary-100: 203 213 225;
-    --color-primary-200: 191 219 254;
-    --color-primary-300: 147 197 253;
-    --color-primary-400: 96 165 250;
-    --color-primary-500: 59 130 246;
-    --color-primary-600: 37 99 235;
-    --color-primary-700: 29 78 216;
-    --color-primary-800: 30 64 175;
-    --color-primary-900: 30 58 138;
-    --color-secondary-50: 240 253 250;
-    --color-secondary-100: 204 251 241;
-    --color-secondary-200: 153 246 228;
-    --color-secondary-300: 110 231 183;
-    --color-secondary-400: 52 211 153;
-    --color-secondary-500: 16 185 129;
-    --color-secondary-600: 5 150 105;
-    --color-secondary-700: 4 120 87;
-    --color-secondary-800: 6 95 70;
-    --color-secondary-900: 6 78 59;
-    --color-surface-50: 17 24 39;
-    --color-surface-100: 15 23 42;
-    --color-surface-200: 30 41 59;
-    --color-surface-300: 55 65 81;
-    --color-surface-400: 75 85 99;
-    --color-surface-500: 96 106 123;
-    --color-surface-600: 107 114 128;
-    --color-surface-700: 148 163 184;
-    --color-surface-800: 203 213 225;
-    --color-surface-900: 226 232 240;
-  }
-
-  :root[data-theme='sunset'] {
-    --color-primary-50: 255 247 237;
-    --color-primary-100: 255 237 213;
-    --color-primary-200: 254 215 170;
-    --color-primary-300: 253 186 116;
-    --color-primary-400: 251 146 60;
-    --color-primary-500: 249 115 22;
-    --color-primary-600: 234 88 12;
-    --color-primary-700: 194 65 12;
-    --color-primary-800: 154 52 18;
-    --color-primary-900: 124 45 18;
-    --color-secondary-50: 255 241 242;
-    --color-secondary-100: 255 228 230;
-    --color-secondary-200: 254 205 211;
-    --color-secondary-300: 253 164 175;
-    --color-secondary-400: 251 113 133;
-    --color-secondary-500: 244 63 94;
-    --color-secondary-600: 225 29 72;
-    --color-secondary-700: 190 24 60;
-    --color-secondary-800: 159 18 57;
-    --color-secondary-900: 136 19 55;
-    --color-surface-50: 255 248 244;
-    --color-surface-100: 254 236 226;
-    --color-surface-200: 253 222 206;
-    --color-surface-300: 252 211 185;
-    --color-surface-400: 249 196 160;
-    --color-surface-500: 243 169 125;
-    --color-surface-600: 224 140 93;
-    --color-surface-700: 191 110 69;
-    --color-surface-800: 159 88 57;
-    --color-surface-900: 133 73 50;
-  }
-
-  :root[data-theme='forest'] {
-    color-scheme: dark;
-    --color-primary-50: 236 253 245;
-    --color-primary-100: 209 250 229;
-    --color-primary-200: 167 243 208;
-    --color-primary-300: 110 231 183;
-    --color-primary-400: 52 211 153;
-    --color-primary-500: 34 197 94;
-    --color-primary-600: 22 163 74;
-    --color-primary-700: 21 128 61;
-    --color-primary-800: 22 101 52;
-    --color-primary-900: 20 83 45;
-    --color-secondary-50: 236 254 255;
-    --color-secondary-100: 207 250 254;
-    --color-secondary-200: 165 243 252;
-    --color-secondary-300: 103 232 249;
-    --color-secondary-400: 34 211 238;
-    --color-secondary-500: 14 165 233;
-    --color-secondary-600: 8 145 178;
-    --color-secondary-700: 14 116 144;
-    --color-secondary-800: 21 94 117;
-    --color-secondary-900: 22 78 99;
-    --color-surface-50: 13 17 23;
-    --color-surface-100: 15 23 30;
-    --color-surface-200: 17 35 38;
-    --color-surface-300: 22 53 46;
-    --color-surface-400: 34 78 60;
-    --color-surface-500: 45 102 74;
-    --color-surface-600: 74 131 102;
-    --color-surface-700: 125 168 144;
-    --color-surface-800: 180 208 186;
-    --color-surface-900: 209 231 212;
-  }
-
-  :root[data-theme='ocean'] {
-    --color-primary-50: 236 254 255;
-    --color-primary-100: 207 250 254;
-    --color-primary-200: 165 243 252;
-    --color-primary-300: 103 232 249;
-    --color-primary-400: 34 211 238;
-    --color-primary-500: 14 165 233;
-    --color-primary-600: 8 145 178;
-    --color-primary-700: 14 116 144;
-    --color-primary-800: 21 94 117;
-    --color-primary-900: 22 78 99;
-    --color-secondary-50: 239 246 255;
-    --color-secondary-100: 219 234 254;
-    --color-secondary-200: 191 219 254;
-    --color-secondary-300: 147 197 253;
-    --color-secondary-400: 96 165 250;
-    --color-secondary-500: 59 130 246;
-    --color-secondary-600: 37 99 235;
-    --color-secondary-700: 29 78 216;
-    --color-secondary-800: 30 64 175;
-    --color-secondary-900: 30 58 138;
-    --color-surface-50: 240 249 255;
-    --color-surface-100: 224 242 254;
-    --color-surface-200: 186 230 253;
-    --color-surface-300: 145 215 250;
-    --color-surface-400: 103 197 241;
-    --color-surface-500: 59 172 227;
-    --color-surface-600: 34 139 199;
-    --color-surface-700: 30 112 168;
-    --color-surface-800: 31 89 141;
-    --color-surface-900: 30 73 117;
-  }
-
   body {
     font-family: Inter, 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    @apply min-h-screen bg-transparent text-surface-900 antialiased dark:text-surface-50;
+    @apply min-h-screen bg-transparent text-surface-900 antialiased;
   }
 
   body.is-lenis {
@@ -223,7 +89,7 @@
 
 @layer utilities {
   .backdrop-glass {
-    @apply bg-white/60 backdrop-blur-xl dark:bg-surface-800/80;
+    @apply bg-white/60 backdrop-blur-xl;
   }
 
   .gradient-border {
