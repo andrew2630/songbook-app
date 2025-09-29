@@ -28,9 +28,9 @@
           <h1 class="text-balance text-2xl font-semibold text-surface-900 dark:text-surface-50 sm:text-3xl lg:text-4xl">
             {$t('app.title')}
           </h1>
-          <p class="max-w-2xl text-sm leading-relaxed text-surface-600 dark:text-surface-300">
+          <!-- <p class="max-w-2xl text-sm leading-relaxed text-surface-600 dark:text-surface-300">
             {$t('app.tagline')}
-          </p>
+          </p> -->
         </div>
         <div class="flex flex-wrap items-center gap-2 sm:justify-end">
           <div class="flex flex-wrap items-center gap-1 rounded-full border border-surface-200/80 bg-white px-3 py-1.5 text-xs font-semibold text-surface-600 shadow-sm dark:border-surface-700 dark:bg-surface-800/90 dark:text-surface-200">
@@ -87,7 +87,7 @@
         </a>
         <div class="flex flex-col gap-2 text-xs text-surface-600 dark:text-surface-300 sm:flex-row sm:items-center">
           <p class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3 py-1.5 uppercase tracking-[0.18em] dark:border-surface-700 dark:bg-surface-800/80">
-            <span class="text-surface-500 dark:text-surface-400">{$t('app.syncing')}</span>
+            <!-- <span class="text-surface-500 dark:text-surface-400">{$t('app.syncing')}</span> -->
             <span class="text-surface-900 dark:text-surface-100">{$syncStatus}</span>
           </p>
           <p class="flex items-center gap-2 rounded-full border border-surface-200/70 bg-white px-3 py-1.5 uppercase tracking-[0.18em] dark:border-surface-700 dark:bg-surface-800/80">

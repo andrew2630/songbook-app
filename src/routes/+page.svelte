@@ -109,12 +109,12 @@
     use:fadeSlide
   >
     <div class="space-y-2">
-      <label
+      <!-- <label
         class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500 dark:text-surface-400"
         for="song-search"
       >
         {$t('app.search_placeholder')}
-      </label>
+      </label> -->
       <div class="flex items-center gap-2.5 rounded-xl border border-surface-200/70 bg-white px-3.5 py-2.5 shadow-inner dark:border-surface-800/60 dark:bg-surface-900/80">
         <Search class="h-4 w-4 text-primary-500" />
         <input
@@ -135,7 +135,7 @@
           </button>
         {/if}
       </div>
-      <p class="text-xs text-surface-500 dark:text-surface-400">{$t('app.search_hint')}</p>
+      <!-- <p class="text-xs text-surface-500 dark:text-surface-400">{$t('app.search_hint')}</p> -->
     </div>
 
     <div class="flex flex-wrap items-center gap-3 text-sm text-surface-600 dark:text-surface-300">

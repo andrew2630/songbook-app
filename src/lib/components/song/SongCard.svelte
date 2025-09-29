@@ -165,10 +165,10 @@
           </div>
         </div>
 
-        <div class="rounded-xl border border-surface-200/70 bg-white px-4 py-4 text-xs dark:border-surface-700 dark:bg-surface-900/70">
+        <!-- <div class="rounded-xl border border-surface-200/70 bg-white px-4 py-4 text-xs dark:border-surface-700 dark:bg-surface-900/70">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <!-- <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-500/90">{$t('app.density_label')}</p> -->
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-500/90">{$t('app.density_label')}</p>
               <div class="mt-2 flex items-center gap-3">
                 <span class="relative inline-flex h-2 w-36 overflow-hidden rounded-full bg-surface-200/70 dark:bg-surface-800">
                   <span
@@ -184,7 +184,7 @@
               {$t('app.density_caption', { values: { chords: chordLines, total: totalLines } })}
             </p>
           </div>
-        </div>
+        </div> -->
 
         <div class="space-y-3 text-sm leading-relaxed text-surface-700 dark:text-surface-200">
           {#each previewItems as item}
