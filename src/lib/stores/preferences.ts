@@ -6,9 +6,11 @@ import type { SongLanguage, SongViewMode } from '$lib/types/song';
 const LANGUAGE_KEY = 'songbook-language';
 const VIEW_KEY = 'songbook-view-mode';
 const FAV_KEY = 'songbook-favourites';
+const THEME_KEY = 'songbook-theme';
 
 const defaultLanguage: SongLanguage = 'PL';
 const defaultViewMode: SongViewMode = 'basic';
+type Theme = 'light' | 'dark';
 
 function createPersistedStore<T>(key: string, initial: T) {
   const store = writable<T>(initial, (set) => {
@@ -36,6 +38,43 @@ function createPersistedStore<T>(key: string, initial: T) {
 export const language = createPersistedStore<SongLanguage>(LANGUAGE_KEY, defaultLanguage);
 export const viewMode = createPersistedStore<SongViewMode>(VIEW_KEY, defaultViewMode);
 export const favourites = createPersistedStore<string[]>(FAV_KEY, []);
+
+function getInitialTheme(): Theme {
+  if (!browser) return 'light';
+  const stored = window.localStorage.getItem(THEME_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored) as Theme;
+      if (parsed === 'light' || parsed === 'dark') {
+        return parsed;
+      }
+    } catch (error) {
+      console.warn('Failed to parse stored theme', error);
+    }
+  }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme: Theme) {
+  if (!browser) return;
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+}
+
+const initialTheme = getInitialTheme();
+export const theme = writable<Theme>(initialTheme);
+
+if (browser) {
+  applyTheme(initialTheme);
+  theme.subscribe((value) => {
+    window.localStorage.setItem(THEME_KEY, JSON.stringify(value));
+    applyTheme(value);
+  });
+}
+
+export function toggleTheme() {
+  theme.update((current) => (current === 'light' ? 'dark' : 'light'));
+}
 
 if (browser) {
   language.subscribe(($language) => {

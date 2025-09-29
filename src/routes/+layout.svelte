@@ -59,26 +59,15 @@
   });
 </script>
 
-<div class="relative isolate overflow-hidden">
-  <div
-    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(99,102,241,0.35),transparent_60%),radial-gradient(circle_at_80%_5%,rgba(34,211,238,0.24),transparent_55%),radial-gradient(circle_at_50%_90%,rgba(14,165,233,0.22),transparent_60%)]"
-    aria-hidden="true"
-  ></div>
-  <div class="relative mx-auto flex min-h-screen w-full max-w-[120rem] flex-col px-4 pb-24 sm:px-6 lg:px-12">
+<div class="min-h-screen bg-gradient-to-b from-surface-50 via-surface-100 to-surface-50 text-surface-900 dark:from-surface-950 dark:via-surface-900 dark:to-surface-950">
+  <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-16 sm:px-6 lg:px-8">
     <AppHeader />
-    <main class="flex-1 py-10 sm:py-12 lg:py-16">
+    <main class="flex-1 py-8 sm:py-10 lg:py-12">
       <slot />
     </main>
-    <footer class="mt-10 flex flex-col gap-3 py-8 text-sm text-surface-500 dark:text-surface-400">
-      <span class="uppercase tracking-[0.25em] text-xs font-semibold text-primary-400/80">Songbook</span>
-      <p class="max-w-xl leading-relaxed text-surface-600 dark:text-surface-300">
-        Designed for worship leaders and musicians who need an offline-first, international-ready song
-        companion.
-      </p>
+    <footer class="mt-12 border-t border-surface-200/60 py-6 text-sm text-surface-500 dark:border-surface-800 dark:text-surface-400">
+      <p class="font-semibold uppercase tracking-[0.2em] text-xs text-primary-500/80">Songbook</p>
+      <p class="mt-2 max-w-xl leading-relaxed">Designed for musicians who need a simple, dependable song companion offline.</p>
     </footer>
   </div>
-  <div
-    class="pointer-events-none absolute inset-x-1/2 top-[20%] h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-primary-500/10 blur-[220px]"
-    aria-hidden="true"
-  ></div>
 </div>
