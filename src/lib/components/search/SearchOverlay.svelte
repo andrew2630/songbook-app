@@ -11,7 +11,7 @@
 
         let query = '';
         let inputRef: HTMLInputElement | null = null;
-        let panelRef: HTMLDivElement | null = null;
+        let resultsRef: HTMLDivElement | null = null;
 
         afterNavigate(() => {
                 closeSearchOverlay();
@@ -50,8 +50,8 @@
                         inputRef.focus();
                         inputRef.select();
                 }
-                if (panelRef) {
-                        panelRef.scrollTop = 0;
+                if (resultsRef) {
+                        resultsRef.scrollTop = 0;
                 }
         }
 
@@ -90,11 +90,10 @@
                 on:keydown={handleKeydown}
         >
                 <div
-                        class="w-full max-w-2xl rounded-[28px] border border-white/30 bg-white/85 p-4 shadow-[0_34px_110px_rgba(15,23,42,0.24)] sm:p-6"
+                        class="flex w-full max-w-2xl flex-col overflow-hidden rounded-[28px] border border-white/30 bg-white/85 p-4 shadow-[0_34px_110px_rgba(15,23,42,0.24)] sm:max-h-[min(85vh,640px)] sm:p-6"
                         role="dialog"
                         aria-modal="true"
                         tabindex="-1"
-                        bind:this={panelRef}
                 >
                         <div class="flex items-start justify-between gap-4">
                                 <div class="flex-1">
@@ -130,7 +129,7 @@
                         </div>
 
                         {#if results.length}
-                                <div class="mt-6 space-y-3">
+                                <div class="mt-6 flex-1 overflow-y-auto space-y-3 pr-1" bind:this={resultsRef}>
                                         {#each results as song (song.id + song.language)}
                                                 <button
                                                         class="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/40 bg-white/70 px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition hover:border-primary-300 hover:text-primary-600 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
@@ -150,13 +149,17 @@
                                         {/each}
                                 </div>
                         {:else if hasQuery}
-                                <p class="mt-6 text-center text-sm text-on-surface-muted">
-                                        {$t('app.empty_state')}
-                                </p>
+                                <div class="mt-6 flex-1 overflow-y-auto pr-1" bind:this={resultsRef}>
+                                        <p class="text-center text-sm text-on-surface-muted">
+                                                {$t('app.empty_state')}
+                                        </p>
+                                </div>
                         {:else}
-                                <p class="mt-6 text-center text-sm text-on-surface-muted">
-                                        {$t('app.search_hint')}
-                                </p>
+                                <div class="mt-6 flex-1 overflow-y-auto pr-1" bind:this={resultsRef}>
+                                        <p class="text-center text-sm text-on-surface-muted">
+                                                {$t('app.search_hint')}
+                                        </p>
+                                </div>
                         {/if}
                 </div>
         </div>

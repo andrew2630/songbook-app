@@ -1,7 +1,10 @@
 <script lang="ts">
+        import { browser } from '$app/environment';
         import { goto } from '$app/navigation';
         import { page } from '$app/stores';
         import { t } from 'svelte-i18n';
+        import { onMount } from 'svelte';
+        import { ArrowUp } from 'lucide-svelte';
         import { getSongByKey } from '$lib/stores/songStore';
         import { favourites, toggleFavourite, language, viewMode } from '$lib/stores/preferences';
         import type { Song, SongLanguage } from '$lib/types/song';
@@ -14,6 +17,7 @@
         let initialised = false;
         let lastRouteId: string | null = null;
         let lastRequestedKey: string | null = null;
+        let showScrollTop = false;
 
         async function fetchSong(id: string, targetLanguage: SongLanguage) {
                 const sequence = ++loadSequence;
@@ -28,6 +32,16 @@
                         }
                 }
         }
+
+        onMount(() => {
+                if (!browser) return;
+                const updateScrollState = () => {
+                        showScrollTop = window.scrollY > 320;
+                };
+                updateScrollState();
+                window.addEventListener('scroll', updateScrollState, { passive: true });
+                return () => window.removeEventListener('scroll', updateScrollState);
+        });
 
         $: favouriteKey = song ? `${song.id}-${song.language}` : '';
         $: activeViewMode = $viewMode;
@@ -86,13 +100,18 @@
 		viewMode.set(next);
 	}
 
-	function goBack() {
-		if (typeof window !== 'undefined' && window.history.length > 1) {
-			window.history.back();
-		} else {
-			goto('/');
-		}
-	}
+        function goBack() {
+                if (typeof window !== 'undefined' && window.history.length > 1) {
+                        window.history.back();
+                } else {
+                        goto('/');
+                }
+        }
+
+        function scrollToTop() {
+                if (!browser) return;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 </script>
 
 <svelte:head>
@@ -135,7 +154,7 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 $favourites.includes(favouriteKey)
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-primary-700 text-on-surface shadow-[0_20px_36px_rgba(245,158,11,0.28)]'
+                                                        ? 'btn-gold'
                                                         : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
                                         }`}
                                         type="button"
@@ -185,12 +204,12 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'basic'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
+                                                        ? 'btn-gold'
                                                         : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
-					type="button"
-					role="tab"
-					aria-selected={activeViewMode === 'basic'}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={activeViewMode === 'basic'}
 					tabindex={activeViewMode === 'basic' ? 0 : -1}
 					on:click={() => viewMode.set('basic')}
 					on:keydown={(event) => handleTabKeydown(event, 'basic')}
@@ -200,12 +219,12 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'chords'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
+                                                        ? 'btn-gold'
                                                         : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
-					type="button"
-					role="tab"
-					aria-selected={activeViewMode === 'chords'}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={activeViewMode === 'chords'}
 					tabindex={activeViewMode === 'chords' ? 0 : -1}
 					on:click={() => viewMode.set('chords')}
 					on:keydown={(event) => handleTabKeydown(event, 'chords')}
@@ -243,7 +262,17 @@
 				{/if}
 			{/each}
 		</section>
-	</article>
+        </article>
+        {#if showScrollTop}
+                <button
+                        class="btn-gold fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                        type="button"
+                        on:click={scrollToTop}
+                >
+                        <ArrowUp class="h-4 w-4" />
+                        <span>{$t('app.scroll_to_top')}</span>
+                </button>
+        {/if}
 {:else}
-	<div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">Song not found.</div>
+        <div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">Song not found.</div>
 {/if}
