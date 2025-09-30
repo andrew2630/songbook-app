@@ -2,315 +2,200 @@
 @import 'tailwindcss';
 
 @theme {
-        /* default theme tokens - songbook-dawn */
-        --color-surface-50: 255 248 244;
-        --color-surface-100: 255 239 226;
-        --color-surface-200: 254 223 200;
-        --color-surface-300: 253 206 170;
-        --color-surface-400: 251 182 140;
-        --color-surface-500: 246 150 104;
-        --color-surface-600: 229 125 82;
-        --color-surface-700: 201 96 62;
-        --color-surface-800: 163 72 47;
-        --color-surface-900: 120 52 34;
+        /* default theme tokens - songbook-lumen */
+        --color-surface-50: 255 249 243;
+        --color-surface-100: 253 240 230;
+        --color-surface-200: 249 225 210;
+        --color-surface-300: 242 203 184;
+        --color-surface-400: 230 177 153;
+        --color-surface-500: 213 146 118;
+        --color-surface-600: 184 114 93;
+        --color-surface-700: 151 88 74;
+        --color-surface-800: 117 66 59;
+        --color-surface-900: 82 47 44;
 
-        --color-primary-50: 255 247 237;
-        --color-primary-100: 255 237 213;
-        --color-primary-200: 254 215 170;
-        --color-primary-300: 253 186 116;
-        --color-primary-400: 251 146 60;
-        --color-primary-500: 249 115 22;
-        --color-primary-600: 234 88 12;
-        --color-primary-700: 194 65 12;
-        --color-primary-800: 154 52 18;
-        --color-primary-900: 124 45 18;
+        --color-primary-50: 255 240 252;
+        --color-primary-100: 252 231 247;
+        --color-primary-200: 249 214 239;
+        --color-primary-300: 244 185 226;
+        --color-primary-400: 236 140 204;
+        --color-primary-500: 221 91 180;
+        --color-primary-600: 196 64 164;
+        --color-primary-700: 165 52 143;
+        --color-primary-800: 133 46 120;
+        --color-primary-900: 103 38 95;
 
-        --color-secondary-50: 253 244 255;
-        --color-secondary-100: 250 232 255;
-        --color-secondary-200: 245 208 254;
-        --color-secondary-300: 240 171 252;
-        --color-secondary-400: 232 121 249;
-        --color-secondary-500: 217 70 239;
-        --color-secondary-600: 192 38 211;
-        --color-secondary-700: 162 28 175;
-        --color-secondary-800: 134 25 143;
-        --color-secondary-900: 112 26 117;
+        --color-secondary-50: 239 244 255;
+        --color-secondary-100: 224 232 255;
+        --color-secondary-200: 202 215 255;
+        --color-secondary-300: 178 197 255;
+        --color-secondary-400: 146 173 255;
+        --color-secondary-500: 109 143 255;
+        --color-secondary-600: 82 116 245;
+        --color-secondary-700: 63 92 220;
+        --color-secondary-800: 51 74 185;
+        --color-secondary-900: 43 61 148;
 
-        --on-surface: 14 23 42;
-        --on-primary: 244 246 255;
+        --on-surface: 35 24 29;
+        --on-primary: 255 255 255;
+
+        --hero-gradient-from: 255 246 234;
+        --hero-gradient-to: 240 235 255;
+        --hero-glow-primary: 255 225 214;
+        --hero-glow-secondary: 216 222 255;
+        --overlay-backdrop: 22 18 27;
 }
 
 @layer theme {
-        [data-theme='songbook-meadow'] {
-                --color-surface-50: 240 253 244;
-                --color-surface-100: 220 252 231;
-                --color-surface-200: 187 247 208;
-                --color-surface-300: 134 239 172;
-                --color-surface-400: 74 222 128;
-                --color-surface-500: 34 197 94;
-                --color-surface-600: 22 163 74;
-                --color-surface-700: 21 128 61;
-                --color-surface-800: 22 101 52;
-                --color-surface-900: 20 83 45;
+        [data-theme='songbook-oasis'] {
+                --color-surface-50: 241 250 251;
+                --color-surface-100: 226 243 240;
+                --color-surface-200: 202 232 224;
+                --color-surface-300: 171 218 204;
+                --color-surface-400: 137 198 182;
+                --color-surface-500: 102 173 160;
+                --color-surface-600: 75 141 132;
+                --color-surface-700: 55 112 105;
+                --color-surface-800: 39 86 82;
+                --color-surface-900: 25 60 58;
 
-                --color-primary-50: 236 253 245;
-                --color-primary-100: 209 250 229;
-                --color-primary-200: 167 243 208;
-                --color-primary-300: 110 231 183;
-                --color-primary-400: 52 211 153;
-                --color-primary-500: 16 185 129;
-                --color-primary-600: 5 150 105;
-                --color-primary-700: 4 120 87;
-                --color-primary-800: 6 95 70;
-                --color-primary-900: 6 78 59;
+                --color-primary-50: 236 254 255;
+                --color-primary-100: 207 250 254;
+                --color-primary-200: 165 243 252;
+                --color-primary-300: 103 232 249;
+                --color-primary-400: 45 212 191;
+                --color-primary-500: 20 184 166;
+                --color-primary-600: 13 148 136;
+                --color-primary-700: 15 118 110;
+                --color-primary-800: 17 94 89;
+                --color-primary-900: 19 78 74;
 
-                --color-secondary-50: 240 249 255;
-                --color-secondary-100: 224 242 254;
-                --color-secondary-200: 186 230 253;
-                --color-secondary-300: 125 211 252;
-                --color-secondary-400: 56 189 248;
-                --color-secondary-500: 14 165 233;
-                --color-secondary-600: 2 132 199;
-                --color-secondary-700: 3 105 161;
-                --color-secondary-800: 7 89 133;
-                --color-secondary-900: 12 74 110;
+                --color-secondary-50: 233 244 255;
+                --color-secondary-100: 209 233 255;
+                --color-secondary-200: 178 215 254;
+                --color-secondary-300: 148 197 252;
+                --color-secondary-400: 103 172 248;
+                --color-secondary-500: 59 143 246;
+                --color-secondary-600: 37 118 226;
+                --color-secondary-700: 30 95 189;
+                --color-secondary-800: 27 76 151;
+                --color-secondary-900: 24 63 122;
 
-                --on-surface: 18 55 35;
-                --on-primary: 244 246 255;
+                --on-surface: 21 46 44;
+                --on-primary: 248 254 255;
+
+                --hero-gradient-from: 220 248 255;
+                --hero-gradient-to: 228 255 244;
+                --hero-glow-primary: 185 247 232;
+                --hero-glow-secondary: 193 225 255;
+                --overlay-backdrop: 9 30 36;
         }
 
-        [data-theme='songbook-aurora'] {
-                --color-surface-50: 248 250 252;
-                --color-surface-100: 241 245 249;
-                --color-surface-200: 226 232 240;
-                --color-surface-300: 203 213 225;
-                --color-surface-400: 148 163 184;
-                --color-surface-500: 100 116 139;
-                --color-surface-600: 71 85 105;
-                --color-surface-700: 51 65 85;
-                --color-surface-800: 30 41 59;
-                --color-surface-900: 15 23 42;
+        [data-theme='songbook-twilight'] {
+                --color-surface-50: 33 25 60;
+                --color-surface-100: 38 29 70;
+                --color-surface-200: 45 34 84;
+                --color-surface-300: 57 43 104;
+                --color-surface-400: 74 55 129;
+                --color-surface-500: 94 69 153;
+                --color-surface-600: 117 88 176;
+                --color-surface-700: 141 111 196;
+                --color-surface-800: 165 137 214;
+                --color-surface-900: 192 167 231;
 
-                --color-primary-50: 238 242 255;
-                --color-primary-100: 224 231 255;
-                --color-primary-200: 199 210 254;
-                --color-primary-300: 165 180 252;
-                --color-primary-400: 129 140 248;
-                --color-primary-500: 99 102 241;
-                --color-primary-600: 79 70 229;
-                --color-primary-700: 67 56 202;
-                --color-primary-800: 55 48 163;
-                --color-primary-900: 49 46 129;
+                --color-primary-50: 254 244 244;
+                --color-primary-100: 252 225 224;
+                --color-primary-200: 249 196 196;
+                --color-primary-300: 246 164 169;
+                --color-primary-400: 242 127 146;
+                --color-primary-500: 239 95 120;
+                --color-primary-600: 225 74 112;
+                --color-primary-700: 199 57 107;
+                --color-primary-800: 170 47 99;
+                --color-primary-900: 134 40 87;
 
-                --color-secondary-50: 236 254 255;
-                --color-secondary-100: 207 250 254;
-                --color-secondary-200: 165 243 252;
-                --color-secondary-300: 103 232 249;
-                --color-secondary-400: 34 211 238;
-                --color-secondary-500: 14 165 233;
-                --color-secondary-600: 8 145 178;
-                --color-secondary-700: 14 116 144;
-                --color-secondary-800: 21 94 117;
-                --color-secondary-900: 22 78 99;
+                --color-secondary-50: 243 240 255;
+                --color-secondary-100: 233 227 255;
+                --color-secondary-200: 214 202 255;
+                --color-secondary-300: 191 174 255;
+                --color-secondary-400: 166 142 255;
+                --color-secondary-500: 142 112 255;
+                --color-secondary-600: 118 89 240;
+                --color-secondary-700: 98 72 208;
+                --color-secondary-800: 83 60 173;
+                --color-secondary-900: 70 52 140;
 
-                --on-surface: 15 23 42;
-                --on-primary: 244 246 255;
+                --on-surface: 235 233 248;
+                --on-primary: 18 11 28;
+
+                --hero-gradient-from: 42 31 82;
+                --hero-gradient-to: 65 45 101;
+                --hero-glow-primary: 90 60 140;
+                --hero-glow-secondary: 247 192 177;
+                --overlay-backdrop: 4 3 11;
         }
 
-        [data-theme='songbook-dusk'] {
-                --color-surface-50: 59 48 94;
-                --color-surface-100: 51 42 87;
-                --color-surface-200: 44 36 79;
-                --color-surface-300: 37 31 70;
-                --color-surface-400: 31 26 62;
-                --color-surface-500: 26 22 53;
-                --color-surface-600: 21 18 45;
-                --color-surface-700: 17 15 37;
-                --color-surface-800: 13 11 29;
-                --color-surface-900: 10 8 23;
+        [data-theme='songbook-nocturne'] {
+                --color-surface-50: 12 20 34;
+                --color-surface-100: 15 27 44;
+                --color-surface-200: 18 36 58;
+                --color-surface-300: 22 48 74;
+                --color-surface-400: 27 63 94;
+                --color-surface-500: 34 82 118;
+                --color-surface-600: 43 103 143;
+                --color-surface-700: 57 128 169;
+                --color-surface-800: 78 156 194;
+                --color-surface-900: 105 188 217;
 
-                --color-primary-50: 245 243 255;
-                --color-primary-100: 237 233 254;
-                --color-primary-200: 221 214 254;
-                --color-primary-300: 196 181 253;
-                --color-primary-400: 167 139 250;
-                --color-primary-500: 139 92 246;
-                --color-primary-600: 124 58 237;
-                --color-primary-700: 109 40 217;
-                --color-primary-800: 91 33 182;
-                --color-primary-900: 76 29 149;
+                --color-primary-50: 224 255 255;
+                --color-primary-100: 187 247 248;
+                --color-primary-200: 136 232 235;
+                --color-primary-300: 94 211 222;
+                --color-primary-400: 64 188 207;
+                --color-primary-500: 45 162 189;
+                --color-primary-600: 35 133 165;
+                --color-primary-700: 30 108 137;
+                --color-primary-800: 28 86 110;
+                --color-primary-900: 26 69 87;
 
-                --color-secondary-50: 255 251 235;
-                --color-secondary-100: 254 243 199;
-                --color-secondary-200: 253 230 138;
-                --color-secondary-300: 252 211 77;
-                --color-secondary-400: 251 191 36;
-                --color-secondary-500: 245 158 11;
-                --color-secondary-600: 217 119 6;
-                --color-secondary-700: 180 83 9;
-                --color-secondary-800: 146 64 14;
-                --color-secondary-900: 120 53 15;
+                --color-secondary-50: 236 248 255;
+                --color-secondary-100: 210 236 255;
+                --color-secondary-200: 176 220 255;
+                --color-secondary-300: 139 201 252;
+                --color-secondary-400: 103 181 244;
+                --color-secondary-500: 76 158 226;
+                --color-secondary-600: 60 130 198;
+                --color-secondary-700: 52 105 165;
+                --color-secondary-800: 45 83 132;
+                --color-secondary-900: 40 68 107;
 
-                --on-surface: 229 231 235;
-                --on-primary: 248 250 255;
-        }
+                --on-surface: 220 231 240;
+                --on-primary: 6 17 23;
 
-        [data-theme='songbook-midnight'] {
-                --color-surface-50: 40 60 99;
-                --color-surface-100: 32 50 84;
-                --color-surface-200: 26 42 71;
-                --color-surface-300: 21 35 60;
-                --color-surface-400: 17 29 51;
-                --color-surface-500: 14 24 43;
-                --color-surface-600: 11 20 37;
-                --color-surface-700: 9 16 30;
-                --color-surface-800: 7 12 24;
-                --color-surface-900: 5 9 18;
-
-                --color-primary-50: 240 249 255;
-                --color-primary-100: 224 242 254;
-                --color-primary-200: 186 230 253;
-                --color-primary-300: 125 211 252;
-                --color-primary-400: 56 189 248;
-                --color-primary-500: 14 165 233;
-                --color-primary-600: 2 132 199;
-                --color-primary-700: 3 105 161;
-                --color-primary-800: 7 89 133;
-                --color-primary-900: 12 74 110;
-
-                --color-secondary-50: 245 243 255;
-                --color-secondary-100: 237 233 254;
-                --color-secondary-200: 221 214 254;
-                --color-secondary-300: 196 181 253;
-                --color-secondary-400: 167 139 250;
-                --color-secondary-500: 139 92 246;
-                --color-secondary-600: 124 58 237;
-                --color-secondary-700: 109 40 217;
-                --color-secondary-800: 91 33 182;
-                --color-secondary-900: 76 29 149;
-
-                --on-surface: 226 232 240;
-                --on-primary: 15 23 42;
+                --hero-gradient-from: 11 22 38;
+                --hero-gradient-to: 16 42 56;
+                --hero-glow-primary: 31 87 110;
+                --hero-glow-secondary: 52 141 155;
+                --overlay-backdrop: 0 8 15;
         }
 }
 
 @layer base {
-	:root {
-		color-scheme: light;
-	}
-
-	:root[data-theme='songbook-dawn'],
-	:root[data-theme='songbook-meadow'],
-	:root[data-theme='songbook-aurora'] {
-		color-scheme: light;
-	}
-
-	:root[data-theme='songbook-dusk'],
-	:root[data-theme='songbook-midnight'] {
-		color-scheme: dark;
-	}
+        :root {
+                color-scheme: light;
+        }
 
         body {
-                font-family:
-                        Inter,
-                        'SF Pro Display',
-                        -apple-system,
-                        BlinkMacSystemFont,
-                        'Segoe UI',
-                        sans-serif;
+                font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: radial-gradient(120% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.55), transparent 60%),
+                        radial-gradient(120% 120% at 90% 10%, rgb(var(--hero-gradient-to) / 0.5), transparent 65%),
+                        linear-gradient(180deg, rgb(var(--color-surface-50)) 0%, rgb(var(--color-surface-100)) 100%);
                 color: rgb(var(--on-surface));
-                @apply min-h-screen bg-surface-50 antialiased transition-colors duration-500;
+                min-height: 100vh;
         }
 
-	body.is-lenis {
-		overflow: hidden;
-	}
-
-	.lenis.lenis-smooth {
-		scroll-behavior: auto;
-	}
-
-	.lenis.lenis-smooth [data-lenis-prevent] {
-		overscroll-behavior: contain;
-	}
-
-	::selection {
-		background: rgb(var(--color-primary-400) / 0.2);
-		color: rgb(var(--on-primary));
-	}
-
-	::-webkit-scrollbar {
-		width: 12px;
-	}
-
-        ::-webkit-scrollbar-thumb {
-                background: linear-gradient(
-                        135deg,
-                        rgb(var(--color-primary-500) / 0.45),
-                        rgb(var(--color-secondary-400) / 0.35)
-                );
-                border-radius: 9999px;
-        }
-
-        ::-webkit-scrollbar-track {
-                background: rgb(var(--color-surface-900) / 0.08);
-        }
-
-	@media (prefers-reduced-motion: reduce) {
-		html:focus-within {
-			scroll-behavior: auto;
-		}
-
-		*,
-		*::before,
-		*::after {
-			animation-duration: 0.01ms !important;
-			animation-iteration-count: 1 !important;
-			transition-duration: 0.01ms !important;
-			scroll-behavior: auto !important;
-		}
-	}
-}
-
-@layer utilities {
-        .backdrop-glass {
-                @apply bg-surface-100/60 backdrop-blur-xl;
-        }
-
-        .gradient-border {
-                position: relative;
-        }
-
-        .gradient-border::before {
-                content: '';
-                position: absolute;
-                inset: -1px;
-                border-radius: inherit;
-                background: linear-gradient(
-                        130deg,
-                        rgb(var(--color-primary-400) / 0.8),
-                        rgb(var(--color-secondary-400) / 0.7)
-                );
-                mask:
-                        linear-gradient(#fff, #fff) padding-box,
-                        linear-gradient(#fff, #fff);
-                mask-composite: exclude;
-                pointer-events: none;
-        }
-
-        .text-on-surface {
-                color: rgb(var(--on-surface));
-        }
-
-        .text-on-surface-soft {
-                color: rgb(var(--on-surface) / 0.75);
-        }
-
-        .text-on-surface-muted {
-                color: rgb(var(--on-surface) / 0.6);
-        }
-
-        .text-on-surface-subtle {
-                color: rgb(var(--on-surface) / 0.45);
+        ::selection {
+                background: rgb(var(--color-primary-200));
+                color: rgb(var(--on-primary));
         }
 }
