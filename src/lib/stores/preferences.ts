@@ -43,14 +43,14 @@ if (browser) {
 		document.documentElement.lang = $language.toLowerCase();
 	});
 
-        document.documentElement.dataset.theme = 'songbook-dawn';
-        document.documentElement.style.colorScheme = 'light';
-        window.localStorage.removeItem('songbook-theme');
+	document.documentElement.dataset.theme = 'songbook-dawn';
+	document.documentElement.style.colorScheme = 'light';
+	window.localStorage.removeItem('songbook-theme');
 
-        const metaThemeColor = document.querySelector("meta[name='theme-color']");
-        if (metaThemeColor instanceof HTMLMetaElement) {
-                metaThemeColor.content = '#fde68a';
-        }
+	const metaThemeColor = document.querySelector("meta[name='theme-color']");
+	if (metaThemeColor instanceof HTMLMetaElement) {
+		metaThemeColor.content = '#fde68a';
+	}
 }
 
 export function toggleFavourite(key: string) {

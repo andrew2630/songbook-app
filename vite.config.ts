@@ -3,16 +3,16 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 const optimizeDepsExclude = [
-        'svelte-i18n',
-        'lucide-svelte',
-        'idb',
-        'motion',
-        '@supabase/supabase-js'
+	'svelte-i18n',
+	'lucide-svelte',
+	'idb',
+	'motion',
+	'@supabase/supabase-js'
 ];
 
 export default defineConfig({
-        plugins: [sveltekit(), devtoolsJson()],
-        optimizeDeps: {
-                exclude: optimizeDepsExclude
-        }
+	plugins: [sveltekit(), devtoolsJson()],
+	optimizeDeps: {
+		exclude: optimizeDepsExclude
+	}
 });

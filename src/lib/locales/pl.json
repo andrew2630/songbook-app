@@ -1,73 +1,73 @@
 {
-        "app": {
-                "title": "Śpiewnik",
-                "tagline": "Zborowy śpiewnik zawsze pod ręką",
-                "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
-                "install_cta": "Zainstaluj aplikację",
-                "install_hint": "Dodaj Śpiewnik Wspólnoty Biblijnej KWCh na ekran główny, aby mieć go zawsze pod ręką.",
-                "install_installed": "Zainstalowano",
-                "language_label": "Język",
-                "view": {
-                        "basic": "Tekst",
-                        "chords": "Akordy"
-                },
-                "favourites": "Ulubione",
-                "all_songs": "Wszystkie pieśni",
-                "page_index": "Spis stron",
-                "page_search": {
-                        "placeholder": "np. 120"
-                },
-                "reset_filters": "Wyczyść filtry",
-                "clear_query": "Wyczyść",
-                "no_favourites": "Brak ulubionych.",
-                "empty_state": "Brak pieśni spełniających kryteria",
-                "offline_ready": "Dostępne offline",
-                "syncing": "Synchronizacja biblioteki…",
-                "last_synced": "Ostatnia synchronizacja",
-                "toggle_index": "Indeks",
-                "toggle_favourites": "Ulubione",
-                "add_favourite": "Dodaj do ulubionych",
-                "remove_favourite": "Usuń z ulubionych",
-                "go_to_song": "Otwórz",
-                "back_action": "Wstecz",
-                "back_to_index": "Powrót do listy",
-                "page_label": "Strona",
-                "source_label": "Źródło:",
-                "external_index": "Indeks",
-                "view_song": "Tryb wyświetlania",
-                "brand_global": "Wspólnota Biblijna KWCh",
-                "brand_available_offline": "Działa offline",
-                "sort": {
-                        "label": "Sortuj według",
-                        "page": "Kolejność śpiewnika",
-                        "alpha": "A do Z",
-                        "recent": "Ostatnio aktualizowane"
-                },
-                "filters": {
-                        "active": "Aktywne filtry",
-                        "none": "Brak filtrów",
-                        "search": "Szukaj: {query}",
-                        "page": "Strona {page}",
-                        "favourites": "Tylko ulubione",
-                        "page_search": "Wyszukiwanie stron: {query}",
-                        "no_page_results": "Brak stron spełniających kryteria"
-                },
-                "density_label": "Gęstość akordów",
-                "density_caption": "Linie z akordami: {chords} / {total}",
-                "updated_label": "Aktualizacja",
-                "copy_link": "Kopiuj link do udostępnienia",
-                "copied_link": "Skopiowano link!",
-                "copy_failed": "Nie udało się skopiować",
-                "scroll_to_top": "Do góry",
-                "preview": "Podgląd tekstu",
-                "hide_preview": "Ukryj podgląd",
-                "preview_remaining": "Ukryto {count} linie",
-                "search_hint": "Łącz filtry i tryby widoku, aby szybciej znaleźć pieśni.",
-                "cta": {
-                        "title": "Ćwicz w dowolnym miejscu",
-                        "subtitle": "Zapisuj zestawy, ćwicz offline i bądź w kontakcie z zespołem.",
-                        "primary": "Zaplanuj setlistę",
-                        "secondary": "Dowiedz się więcej"
-                }
-        }
+	"app": {
+		"title": "Śpiewnik",
+		"tagline": "Zborowy śpiewnik zawsze pod ręką",
+		"search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
+		"install_cta": "Zainstaluj aplikację",
+		"install_hint": "Dodaj Śpiewnik Wspólnoty Biblijnej KWCh na ekran główny, aby mieć go zawsze pod ręką.",
+		"install_installed": "Zainstalowano",
+		"language_label": "Język",
+		"view": {
+			"basic": "Tekst",
+			"chords": "Akordy"
+		},
+		"favourites": "Ulubione",
+		"all_songs": "Wszystkie pieśni",
+		"page_index": "Spis stron",
+		"page_search": {
+			"placeholder": "np. 120"
+		},
+		"reset_filters": "Wyczyść filtry",
+		"clear_query": "Wyczyść",
+		"no_favourites": "Brak ulubionych.",
+		"empty_state": "Brak pieśni spełniających kryteria",
+		"offline_ready": "Dostępne offline",
+		"syncing": "Synchronizacja biblioteki…",
+		"last_synced": "Ostatnia synchronizacja",
+		"toggle_index": "Indeks",
+		"toggle_favourites": "Ulubione",
+		"add_favourite": "Dodaj do ulubionych",
+		"remove_favourite": "Usuń z ulubionych",
+		"go_to_song": "Otwórz",
+		"back_action": "Wstecz",
+		"back_to_index": "Powrót do listy",
+		"page_label": "Strona",
+		"source_label": "Źródło:",
+		"external_index": "Indeks",
+		"view_song": "Tryb wyświetlania",
+		"brand_global": "Wspólnota Biblijna KWCh",
+		"brand_available_offline": "Działa offline",
+		"sort": {
+			"label": "Sortuj według",
+			"page": "Kolejność śpiewnika",
+			"alpha": "A do Z",
+			"recent": "Ostatnio aktualizowane"
+		},
+		"filters": {
+			"active": "Aktywne filtry",
+			"none": "Brak filtrów",
+			"search": "Szukaj: {query}",
+			"page": "Strona {page}",
+			"favourites": "Tylko ulubione",
+			"page_search": "Wyszukiwanie stron: {query}",
+			"no_page_results": "Brak stron spełniających kryteria"
+		},
+		"density_label": "Gęstość akordów",
+		"density_caption": "Linie z akordami: {chords} / {total}",
+		"updated_label": "Aktualizacja",
+		"copy_link": "Kopiuj link do udostępnienia",
+		"copied_link": "Skopiowano link!",
+		"copy_failed": "Nie udało się skopiować",
+		"scroll_to_top": "Do góry",
+		"preview": "Podgląd tekstu",
+		"hide_preview": "Ukryj podgląd",
+		"preview_remaining": "Ukryto {count} linie",
+		"search_hint": "Łącz filtry i tryby widoku, aby szybciej znaleźć pieśni.",
+		"cta": {
+			"title": "Ćwicz w dowolnym miejscu",
+			"subtitle": "Zapisuj zestawy, ćwicz offline i bądź w kontakcie z zespołem.",
+			"primary": "Zaplanuj setlistę",
+			"secondary": "Dowiedz się więcej"
+		}
+	}
 }

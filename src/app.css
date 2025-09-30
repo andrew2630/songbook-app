@@ -2,157 +2,166 @@
 @import 'tailwindcss';
 
 @theme {
-        /* default light theme tokens */
-        --color-surface-50: 249 250 251;
-        --color-surface-100: 243 245 247;
-        --color-surface-200: 229 233 239;
-        --color-surface-300: 210 217 226;
-        --color-surface-400: 176 190 205;
-        --color-surface-500: 136 152 170;
-        --color-surface-600: 102 120 140;
-        --color-surface-700: 76 90 110;
-        --color-surface-800: 50 64 83;
-        --color-surface-900: 28 36 50;
+	/* default light theme tokens */
+	--color-surface-50: 249 250 251;
+	--color-surface-100: 243 245 247;
+	--color-surface-200: 229 233 239;
+	--color-surface-300: 210 217 226;
+	--color-surface-400: 176 190 205;
+	--color-surface-500: 136 152 170;
+	--color-surface-600: 102 120 140;
+	--color-surface-700: 76 90 110;
+	--color-surface-800: 50 64 83;
+	--color-surface-900: 28 36 50;
 
-        --color-primary-50: 255 251 235;
-        --color-primary-100: 254 243 199;
-        --color-primary-200: 253 230 138;
-        --color-primary-300: 252 211 77;
-        --color-primary-400: 251 191 36;
-        --color-primary-500: 245 158 11;
-        --color-primary-600: 217 119 6;
-        --color-primary-700: 180 83 9;
-        --color-primary-800: 146 64 14;
-        --color-primary-900: 120 53 15;
+	--color-primary-50: 255 251 235;
+	--color-primary-100: 254 243 199;
+	--color-primary-200: 253 230 138;
+	--color-primary-300: 252 211 77;
+	--color-primary-400: 251 191 36;
+	--color-primary-500: 245 158 11;
+	--color-primary-600: 217 119 6;
+	--color-primary-700: 180 83 9;
+	--color-primary-800: 146 64 14;
+	--color-primary-900: 120 53 15;
 
-        --color-secondary-50: 253 244 255;
-        --color-secondary-100: 250 232 255;
-        --color-secondary-200: 245 208 254;
-        --color-secondary-300: 235 180 252;
-        --color-secondary-400: 216 150 250;
-        --color-secondary-500: 192 109 240;
-        --color-secondary-600: 168 85 227;
-        --color-secondary-700: 147 51 234;
-        --color-secondary-800: 126 34 206;
-        --color-secondary-900: 107 33 168;
+	--color-secondary-50: 253 244 255;
+	--color-secondary-100: 250 232 255;
+	--color-secondary-200: 245 208 254;
+	--color-secondary-300: 235 180 252;
+	--color-secondary-400: 216 150 250;
+	--color-secondary-500: 192 109 240;
+	--color-secondary-600: 168 85 227;
+	--color-secondary-700: 147 51 234;
+	--color-secondary-800: 126 34 206;
+	--color-secondary-900: 107 33 168;
 
-        --on-surface: 18 30 39;
-        --on-primary: 45 32 11;
+	--on-surface: 18 30 39;
+	--on-primary: 45 32 11;
 
-        --accent-gold: 234 179 8;
-        --hero-gradient-from: 240 249 255;
-        --hero-gradient-mid: 255 247 237;
-        --hero-gradient-to: 253 244 255;
-        --hero-glow-primary: 253 224 130;
-        --hero-glow-secondary: 186 230 253;
-        --overlay-backdrop: 9 16 26;
+	--accent-gold: 234 179 8;
+	--hero-gradient-from: 240 249 255;
+	--hero-gradient-mid: 255 247 237;
+	--hero-gradient-to: 253 244 255;
+	--hero-glow-primary: 253 224 130;
+	--hero-glow-secondary: 186 230 253;
+	--overlay-backdrop: 9 16 26;
 }
 
 @layer base {
-        :root {
-                color-scheme: light;
-        }
+	:root {
+		color-scheme: light;
+	}
 
-        body {
-                font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                background: radial-gradient(120% 110% at 15% -5%, rgb(var(--accent-gold) / 0.18), transparent 60%),
-                        radial-gradient(140% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.65), transparent 60%),
-                        radial-gradient(110% 130% at 90% 10%, rgb(var(--hero-gradient-to) / 0.55), transparent 65%),
-                        linear-gradient(180deg, rgb(var(--color-surface-50)) 0%, rgb(var(--color-surface-100)) 100%);
-                color: rgb(var(--on-surface));
-                min-height: 100vh;
-        }
+	body {
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			sans-serif;
+		background:
+			radial-gradient(120% 110% at 15% -5%, rgb(var(--accent-gold) / 0.18), transparent 60%),
+			radial-gradient(140% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.65), transparent 60%),
+			radial-gradient(110% 130% at 90% 10%, rgb(var(--hero-gradient-to) / 0.55), transparent 65%),
+			linear-gradient(180deg, rgb(var(--color-surface-50)) 0%, rgb(var(--color-surface-100)) 100%);
+		color: rgb(var(--on-surface));
+		min-height: 100vh;
+	}
 
-        ::selection {
-                background: rgb(var(--color-primary-200));
-                color: rgb(var(--on-primary));
-        }
+	::selection {
+		background: rgb(var(--color-primary-200));
+		color: rgb(var(--on-primary));
+	}
 }
 
 @layer components {
-        .btn-gold {
-                background: linear-gradient(
-                        120deg,
-                        rgba(var(--accent-gold), 1) 0%,
-                        rgba(var(--accent-gold), 0.98) 68%,
-                        rgba(var(--color-primary-600), 0.98) 100%
-                );
-                color: rgb(var(--on-surface));
-                box-shadow: 0 20px 42px rgba(var(--accent-gold), 0.18);
-                border: none;
-                transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                        box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                        background 220ms ease;
-                will-change: transform, box-shadow;
-        }
+	.btn-gold {
+		background: linear-gradient(
+			120deg,
+			rgba(var(--accent-gold), 1) 0%,
+			rgba(var(--accent-gold), 0.98) 68%,
+			rgba(var(--color-primary-600), 0.98) 100%
+		);
+		color: rgb(var(--on-surface));
+		box-shadow: 0 20px 42px rgba(var(--accent-gold), 0.18);
+		border: none;
+		transition:
+			transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			background 220ms ease;
+		will-change: transform, box-shadow;
+	}
 
-        .btn-gold:hover {
-                background: linear-gradient(
-                        120deg,
-                        rgba(var(--accent-gold), 1) 0%,
-                        rgba(var(--accent-gold), 1) 72%,
-                        rgba(var(--color-primary-600), 1) 100%
-                );
-                box-shadow: 0 24px 52px rgba(var(--accent-gold), 0.22);
-                transform: translateY(-1px);
-        }
+	.btn-gold:hover {
+		background: linear-gradient(
+			120deg,
+			rgba(var(--accent-gold), 1) 0%,
+			rgba(var(--accent-gold), 1) 72%,
+			rgba(var(--color-primary-600), 1) 100%
+		);
+		box-shadow: 0 24px 52px rgba(var(--accent-gold), 0.22);
+		transform: translateY(-1px);
+	}
 
-        .btn-gold:focus-visible {
-                outline: 2px solid rgba(var(--accent-gold), 0.6);
-                outline-offset: 2px;
-        }
+	.btn-gold:focus-visible {
+		outline: 2px solid rgba(var(--accent-gold), 0.6);
+		outline-offset: 2px;
+	}
 
-        .icon-button {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 2.75rem;
-                height: 2.75rem;
-                border-radius: 9999px;
-                border: 1px solid rgba(255, 255, 255, 0.7);
-                background-color: rgba(255, 255, 255, 0.96);
-                color: rgb(var(--on-surface));
-                box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
-                transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-                        box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
-                        border-color 180ms ease,
-                        background-color 180ms ease,
-                        color 180ms ease;
-        }
+	.icon-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 9999px;
+		border: 1px solid rgba(255, 255, 255, 0.7);
+		background-color: rgba(255, 255, 255, 0.96);
+		color: rgb(var(--on-surface));
+		box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
+		transition:
+			transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+			border-color 180ms ease,
+			background-color 180ms ease,
+			color 180ms ease;
+	}
 
-        .icon-button:hover {
-                transform: translateY(-1px);
-                border-color: rgba(var(--accent-gold), 0.5);
-                box-shadow: 0 20px 44px rgba(15, 23, 42, 0.16);
-                color: rgb(var(--color-primary-600));
-        }
+	.icon-button:hover {
+		transform: translateY(-1px);
+		border-color: rgba(var(--accent-gold), 0.5);
+		box-shadow: 0 20px 44px rgba(15, 23, 42, 0.16);
+		color: rgb(var(--color-primary-600));
+	}
 
-        .icon-button:focus-visible {
-                outline: 2px solid rgba(var(--accent-gold), 0.6);
-                outline-offset: 2px;
-        }
+	.icon-button:focus-visible {
+		outline: 2px solid rgba(var(--accent-gold), 0.6);
+		outline-offset: 2px;
+	}
 
-        .icon-button--success {
-                background-color: rgba(16, 185, 129, 0.16);
-                border-color: rgba(16, 185, 129, 0.35);
-                color: rgb(5, 150, 105);
-                box-shadow: 0 18px 42px rgba(16, 185, 129, 0.18);
-        }
+	.icon-button--success {
+		background-color: rgba(16, 185, 129, 0.16);
+		border-color: rgba(16, 185, 129, 0.35);
+		color: rgb(5, 150, 105);
+		box-shadow: 0 18px 42px rgba(16, 185, 129, 0.18);
+	}
 
-        .icon-button--success:hover {
-                border-color: rgba(16, 185, 129, 0.45);
-                box-shadow: 0 22px 48px rgba(16, 185, 129, 0.22);
-        }
+	.icon-button--success:hover {
+		border-color: rgba(16, 185, 129, 0.45);
+		box-shadow: 0 22px 48px rgba(16, 185, 129, 0.22);
+	}
 
-        .icon-button--danger {
-                background-color: rgba(248, 113, 113, 0.16);
-                border-color: rgba(248, 113, 113, 0.35);
-                color: rgb(220, 38, 38);
-                box-shadow: 0 18px 42px rgba(248, 113, 113, 0.18);
-        }
+	.icon-button--danger {
+		background-color: rgba(248, 113, 113, 0.16);
+		border-color: rgba(248, 113, 113, 0.35);
+		color: rgb(220, 38, 38);
+		box-shadow: 0 18px 42px rgba(248, 113, 113, 0.18);
+	}
 
-        .icon-button--danger:hover {
-                border-color: rgba(248, 113, 113, 0.45);
-                box-shadow: 0 22px 48px rgba(248, 113, 113, 0.22);
-        }
+	.icon-button--danger:hover {
+		border-color: rgba(248, 113, 113, 0.45);
+		box-shadow: 0 22px 48px rgba(248, 113, 113, 0.22);
+	}
 }

@@ -106,55 +106,55 @@
       >
         {$t('app.search_placeholder')}
       </label> -->
-					<div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-			<div class="flex flex-wrap gap-2">
-				<button
-					class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-						menuView === 'index'
-							? 'btn-gold'
-							: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
-					}`}
-					on:click={() => (menuView = 'index')}
-					type="button"
-				>
-					<LayoutList class="h-4 w-4" />
-					{$t('app.toggle_index')}
-				</button>
-				<button
-					class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-						menuView === 'favourites'
-							? 'btn-gold'
-							: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
-					}`}
-					on:click={() => (menuView = 'favourites')}
-					type="button"
-				>
-					<Heart class="h-4 w-4" />
-					{$t('app.toggle_favourites')}
-				</button>
-				<button
-					class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted transition hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-[rgb(var(--accent-gold)/0.95)]"
-					on:click={handleClearFilters}
-					type="button"
-				>
-					{$t('app.reset_filters')}
-				</button>
-			</div>
+			<div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+				<div class="flex flex-wrap gap-2">
+					<button
+						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+							menuView === 'index'
+								? 'btn-gold'
+								: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
+						}`}
+						on:click={() => (menuView = 'index')}
+						type="button"
+					>
+						<LayoutList class="h-4 w-4" />
+						{$t('app.toggle_index')}
+					</button>
+					<button
+						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+							menuView === 'favourites'
+								? 'btn-gold'
+								: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
+						}`}
+						on:click={() => (menuView = 'favourites')}
+						type="button"
+					>
+						<Heart class="h-4 w-4" />
+						{$t('app.toggle_favourites')}
+					</button>
+					<button
+						class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted transition hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-[rgb(var(--accent-gold)/0.95)]"
+						on:click={handleClearFilters}
+						type="button"
+					>
+						{$t('app.reset_filters')}
+					</button>
+				</div>
 
-			<label class="flex items-center gap-3 text-sm font-medium text-surface-600 lg:ml-auto">
-				<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500">
-					{$t('app.sort.label')}
-				</span>
-				<select
-					class="rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none"
-					bind:value={sortMode}
-				>
-					{#each sortOptions as option}
-						<option value={option.value}>{$t(option.label)}</option>
-					{/each}
-				</select>
-			</label>
-		</div>
+				<label class="flex items-center gap-3 text-sm font-medium text-surface-600 lg:ml-auto">
+					<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500">
+						{$t('app.sort.label')}
+					</span>
+					<select
+						class="rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none"
+						bind:value={sortMode}
+					>
+						{#each sortOptions as option}
+							<option value={option.value}>{$t(option.label)}</option>
+						{/each}
+					</select>
+				</label>
+			</div>
 			<div
 				class="flex items-center gap-3 rounded-2xl border border-white/60 bg-[rgba(255,255,255,0.9)] px-4 py-3 shadow-inner shadow-[rgba(245,158,11,0.12)]"
 			>
@@ -173,7 +173,7 @@
 						on:click={() => (query = '')}
 						type="button"
 					>
-						{$t('app.clear_query')}z
+						{$t('app.clear_query')}
 					</button>
 				{/if}
 			</div>
@@ -205,8 +205,6 @@
 				{/each}
 			</div>
 		{/if}
-
-
 	</div>
 
 	<!-- <div

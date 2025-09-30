@@ -49,8 +49,8 @@ Set the `BASE_PATH` environment variable to the public directory you will host u
 ## Install as a standalone app
 
 - **Desktop (Chrome/Edge)** – open the site, click the “Install app” pill in the hero, or use the browser’s install icon in the address bar.
-- **Android** – open the site in Chrome, accept the install prompt, or use the overflow menu → *Install app*.
-- **iOS/iPadOS** – open the site in Safari, tap the share icon → *Add to Home Screen*.
+- **Android** – open the site in Chrome, accept the install prompt, or use the overflow menu → _Install app_.
+- **iOS/iPadOS** – open the site in Safari, tap the share icon → _Add to Home Screen_.
 
 When testing locally, run `npm run preview` so the service worker and install prompt are available.
 

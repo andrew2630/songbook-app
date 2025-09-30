@@ -10,7 +10,7 @@ const baseThemeProperties = {
 	'--theme-rounded-base': '1.75rem',
 	'--theme-rounded-container': '2rem',
 	'--theme-border-base': '1px',
-        '--on-primary': '45 32 11',
+	'--on-primary': '45 32 11',
 	'--on-secondary': '12 17 32',
 	'--on-tertiary': '12 17 32',
 	'--on-success': '12 17 32',
@@ -49,43 +49,43 @@ export default {
 			themes: {
 				preset: ['skeleton', 'modern'],
 				custom: [
-                                        {
-                                                name: 'songbook-dawn',
-                                                properties: {
-                                                        ...baseThemeProperties,
-                                                        '--color-primary-50': '255 251 235',
-                                                        '--color-primary-100': '254 243 199',
-                                                        '--color-primary-200': '253 230 138',
-                                                        '--color-primary-300': '252 211 77',
-                                                        '--color-primary-400': '251 191 36',
-                                                        '--color-primary-500': '245 158 11',
-                                                        '--color-primary-600': '217 119 6',
-                                                        '--color-primary-700': '180 83 9',
-                                                        '--color-primary-800': '146 64 14',
-                                                        '--color-primary-900': '120 53 15',
-                                                        '--color-secondary-50': '253 244 255',
-                                                        '--color-secondary-100': '250 232 255',
-                                                        '--color-secondary-200': '245 208 254',
-                                                        '--color-secondary-300': '240 171 252',
-                                                        '--color-secondary-400': '232 121 249',
-                                                        '--color-secondary-500': '217 70 239',
-                                                        '--color-secondary-600': '192 38 211',
-                                                        '--color-secondary-700': '162 28 175',
-                                                        '--color-secondary-800': '134 25 143',
-                                                        '--color-secondary-900': '112 26 117',
-                                                        '--color-surface-50': '255 248 244',
-                                                        '--color-surface-100': '255 239 226',
-                                                        '--color-surface-200': '254 223 200',
-                                                        '--color-surface-300': '253 206 170',
-                                                        '--color-surface-400': '251 182 140',
-                                                        '--color-surface-500': '246 150 104',
-                                                        '--color-surface-600': '229 125 82',
-                                                        '--color-surface-700': '201 96 62',
-                                                        '--color-surface-800': '163 72 47',
-                                                        '--color-surface-900': '120 52 34'
-                                                }
-                                        }
-                                ]
+					{
+						name: 'songbook-dawn',
+						properties: {
+							...baseThemeProperties,
+							'--color-primary-50': '255 251 235',
+							'--color-primary-100': '254 243 199',
+							'--color-primary-200': '253 230 138',
+							'--color-primary-300': '252 211 77',
+							'--color-primary-400': '251 191 36',
+							'--color-primary-500': '245 158 11',
+							'--color-primary-600': '217 119 6',
+							'--color-primary-700': '180 83 9',
+							'--color-primary-800': '146 64 14',
+							'--color-primary-900': '120 53 15',
+							'--color-secondary-50': '253 244 255',
+							'--color-secondary-100': '250 232 255',
+							'--color-secondary-200': '245 208 254',
+							'--color-secondary-300': '240 171 252',
+							'--color-secondary-400': '232 121 249',
+							'--color-secondary-500': '217 70 239',
+							'--color-secondary-600': '192 38 211',
+							'--color-secondary-700': '162 28 175',
+							'--color-secondary-800': '134 25 143',
+							'--color-secondary-900': '112 26 117',
+							'--color-surface-50': '255 248 244',
+							'--color-surface-100': '255 239 226',
+							'--color-surface-200': '254 223 200',
+							'--color-surface-300': '253 206 170',
+							'--color-surface-400': '251 182 140',
+							'--color-surface-500': '246 150 104',
+							'--color-surface-600': '229 125 82',
+							'--color-surface-700': '201 96 62',
+							'--color-surface-800': '163 72 47',
+							'--color-surface-900': '120 52 34'
+						}
+					}
+				]
 			}
 		})
 	]
