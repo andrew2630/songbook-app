@@ -1,8 +1,10 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { loadEnv } from 'vite';
 
 const normalizedBasePath = (() => {
-	const raw = process.env.BASE_PATH?.trim();
+        const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+        const raw = (process.env.BASE_PATH ?? env.BASE_PATH)?.trim();
 	if (!raw) return '';
 
 	const withoutTrailing = raw.replace(/\/+$/, '');
