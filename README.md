@@ -56,9 +56,8 @@ When testing locally, run `npm run preview` so the service worker and install pr
 
 ## Branding assets
 
-- `static/logo.png`: Raster logo used for install icons, Apple touch icons, and favicon fallbacks. Replace with your own branding asset.
+- `static/logo.png`: Primary logo asset used for install icons, Apple touch icons, and larger surfaces. Replace with your own branding.
 - `static/favicon.ico`: Legacy favicon for browsers that prefer `.ico` files. Add your copy to `static/` to override the default.
-- `static/logo.svg`: Primary vector logo for large surfaces and sharing previews.
-- `static/favicon.svg`: Scalable favicon and mask icon used across browsers.
+- `static/favicon.png`: Modern favicon used across browsers alongside the `.ico` fallback.
 
 Feel free to adapt the colours or typography in `src/app.css` if your design system evolves.
