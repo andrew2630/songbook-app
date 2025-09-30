@@ -63,23 +63,23 @@
 <div class="relative min-h-screen overflow-hidden text-on-surface">
         <div class="pointer-events-none absolute inset-0 -z-10">
                 <div
-                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.7)_45%,rgba(255,255,255,0.85)_100%)]"
+                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.78)_40%,rgba(255,255,255,0.88)_100%)]"
                 ></div>
                 <div
-                        class="absolute left-[10%] top-[-12%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.55),rgba(255,255,255,0))] blur-3xl"
+                        class="absolute left-[8%] top-[-16%] h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.5),rgba(255,255,255,0))] blur-[140px]"
                 ></div>
                 <div
-                        class="absolute right-[-10%] top-[5%] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.5),rgba(255,255,255,0))] blur-[150px]"
+                        class="absolute right-[-12%] top-[0%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.55),rgba(255,255,255,0))] blur-[150px]"
                 ></div>
                 <div
-                        class="absolute bottom-[-24%] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.9),rgba(255,255,255,0))] blur-[160px]"
+                        class="absolute bottom-[-26%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.92),rgba(255,255,255,0))] blur-[170px]"
                 ></div>
         </div>
         <div
-                class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 pb-12 sm:px-6 lg:max-w-6xl lg:px-8"
+                class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 pb-10 sm:px-6 lg:max-w-6xl lg:px-10"
         >
                 <AppHeader />
-                <main class="flex-1 py-6 sm:py-8 lg:py-10">
+                <main class="flex-1 py-5 sm:py-8 lg:py-10">
                         <slot />
                 </main>
                 <footer class="mt-10 border-t border-surface-200/60 py-5 text-xs text-on-surface-muted sm:text-sm">

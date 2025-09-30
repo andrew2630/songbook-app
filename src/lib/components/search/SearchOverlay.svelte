@@ -1,12 +1,13 @@
 <script lang="ts">
         import { browser } from '$app/environment';
-        import { afterNavigate } from '$app/navigation';
+        import { afterNavigate, goto } from '$app/navigation';
         import { tick } from 'svelte';
         import { t } from 'svelte-i18n';
         import { Search, X } from 'lucide-svelte';
         import { favourites, language } from '$lib/stores/preferences';
         import { closeSearchOverlay, isSearchOverlayOpen } from '$lib/stores/ui';
         import { filterSongs, searchableSongs } from '$lib/stores/songStore';
+        import type { Song } from '$lib/types/song';
 
         let query = '';
         let inputRef: HTMLInputElement | null = null;
@@ -35,6 +36,12 @@
                         event.preventDefault();
                         handleClose();
                 }
+        }
+
+        async function handleSongSelect(song: Song) {
+                const url = `/song/${song.id}?lang=${song.language}`;
+                handleClose();
+                await goto(url, { noScroll: false });
         }
 
         async function focusInput() {
@@ -76,14 +83,14 @@
 
 {#if $isSearchOverlayOpen}
         <div
-                class="fixed inset-0 z-50 flex items-start justify-center px-4 py-16 backdrop-blur-2xl"
+                class="fixed inset-0 z-50 flex items-start justify-center px-3 py-12 backdrop-blur-2xl sm:px-4 sm:py-16"
                 style="background-color: rgba(var(--overlay-backdrop), 0.58);"
                 role="presentation"
                 on:click={handleBackdropClick}
                 on:keydown={handleKeydown}
         >
                 <div
-                        class="w-full max-w-2xl rounded-[32px] border border-white/20 bg-white/85 p-6 shadow-[0_40px_120px_rgba(15,23,42,0.32)]"
+                        class="w-full max-w-2xl rounded-[28px] border border-white/30 bg-white/85 p-4 shadow-[0_34px_110px_rgba(15,23,42,0.24)] sm:p-6"
                         role="dialog"
                         aria-modal="true"
                         tabindex="-1"
@@ -98,7 +105,7 @@
                                                 {$t('app.search_placeholder')}
                                         </label>
                                         <div
-                                                class="mt-3 flex items-center gap-3 rounded-2xl border border-white/30 bg-white/60 px-4 py-3 shadow-inner shadow-primary-500/10"
+                                                class="mt-3 flex items-center gap-3 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 shadow-inner shadow-primary-500/10"
                                         >
                                                 <Search class="h-4 w-4 text-primary-500" aria-hidden="true" />
                                                 <input
@@ -125,10 +132,10 @@
                         {#if results.length}
                                 <div class="mt-6 space-y-3">
                                         {#each results as song (song.id + song.language)}
-                                                <a
+                                                <button
                                                         class="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/40 bg-white/70 px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition hover:border-primary-300 hover:text-primary-600 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
-                                                        href={`/song/${song.id}?lang=${song.language}`}
-                                                        on:click={handleClose}
+                                                        type="button"
+                                                        on:click={() => handleSongSelect(song)}
                                                 >
                                                         <div>
                                                                 <p class="font-semibold text-on-surface">{song.title}</p>
@@ -137,9 +144,9 @@
                                                                 </p>
                                                         </div>
                                                         <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-400/90">
-                                                                {$t('app.view_song')}
+                                                                {$t('app.go_to_song')}
                                                         </span>
-                                                </a>
+                                                </button>
                                         {/each}
                                 </div>
                         {:else if hasQuery}

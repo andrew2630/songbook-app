@@ -118,14 +118,14 @@
 			<div class="flex flex-1 flex-wrap items-center justify-between gap-3">
                                 <div class="flex flex-wrap items-center gap-2.5">
                                         <button
-                                                class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+                                                class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
                                                 type="button"
                                                 on:click={goBack}
                                         >
                                                 {$t('app.back_action')}
                                         </button>
                                         <button
-                                                class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+                                                class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
                                                 type="button"
                                                 on:click={() => goto('/')}
                                         >
@@ -135,8 +135,8 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 $favourites.includes(favouriteKey)
-                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
-                                                        : 'border border-white/60 bg-white/70 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
+                                                        ? 'bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 text-white shadow-[0_20px_36px_rgba(14,165,233,0.28)]'
+                                                        : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
                                         }`}
                                         type="button"
                                         aria-pressed={$favourites.includes(favouriteKey)}
@@ -166,11 +166,11 @@
                                                 {$t('app.page_label')}
                                                 {song.page}
                                         </span>
-                                        <span class="rounded-full border border-white/60 bg-white/60 px-3 py-1 text-[11px] text-on-surface-soft">
+                                        <span class="rounded-full border border-white/50 bg-white/70 px-3 py-1 text-[11px] text-on-surface-soft">
                                                 {$t('app.source_label')}
                                                 {song.source}
                                         </span>
-                                        <span class="rounded-full border border-white/60 bg-white/60 px-3 py-1 text-[11px] text-on-surface-soft">
+                                        <span class="rounded-full border border-white/50 bg-white/70 px-3 py-1 text-[11px] text-on-surface-soft">
                                                 {$t('app.external_index')}
                                                 {song.externalIndex}
                                         </span>
@@ -182,11 +182,11 @@
 				role="tablist"
 				aria-label={$t('app.view_song')}
 			>
-				<button
+                                <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'basic'
                                                         ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
-                                                        : 'border border-white/60 bg-white/70 text-on-surface'
+                                                        : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
 					type="button"
 					role="tab"
@@ -197,11 +197,11 @@
 				>
 					{$t('app.view.basic')}
 				</button>
-				<button
+                                <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'chords'
                                                         ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
-                                                        : 'border border-white/60 bg-white/70 text-on-surface'
+                                                        : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
 					type="button"
 					role="tab"
@@ -216,7 +216,7 @@
 		</header>
 
                 <section
-                        class={`relative space-y-3 rounded-[26px] border border-white/40 bg-white/65 p-5 text-left text-sm leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 sm:text-base ${
+                        class={`relative space-y-3 rounded-[26px] border border-white/40 bg-white/75 p-5 text-left text-sm leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 sm:text-base ${
                                 activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
                         }`}
                 >
