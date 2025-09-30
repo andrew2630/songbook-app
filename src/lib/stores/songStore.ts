@@ -9,6 +9,7 @@ const DB_VERSION = 1;
 const STORE_NAME = 'songs';
 const META_STORE = 'meta';
 const SUPABASE_PAGE_SIZE = 1000;
+const PERIODIC_SYNC_INTERVAL_MS = 1000 * 60 * 60; // 1 hour
 type SupabaseClient = NonNullable<typeof supabase>;
 
 interface SongRecord {
@@ -30,7 +31,7 @@ async function getDb() {
   });
 }
 
-async function persistSongs(songs: Song[]) {
+async function persistSongs(songs: Song[], syncedAt = new Date().toISOString()) {
   if (!browser) return;
   const db = await getDb();
   const tx = db.transaction([STORE_NAME, META_STORE], 'readwrite');
@@ -39,7 +40,15 @@ async function persistSongs(songs: Song[]) {
   for (const song of songs) {
     await store.put({ key: `${song.id}-${song.language}`, song } satisfies SongRecord);
   }
-  await tx.objectStore(META_STORE).put({ key: 'lastSynced', value: new Date().toISOString() });
+  await tx.objectStore(META_STORE).put({ key: 'lastSynced', value: syncedAt });
+  await tx.done;
+}
+
+async function persistLastSynced(syncedAt: string) {
+  if (!browser) return;
+  const db = await getDb();
+  const tx = db.transaction(META_STORE, 'readwrite');
+  await tx.objectStore(META_STORE).put({ key: 'lastSynced', value: syncedAt });
   await tx.done;
 }
 
@@ -142,6 +151,9 @@ export const songs = writable<Song[]>([]);
 export const isSyncing = writable(false);
 export const lastSynced = writable<string | null>(null);
 
+let periodicSyncHandle: number | null = null;
+let periodicSyncInFlight = false;
+
 export async function loadSongs(force = false) {
   if (!browser) return;
   isSyncing.set(true);
@@ -166,6 +178,67 @@ export async function loadSongs(force = false) {
     songs.set([]);
   } finally {
     isSyncing.set(false);
+  }
+}
+
+function haveSongsChanged(current: Song[], remote: Song[]) {
+  if (current.length !== remote.length) return true;
+  const map = new Map<string, Song>(
+    current.map((song) => [`${song.id}-${song.language}`, song])
+  );
+  for (const song of remote) {
+    const key = `${song.id}-${song.language}`;
+    const existing = map.get(key);
+    if (!existing) return true;
+    if (existing.version !== song.version) return true;
+    const existingUpdated = existing.lastUpdatedAt ?? null;
+    const remoteUpdated = song.lastUpdatedAt ?? null;
+    if (existingUpdated !== remoteUpdated) return true;
+  }
+  return false;
+}
+
+async function performPeriodicSync() {
+  if (!browser) return;
+  if (!supabase) return;
+  if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+  if (periodicSyncInFlight) return;
+  if (getSnapshot(isSyncing)) return;
+
+  periodicSyncInFlight = true;
+  isSyncing.set(true);
+  try {
+    const remoteSongs = await fetchSongsFromSupabase();
+    const currentSongs = getSnapshot(songs);
+    const syncedAt = new Date().toISOString();
+    if (haveSongsChanged(currentSongs, remoteSongs)) {
+      songs.set(remoteSongs);
+      await persistSongs(remoteSongs, syncedAt);
+    } else {
+      await persistLastSynced(syncedAt);
+    }
+    lastSynced.set(syncedAt);
+  } catch (error) {
+    console.error('Failed to perform periodic sync', error);
+  } finally {
+    isSyncing.set(false);
+    periodicSyncInFlight = false;
+  }
+}
+
+export function startPeriodicSync(intervalMs = PERIODIC_SYNC_INTERVAL_MS) {
+  if (!browser) return () => undefined;
+  stopPeriodicSync();
+  periodicSyncHandle = window.setInterval(() => {
+    void performPeriodicSync();
+  }, intervalMs);
+  return stopPeriodicSync;
+}
+
+export function stopPeriodicSync() {
+  if (periodicSyncHandle !== null) {
+    clearInterval(periodicSyncHandle);
+    periodicSyncHandle = null;
   }
 }
 
