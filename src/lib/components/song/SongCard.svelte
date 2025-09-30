@@ -128,7 +128,7 @@ import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'luc
                                                 </span>
                                         </div>
 					</div>
-                                        <div class="flex flex-wrap justify-end gap-2.5 text-sm">
+                                        <div class="flex flex-wrap justify-end gap-2 text-sm">
                                                 <button
                                                         class="btn-gold inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition"
                                                         on:click={() => dispatch('open', song)}
