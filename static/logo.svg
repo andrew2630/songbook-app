@@ -1,29 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">Global Worship Songbook Logo</title>
-  <desc id="desc">A golden globe with a white cross cutout.</desc>
-  <defs>
-    <radialGradient id="gold" cx="50%" cy="38%" r="65%">
-      <stop offset="0%" stop-color="#ffe9a3" />
-      <stop offset="45%" stop-color="#f4ca58" />
-      <stop offset="100%" stop-color="#b8841a" />
-    </radialGradient>
-    <linearGradient id="shadow" x1="0%" x2="0%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#000" stop-opacity="0.18" />
-      <stop offset="100%" stop-color="#000" stop-opacity="0.0" />
-    </linearGradient>
-  </defs>
-  <g transform="translate(16 16)">
-    <circle cx="240" cy="240" r="240" fill="url(#gold)" />
-    <g fill="#fdf6e3" opacity="0.42">
-      <path d="M0 186h480v20H0zm0 120h480v20H0z" />
-      <path d="M140 0h20v480h-20zm180 0h20v480h-20z" />
-      <path d="M20 60h440v16H20zm0 344h440v16H20z" />
-      <path d="M60 20h16v440H60zm344 0h16v440h-16z" />
-    </g>
-    <path
-      fill="#f7f9fb"
-      d="M214 40h52c9 0 16 7 16 16v96h96c9 0 16 7 16 16v52c0 9-7 16-16 16h-96v160h64c9 0 16 7 16 16v52c0 9-7 16-16 16h-64v64c0 9-7 16-16 16h-52c-9 0-16-7-16-16v-64h-64c-9 0-16-7-16-16v-52c0-9 7-16 16-16h64V236h-96c-9 0-16-7-16-16v-52c0-9 7-16 16-16h96V56c0-9 7-16 16-16z"
-    />
-    <circle cx="240" cy="240" r="240" fill="url(#shadow)" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Śpiewnik Wspólnoty Biblijnej KWCh logo">
+  <rect width="512" height="512" rx="120" fill="#0b1020" />
+  <circle cx="256" cy="256" r="192" fill="#caa545" />
+  <path
+    fill="#fef7e5"
+    d="M228 96h56c17 0 30 13 30 30v106h106c17 0 30 13 30 30v56c0 17-13 30-30 30H314v106c0 17-13 30-30 30h-56c-17 0-30-13-30-30V348H92c-17 0-30-13-30-30v-56c0-17 13-30 30-30h106V126c0-17 13-30 30-30Z"
+  />
+  <rect x="176" y="332" width="160" height="54" rx="27" fill="#0b1020" />
 </svg>

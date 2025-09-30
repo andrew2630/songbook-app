@@ -1,15 +1,17 @@
 <script lang="ts">
 	import '../app.css';
-	import { browser } from '$app/environment';
+        import { browser } from '$app/environment';
+        import { base } from '$app/paths';
 	import { onDestroy, onMount } from 'svelte';
 	import { addMessages, init, locale as i18nLocale } from 'svelte-i18n';
 	import { get } from 'svelte/store';
         import AppHeader from '$lib/components/layout/AppHeader.svelte';
         import SearchOverlay from '$lib/components/search/SearchOverlay.svelte';
-	import { loadSongs } from '$lib/stores/songStore';
-	import { language } from '$lib/stores/preferences';
-	import pl from '$lib/locales/pl.json';
-	import en from '$lib/locales/en.json';
+        import { loadSongs } from '$lib/stores/songStore';
+        import { language } from '$lib/stores/preferences';
+        import pl from '$lib/locales/pl.json';
+        import en from '$lib/locales/en.json';
+        import { setInstallPrompt, type BeforeInstallPromptEvent } from '$lib/stores/pwa';
 
 	addMessages('pl', pl);
 	addMessages('en', en);
@@ -27,10 +29,18 @@
 	onMount(() => {
 		loadSongs();
 
-		const handleOnline = () => loadSongs(true);
+                const handleOnline = () => loadSongs(true);
+                const handleBeforeInstallPrompt = (event: Event) => {
+                        const promptEvent = event as BeforeInstallPromptEvent;
+                        event.preventDefault();
+                        setInstallPrompt(promptEvent);
+                };
+                const handleAppInstalled = () => {
+                        setInstallPrompt(null);
+                };
 
-		async function initLenis() {
-			if (!browser) return;
+                async function initLenis() {
+                        if (!browser) return;
 			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 			if (prefersReducedMotion) return;
 
@@ -41,19 +51,29 @@
 		initLenis();
 
 		if (browser) {
-			window.addEventListener('online', handleOnline, { passive: true });
+                        window.addEventListener('online', handleOnline, { passive: true });
+                        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+                        window.addEventListener('appinstalled', handleAppInstalled);
 
-			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register('/service-worker.js');
-			}
-		}
+                        if ('serviceWorker' in navigator) {
+                                const serviceWorkerPath = `${base}/service-worker.js`
+                                        .replace(/\/+/g, '/')
+                                        .replace(/^(?!\/)/, '/');
+                                navigator.serviceWorker.register(serviceWorkerPath);
+                        }
+                }
 
-		return () => {
-			if (browser) {
-				window.removeEventListener('online', handleOnline);
-			}
-		};
-	});
+                return () => {
+                        if (browser) {
+                                window.removeEventListener('online', handleOnline);
+                                window.removeEventListener(
+                                        'beforeinstallprompt',
+                                        handleBeforeInstallPrompt as EventListener
+                                );
+                                window.removeEventListener('appinstalled', handleAppInstalled);
+                        }
+                };
+        });
 
 	onDestroy(() => {
 		lenisController?.destroy();

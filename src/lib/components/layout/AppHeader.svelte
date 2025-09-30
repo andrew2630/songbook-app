@@ -3,15 +3,15 @@
         import { t } from 'svelte-i18n';
         import { language } from '$lib/stores/preferences';
         import { isSyncing, lastSynced } from '$lib/stores/songStore';
-        import { derived } from 'svelte/store';
+        import { derived, get } from 'svelte/store';
         import { Languages, Search } from 'lucide-svelte';
         import type { SongLanguage } from '$lib/types/song';
         import { openSearchOverlay } from '$lib/stores/ui';
+        import { canInstall, installPrompt, isStandalone, setInstallPrompt } from '$lib/stores/pwa';
 
         type LanguageOption = {
                 code: SongLanguage;
                 label: string;
-                shortLabel: string;
         };
 
         const syncStatus = derived(isSyncing, ($isSyncing) =>
@@ -19,8 +19,8 @@
         );
 
         const languageOptions: LanguageOption[] = [
-                { code: 'PL', label: 'Polski', shortLabel: 'PL' },
-                { code: 'EN', label: 'English', shortLabel: 'EN' }
+                { code: 'PL', label: 'Polski' },
+                { code: 'EN', label: 'English' }
         ];
 
         function setLanguage(code: SongLanguage) {
@@ -39,6 +39,18 @@
                 }
 
                 openSearchOverlay();
+        }
+
+        async function installApp() {
+                const promptEvent = get(installPrompt);
+                if (!promptEvent) return;
+
+                await promptEvent.prompt();
+                try {
+                        await promptEvent.userChoice;
+                } finally {
+                        setInstallPrompt(null);
+                }
         }
 </script>
 
@@ -73,31 +85,22 @@
                                                 </h1>
                                         </div>
                                 </div>
-                                <div class="flex w-full flex-col lg:max-w-sm">
-                                        <div class="rounded-2xl border border-white/60 bg-white/80 p-4 shadow-lg shadow-primary-500/10 backdrop-blur">
-                                                <div class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-on-surface-subtle">
-                                                        <span class="inline-flex items-center gap-2 text-on-surface">
-                                                                <Languages class="h-4 w-4 text-primary-500" />
-                                                                {$t('app.language_label')}
-                                                        </span>
-                                                </div>
-                                                <div class="mt-3 grid grid-cols-2 gap-2">
+                                <div class="flex w-full items-start justify-center lg:max-w-sm lg:justify-end">
+                                        <div class="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface shadow-sm shadow-primary-500/5 backdrop-blur">
+                                                <Languages class="h-3 w-3 text-primary-500" aria-hidden="true" />
+                                                <label class="sr-only" for="language-select">{$t('app.language_label')}</label>
+                                                <select
+                                                        id="language-select"
+                                                        class="cursor-pointer appearance-none bg-transparent text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface outline-none focus-visible:text-primary-600"
+                                                        value={$language}
+                                                        on:change={(event) =>
+                                                                setLanguage((event.currentTarget as HTMLSelectElement).value as SongLanguage)
+                                                        }
+                                                >
                                                         {#each languageOptions as option}
-                                                                <button
-                                                                        class={`rounded-xl px-3 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.2em] transition ${
-                                                                                $language === option.code
-                                                                                        ? 'btn-gold'
-                                                                                        : 'bg-white/70 text-on-surface hover:bg-[rgb(var(--accent-gold)/0.12)] hover:text-primary-600'
-                                                                        }`}
-                                                                        type="button"
-                                                                        aria-pressed={$language === option.code}
-                                                                        on:click={() => setLanguage(option.code)}
-                                                                >
-                                                                        <span class="hidden sm:inline">{option.label}</span>
-                                                                        <span class="sm:hidden">{option.shortLabel}</span>
-                                                                </button>
+                                                                <option value={option.code}>{option.label}</option>
                                                         {/each}
-                                                </div>
+                                                </select>
                                         </div>
                                 </div>
                         </div>
@@ -112,6 +115,24 @@
                                                 <Search class="h-4 w-4" />
                                                 {$t('app.search_placeholder')}
                                         </button>
+                                        {#if $canInstall && !$isStandalone}
+                                                <div class="flex flex-col items-center gap-2 sm:items-start">
+                                                        <button
+                                                                class="inline-flex items-center justify-center gap-2 rounded-full border border-primary-500/70 bg-white/70 px-5 py-2.5 text-sm font-semibold text-primary-600 shadow-sm transition hover:bg-white hover:text-primary-700"
+                                                                type="button"
+                                                                on:click={installApp}
+                                                        >
+                                                                {$t('app.install_cta')}
+                                                        </button>
+                                                        <p class="max-w-[16rem] text-center text-xs font-medium text-on-surface-soft sm:text-left">
+                                                                {$t('app.install_hint')}
+                                                        </p>
+                                                </div>
+                                        {:else if $isStandalone}
+                                                <div class="inline-flex items-center justify-center gap-2 rounded-full border border-white/60 bg-white/70 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">
+                                                        {$t('app.install_installed')}
+                                                </div>
+                                        {/if}
                                 </div>
                                 <div class="flex flex-col gap-2 text-xs text-on-surface-soft sm:flex-row sm:items-center sm:gap-3">
                                         <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">

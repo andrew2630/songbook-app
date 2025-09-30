@@ -1,8 +1,11 @@
 {
         "app": {
-                "title": "Songbook",
+                "title": "Śpiewnik Wspólnoty Biblijnej KWCh",
                 "tagline": "Church worship songs at your fingertips",
                 "search_placeholder": "Search by title, lyric, page or index…",
+                "install_cta": "Install app",
+                "install_hint": "Install Śpiewnik Wspólnoty Biblijnej KWCh to keep the library one tap away on your device.",
+                "install_installed": "Installed",
                 "language_label": "Language",
                 "view": {
                         "basic": "Lyrics",
