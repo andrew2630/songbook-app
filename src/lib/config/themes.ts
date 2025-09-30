@@ -1,47 +1,45 @@
 export type ThemeOption = {
-	id: string;
-	labelKey: string;
-	preview: string[];
-	scheme: 'light' | 'dark';
-	metaColor: string;
+        id: string;
+        labelKey: string;
+        preview: string[];
+        scheme: 'light' | 'dark';
+        metaColor: string;
+        hero: [string, string];
 };
 
 export const themeOptions: ThemeOption[] = [
-	{
-		id: 'songbook-dawn',
-		labelKey: 'dawn',
-		preview: ['#fff7ed', '#fed7aa', '#fb923c'],
-		scheme: 'light',
-		metaColor: '#fde68a'
-	},
-	{
-		id: 'songbook-meadow',
-		labelKey: 'meadow',
-		preview: ['#ecfdf3', '#bbf7d0', '#34d399'],
-		scheme: 'light',
-		metaColor: '#86efac'
-	},
-	{
-		id: 'songbook-aurora',
-		labelKey: 'aurora',
-		preview: ['#eef2ff', '#c7d2fe', '#6366f1'],
-		scheme: 'light',
-		metaColor: '#a5b4fc'
-	},
-	{
-		id: 'songbook-dusk',
-		labelKey: 'dusk',
-		preview: ['#ede9fe', '#c4b5fd', '#7c3aed'],
-		scheme: 'dark',
-		metaColor: '#5b21b6'
-	},
-	{
-		id: 'songbook-midnight',
-		labelKey: 'midnight',
-		preview: ['#0f172a', '#1e293b', '#38bdf8'],
-		scheme: 'dark',
-		metaColor: '#0f172a'
-	}
+        {
+                id: 'songbook-lumen',
+                labelKey: 'lumen',
+                preview: ['#ffe9d6', '#ffd3eb', '#d6c7ff'],
+                scheme: 'light',
+                metaColor: '#fde9ff',
+                hero: ['#fff6ea', '#f1ecff']
+        },
+        {
+                id: 'songbook-oasis',
+                labelKey: 'oasis',
+                preview: ['#ddf7ff', '#c7f5de', '#7dd3fc'],
+                scheme: 'light',
+                metaColor: '#c8f5ff',
+                hero: ['#ecfbff', '#e8fff4']
+        },
+        {
+                id: 'songbook-twilight',
+                labelKey: 'twilight',
+                preview: ['#433d8b', '#7257b5', '#ee8468'],
+                scheme: 'dark',
+                metaColor: '#1c163f',
+                hero: ['#2a1f52', '#412d65']
+        },
+        {
+                id: 'songbook-nocturne',
+                labelKey: 'nocturne',
+                preview: ['#0f1c2e', '#12354a', '#4bc5c5'],
+                scheme: 'dark',
+                metaColor: '#0b1626',
+                hero: ['#0b1626', '#102b38']
+        }
 ];
 
 export const defaultTheme = themeOptions[0];

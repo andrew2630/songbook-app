@@ -6,11 +6,10 @@
 		"language_label": "Język",
                 "theme_label": "Motyw",
                 "themes": {
-                        "dawn": "Ciepłe światło",
-                        "meadow": "Leśny",
-                        "aurora": "Indygo",
-                        "dusk": "Zmierzch",
-                        "midnight": "Północ"
+                        "lumen": "Lumen",
+                        "oasis": "Oaza",
+                        "twilight": "Zmierzch",
+                        "nocturne": "Nokturn"
                 },
                 "theme_scheme": {
                         "light": "Jasny",

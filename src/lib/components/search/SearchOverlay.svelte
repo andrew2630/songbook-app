@@ -85,28 +85,29 @@
 
 {#if $isSearchOverlayOpen}
         <div
-                class="fixed inset-0 z-50 flex items-start justify-center bg-surface-900/50 px-4 py-16 backdrop-blur"
+                class="fixed inset-0 z-50 flex items-start justify-center px-4 py-16 backdrop-blur-2xl"
+                style="background-color: rgba(var(--overlay-backdrop), 0.58);"
                 role="presentation"
                 on:click={handleBackdropClick}
                 on:keydown={handleKeydown}
         >
                 <div
-                        class="w-full max-w-xl rounded-3xl border border-surface-200/70 bg-surface-50/95 p-5 shadow-2xl"
+                        class="w-full max-w-2xl rounded-[32px] border border-white/20 bg-white/85 p-6 shadow-[0_40px_120px_rgba(15,23,42,0.32)]"
                         role="dialog"
                         aria-modal="true"
                         tabindex="-1"
                         bind:this={panelRef}
                 >
-                        <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-start justify-between gap-4">
                                 <div class="flex-1">
                                         <label
-                                                class="text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface-subtle"
+                                                class="text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted"
                                                 for="search-overlay-input"
                                         >
                                                 {$t('app.search_placeholder')}
                                         </label>
                                         <div
-                                                class="mt-2 flex items-center gap-2.5 rounded-xl border border-surface-200/60 bg-surface-100/70 px-3.5 py-2.5 shadow-inner"
+                                                class="mt-3 flex items-center gap-3 rounded-2xl border border-white/30 bg-white/60 px-4 py-3 shadow-inner shadow-primary-500/10"
                                         >
                                                 <Search class="h-4 w-4 text-primary-500" aria-hidden="true" />
                                                 <input
@@ -121,7 +122,7 @@
                                         </div>
                                 </div>
                                 <button
-                                        class="inline-flex shrink-0 items-center justify-center rounded-full border border-surface-200/70 bg-surface-100/70 p-2 text-on-surface-soft transition hover:border-primary-300 hover:text-primary-400"
+                                        class="inline-flex shrink-0 items-center justify-center rounded-full border border-white/40 bg-white/70 p-2 text-on-surface-soft transition hover:border-primary-200 hover:text-primary-500"
                                         type="button"
                                         on:click={handleClose}
                                 >
@@ -131,20 +132,20 @@
                         </div>
 
                         {#if results.length}
-                                <div class="mt-5 space-y-2">
+                                <div class="mt-6 space-y-3">
                                         {#each results as song (song.id + song.language)}
                                                 <button
-                                                        class="flex w-full items-center justify-between gap-3 rounded-2xl border border-surface-200/70 bg-surface-50/80 px-4 py-3 text-left text-sm font-medium text-on-surface transition hover:border-primary-400 hover:text-primary-500"
+                                                        class="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/40 bg-white/70 px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition hover:border-primary-300 hover:text-primary-600 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
                                                         type="button"
                                                         on:click={() => handleSelect(song)}
                                                 >
                                                         <div>
-                                                                <p class="font-semibold">{song.title}</p>
+                                                                <p class="font-semibold text-on-surface">{song.title}</p>
                                                                 <p class="text-xs text-on-surface-muted">
                                                                         {$t('app.page_label')} {song.page} · {song.source}
                                                                 </p>
                                                         </div>
-                                                        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-400/80">
+                                                        <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-400/90">
                                                                 {$t('app.view_song')}
                                                         </span>
                                                 </button>

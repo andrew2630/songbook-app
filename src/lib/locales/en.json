@@ -6,11 +6,10 @@
 		"language_label": "Language",
                 "theme_label": "Theme",
                 "themes": {
-                        "dawn": "Warm Light",
-                        "meadow": "Forest",
-                        "aurora": "Indigo",
-                        "dusk": "Twilight",
-                        "midnight": "Midnight"
+                        "lumen": "Lumen",
+                        "oasis": "Oasis",
+                        "twilight": "Twilight",
+                        "nocturne": "Nocturne"
                 },
                 "theme_scheme": {
                         "light": "Light",

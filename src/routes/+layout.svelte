@@ -61,20 +61,23 @@
 </script>
 
 <div class="relative min-h-screen overflow-hidden text-on-surface">
-	<div class="pointer-events-none absolute inset-0 -z-10">
-		<div
-			class="absolute inset-0 bg-gradient-to-b from-surface-50 via-surface-100/80 to-surface-50"
-		></div>
-		<div
-			class="absolute left-1/2 top-[-25%] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgb(var(--color-secondary-200)/0.45),_rgba(255,255,255,0))] blur-3xl"
-		></div>
-		<div
-			class="absolute bottom-[-18%] right-[-10%] h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle_at_center,_rgb(var(--color-primary-200)/0.35),_rgba(255,255,255,0))] blur-3xl"
-		></div>
-	</div>
-	<div
-		class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 pb-12 sm:px-5 lg:max-w-6xl lg:px-8"
-	>
+        <div class="pointer-events-none absolute inset-0 -z-10">
+                <div
+                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.7)_45%,rgba(255,255,255,0.85)_100%)]"
+                ></div>
+                <div
+                        class="absolute left-[10%] top-[-12%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.55),rgba(255,255,255,0))] blur-3xl"
+                ></div>
+                <div
+                        class="absolute right-[-10%] top-[5%] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.5),rgba(255,255,255,0))] blur-[150px]"
+                ></div>
+                <div
+                        class="absolute bottom-[-24%] left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.9),rgba(255,255,255,0))] blur-[160px]"
+                ></div>
+        </div>
+        <div
+                class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 pb-12 sm:px-6 lg:max-w-6xl lg:px-8"
+        >
                 <AppHeader />
                 <main class="flex-1 py-6 sm:py-8 lg:py-10">
                         <slot />

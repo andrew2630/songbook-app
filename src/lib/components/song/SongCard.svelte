@@ -92,10 +92,10 @@
 
 <div use:inView on:enterViewport={handleEnter}>
 	{#if visible}
-		<article
-			class="rounded-2xl border border-surface-200/60 bg-surface-50/80 p-4 shadow-lg shadow-primary-500/5 transition hover:-translate-y-1 hover:shadow-xl sm:p-5"
-			use:listTransition={index}
-		>
+                <article
+                        class="rounded-[28px] border border-white/40 bg-white/75 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.14)] sm:p-6"
+                        use:listTransition={index}
+                >
 			<div class="flex flex-col gap-5">
 				<div class="flex flex-col gap-3.5 lg:flex-row lg:items-start lg:justify-between">
 					<div class="space-y-3">
@@ -107,55 +107,55 @@
                                                                 </p>
                                                         {/if}
                                                 </div>
-                                                <div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-subtle">
-                                                        <span
-                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 font-medium text-on-surface"
-                                                        >
-                                                                {$t('app.page_label')}
-                                                                {song.page}
-                                                        </span>
-                                                        <span
-                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-on-surface-soft"
-                                                        >
-                                                                {$t('app.source_label')}
-                                                                {song.source}
-                                                        </span>
-                                                        <span
-                                                                class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-1 text-on-surface-soft"
-                                                        >
-                                                                {$t('app.external_index')}
-                                                                {song.externalIndex}
-                                                        </span>
-                                                </div>
+                                        <div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-subtle">
+                                                <span
+                                                        class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/70 px-3 py-1 font-medium text-on-surface"
+                                                >
+                                                        {$t('app.page_label')}
+                                                        {song.page}
+                                                </span>
+                                                <span
+                                                        class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/60 px-3 py-1 text-on-surface-soft"
+                                                >
+                                                        {$t('app.source_label')}
+                                                        {song.source}
+                                                </span>
+                                                <span
+                                                        class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/60 px-3 py-1 text-on-surface-soft"
+                                                >
+                                                        {$t('app.external_index')}
+                                                        {song.externalIndex}
+                                                </span>
+                                        </div>
 					</div>
 					<div class="flex flex-wrap justify-end gap-2 text-sm">
-						<button
-							class={`inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3.5 py-1.5 text-sm font-medium transition hover:border-primary-400 hover:text-primary-500 ${
+                                                <button
+                                                        class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
                                                                 isFavourite
-                                                                        ? 'bg-primary-500/10 text-primary-600 shadow-inner shadow-primary-500/20'
-                                                                        : 'text-on-surface'
+                                                                        ? 'bg-gradient-to-r from-primary-500/90 to-secondary-500/90 text-white shadow-lg shadow-primary-500/40'
+                                                                        : 'border border-white/60 bg-white/70 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
                                                         }`}
-							on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
-							type="button"
-						>
+                                                        on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
+                                                        type="button"
+                                                >
 							<Heart class={`h-4 w-4 ${isFavourite ? 'fill-current' : ''}`} />
 							{isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
 						</button>
-						<button
-							class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-md transition hover:from-primary-500/90 hover:to-secondary-500/90"
-							on:click={() => dispatch('open', song)}
-							type="button"
-						>
+                                                <button
+                                                        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-[0_20px_35px_rgba(221,91,180,0.35)] transition hover:scale-[1.01] hover:from-primary-500/90 hover:to-secondary-500/90"
+                                                        on:click={() => dispatch('open', song)}
+                                                        type="button"
+                                                >
 							<ExternalLink class="h-4 w-4" />
 							{$t('app.view_song')}
 						</button>
 						{#if remainingItems.length}
-							<button
-								class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3.5 py-1.5 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500"
-								on:click={() => (expanded = !expanded)}
-								type="button"
-								aria-expanded={expanded}
-							>
+                                                        <button
+                                                                class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3.5 py-1.5 text-sm font-medium text-on-surface transition hover:border-primary-200/70 hover:text-primary-600"
+                                                                on:click={() => (expanded = !expanded)}
+                                                                type="button"
+                                                                aria-expanded={expanded}
+                                                        >
 								{#if expanded}
 									<EyeOff class="h-4 w-4" />
 									{$t('app.hide_preview')}
@@ -165,11 +165,11 @@
 								{/if}
 							</button>
 						{/if}
-						<button
-							class="inline-flex items-center gap-2 rounded-full border border-surface-200/60 bg-surface-100/70 px-3.5 py-1.5 text-sm font-medium text-surface-600 transition hover:border-primary-400 hover:text-primary-500"
-							on:click={copyShareLink}
-							type="button"
-						>
+                                                <button
+                                                        class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3.5 py-1.5 text-sm font-medium text-on-surface transition hover:border-primary-200/70 hover:text-primary-600"
+                                                        on:click={copyShareLink}
+                                                        type="button"
+                                                >
 							<Link2 class="h-4 w-4" />
 							{copyState === 'copied' ? $t('app.copied_link') : $t('app.copy_link')}
 						</button>
