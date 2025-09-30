@@ -1,13 +1,12 @@
 <script lang="ts">
         import { browser } from '$app/environment';
-        import { goto, afterNavigate } from '$app/navigation';
+        import { afterNavigate } from '$app/navigation';
         import { tick } from 'svelte';
         import { t } from 'svelte-i18n';
         import { Search, X } from 'lucide-svelte';
         import { favourites, language } from '$lib/stores/preferences';
         import { closeSearchOverlay, isSearchOverlayOpen } from '$lib/stores/ui';
         import { filterSongs, searchableSongs } from '$lib/stores/songStore';
-        import type { Song } from '$lib/types/song';
 
         let query = '';
         let inputRef: HTMLInputElement | null = null;
@@ -46,14 +45,6 @@
                 }
                 if (panelRef) {
                         panelRef.scrollTop = 0;
-                }
-        }
-
-        async function handleSelect(song: Song) {
-                try {
-                        await goto(`/song/${song.id}?lang=${song.language}`);
-                } finally {
-                        handleClose();
                 }
         }
 
@@ -134,10 +125,10 @@
                         {#if results.length}
                                 <div class="mt-6 space-y-3">
                                         {#each results as song (song.id + song.language)}
-                                                <button
+                                                <a
                                                         class="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/40 bg-white/70 px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition hover:border-primary-300 hover:text-primary-600 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
-                                                        type="button"
-                                                        on:click={() => handleSelect(song)}
+                                                        href={`/song/${song.id}?lang=${song.language}`}
+                                                        on:click={handleClose}
                                                 >
                                                         <div>
                                                                 <p class="font-semibold text-on-surface">{song.title}</p>
@@ -148,7 +139,7 @@
                                                         <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-400/90">
                                                                 {$t('app.view_song')}
                                                         </span>
-                                                </button>
+                                                </a>
                                         {/each}
                                 </div>
                         {:else if hasQuery}

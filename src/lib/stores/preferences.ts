@@ -2,16 +2,13 @@ import { browser } from '$app/environment';
 import { writable, derived } from 'svelte/store';
 import { locale } from 'svelte-i18n';
 import type { SongLanguage, SongViewMode } from '$lib/types/song';
-import { defaultTheme, themeMap } from '$lib/config/themes';
 
 const LANGUAGE_KEY = 'songbook-language';
 const VIEW_KEY = 'songbook-view-mode';
 const FAV_KEY = 'songbook-favourites';
-const THEME_KEY = 'songbook-theme';
 
 const defaultLanguage: SongLanguage = 'PL';
 const defaultViewMode: SongViewMode = 'basic';
-const defaultThemeName = defaultTheme.id;
 
 function createPersistedStore<T>(key: string, initial: T) {
 	const store = writable<T>(initial, (set) => {
@@ -39,7 +36,6 @@ function createPersistedStore<T>(key: string, initial: T) {
 export const language = createPersistedStore<SongLanguage>(LANGUAGE_KEY, defaultLanguage);
 export const viewMode = createPersistedStore<SongViewMode>(VIEW_KEY, defaultViewMode);
 export const favourites = createPersistedStore<string[]>(FAV_KEY, []);
-export const themeName = createPersistedStore<string>(THEME_KEY, defaultThemeName);
 
 if (browser) {
 	language.subscribe(($language) => {
@@ -47,16 +43,14 @@ if (browser) {
 		document.documentElement.lang = $language.toLowerCase();
 	});
 
-	themeName.subscribe(($theme) => {
-		const theme = themeMap.get($theme) ?? defaultTheme;
-		document.documentElement.dataset.theme = theme.id;
-		document.documentElement.style.colorScheme = theme.scheme;
+        document.documentElement.dataset.theme = 'songbook-dawn';
+        document.documentElement.style.colorScheme = 'light';
+        window.localStorage.removeItem('songbook-theme');
 
-		const metaThemeColor = document.querySelector("meta[name='theme-color']");
-		if (metaThemeColor instanceof HTMLMetaElement) {
-			metaThemeColor.content = theme.metaColor;
-		}
-	});
+        const metaThemeColor = document.querySelector("meta[name='theme-color']");
+        if (metaThemeColor instanceof HTMLMetaElement) {
+                metaThemeColor.content = '#fde68a';
+        }
 }
 
 export function toggleFavourite(key: string) {

@@ -1,81 +1,70 @@
 {
-	"app": {
-		"title": "Songbook",
-		"tagline": "Church worship songs at your fingertips",
-		"search_placeholder": "Search by title, lyric, page or index…",
-		"language_label": "Language",
-                "theme_label": "Theme",
-                "themes": {
-                        "lumen": "Lumen",
-                        "oasis": "Oasis",
-                        "twilight": "Twilight",
-                        "nocturne": "Nocturne"
+        "app": {
+                "title": "Songbook",
+                "tagline": "Church worship songs at your fingertips",
+                "search_placeholder": "Search by title, lyric, page or index…",
+                "language_label": "Language",
+                "view": {
+                        "basic": "Lyrics",
+                        "chords": "Chords view"
                 },
-                "theme_scheme": {
-                        "light": "Light",
-                        "dark": "Dark"
+                "favourites": "Favourites",
+                "all_songs": "All songs",
+                "page_index": "Page index",
+                "page_search": {
+                        "placeholder": "e.g. 120"
                 },
-		"view": {
-			"basic": "Lyrics",
-			"chords": "Chords view"
-		},
-		"favourites": "Favourites",
-		"all_songs": "All songs",
-		"page_index": "Page index",
-		"page_search": {
-			"placeholder": "e.g. 120"
-		},
-		"reset_filters": "Reset filters",
-		"clear_query": "Clear",
-		"no_favourites": "No favourites yet.",
-		"empty_state": "No songs match the current filters",
-		"offline_ready": "Offline ready",
-		"syncing": "Syncing library…",
-		"last_synced": "Last synced",
-		"toggle_index": "Index",
-		"toggle_favourites": "Favourites",
-		"add_favourite": "Add to favourites",
-		"remove_favourite": "Remove from favourites",
-		"go_to_song": "Open song",
-		"back_action": "Back",
-		"back_to_index": "Back to song list",
-		"page_label": "Page",
-		"source_label": "Source",
-		"external_index": "Index",
-		"view_song": "View song",
-		"brand_global": "KWCh Bible Fellowship",
-		"brand_available_offline": "Offline ready",
-		"sort": {
-			"label": "Sort by",
-			"page": "Songbook order",
-			"alpha": "A to Z",
-			"recent": "Recently updated"
-		},
-		"filters": {
-			"active": "Active filters",
-			"none": "No filters applied",
-			"search": "Search: {query}",
-			"page": "Page {page}",
-			"favourites": "Favourites only",
-			"page_search": "Page search: {query}",
-			"no_page_results": "No pages match this search"
-		},
-		"density_label": "Chord density",
-		"density_caption": "{chords} of {total} lines use chords",
-		"updated_label": "Updated",
-		"copy_link": "Copy share link",
-		"copied_link": "Link copied!",
-		"copy_failed": "Copy failed",
-		"scroll_to_top": "Back to top",
-		"preview": "Preview lyrics",
-		"hide_preview": "Hide preview",
-		"preview_remaining": "{count} more lines hidden",
-		"search_hint": "Try combining filters and view modes to surface songs faster.",
-		"cta": {
-			"title": "Practice anywhere",
-			"subtitle": "Save sets, practise offline, and stay in sync across teams.",
-			"primary": "Plan a setlist",
-			"secondary": "Learn about the app"
-		}
-	}
+                "reset_filters": "Reset filters",
+                "clear_query": "Clear",
+                "no_favourites": "No favourites yet.",
+                "empty_state": "No songs match the current filters",
+                "offline_ready": "Offline ready",
+                "syncing": "Syncing library…",
+                "last_synced": "Last synced",
+                "toggle_index": "Index",
+                "toggle_favourites": "Favourites",
+                "add_favourite": "Add to favourites",
+                "remove_favourite": "Remove from favourites",
+                "go_to_song": "Open song",
+                "back_action": "Back",
+                "back_to_index": "Back to song list",
+                "page_label": "Page",
+                "source_label": "Source",
+                "external_index": "Index",
+                "view_song": "View song",
+                "brand_global": "KWCh Bible Fellowship",
+                "brand_available_offline": "Offline ready",
+                "sort": {
+                        "label": "Sort by",
+                        "page": "Songbook order",
+                        "alpha": "A to Z",
+                        "recent": "Recently updated"
+                },
+                "filters": {
+                        "active": "Active filters",
+                        "none": "No filters applied",
+                        "search": "Search: {query}",
+                        "page": "Page {page}",
+                        "favourites": "Favourites only",
+                        "page_search": "Page search: {query}",
+                        "no_page_results": "No pages match this search"
+                },
+                "density_label": "Chord density",
+                "density_caption": "{chords} of {total} lines use chords",
+                "updated_label": "Updated",
+                "copy_link": "Copy share link",
+                "copied_link": "Link copied!",
+                "copy_failed": "Copy failed",
+                "scroll_to_top": "Back to top",
+                "preview": "Preview lyrics",
+                "hide_preview": "Hide preview",
+                "preview_remaining": "{count} more lines hidden",
+                "search_hint": "Try combining filters and view modes to surface songs faster.",
+                "cta": {
+                        "title": "Practice anywhere",
+                        "subtitle": "Save sets, practise offline, and stay in sync across teams.",
+                        "primary": "Plan a setlist",
+                        "secondary": "Learn about the app"
+                }
+        }
 }
