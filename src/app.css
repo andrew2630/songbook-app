@@ -3,47 +3,47 @@
 
 @theme {
         /* default light theme tokens */
-        --color-surface-50: 255 249 243;
-        --color-surface-100: 253 240 230;
-        --color-surface-200: 249 225 210;
-        --color-surface-300: 242 203 184;
-        --color-surface-400: 230 177 153;
-        --color-surface-500: 213 146 118;
-        --color-surface-600: 184 114 93;
-        --color-surface-700: 151 88 74;
-        --color-surface-800: 117 66 59;
-        --color-surface-900: 82 47 44;
+        --color-surface-50: 249 250 251;
+        --color-surface-100: 243 245 247;
+        --color-surface-200: 229 233 239;
+        --color-surface-300: 210 217 226;
+        --color-surface-400: 176 190 205;
+        --color-surface-500: 136 152 170;
+        --color-surface-600: 102 120 140;
+        --color-surface-700: 76 90 110;
+        --color-surface-800: 50 64 83;
+        --color-surface-900: 28 36 50;
 
-        --color-primary-50: 255 240 252;
-        --color-primary-100: 252 231 247;
-        --color-primary-200: 249 214 239;
-        --color-primary-300: 244 185 226;
-        --color-primary-400: 236 140 204;
-        --color-primary-500: 221 91 180;
-        --color-primary-600: 196 64 164;
-        --color-primary-700: 165 52 143;
-        --color-primary-800: 133 46 120;
-        --color-primary-900: 103 38 95;
+        --color-primary-50: 240 249 255;
+        --color-primary-100: 224 242 254;
+        --color-primary-200: 186 230 253;
+        --color-primary-300: 125 211 252;
+        --color-primary-400: 56 189 248;
+        --color-primary-500: 14 165 233;
+        --color-primary-600: 2 132 199;
+        --color-primary-700: 3 105 161;
+        --color-primary-800: 7 89 133;
+        --color-primary-900: 12 74 110;
 
-        --color-secondary-50: 239 244 255;
-        --color-secondary-100: 224 232 255;
-        --color-secondary-200: 202 215 255;
-        --color-secondary-300: 178 197 255;
-        --color-secondary-400: 146 173 255;
-        --color-secondary-500: 109 143 255;
-        --color-secondary-600: 82 116 245;
-        --color-secondary-700: 63 92 220;
-        --color-secondary-800: 51 74 185;
-        --color-secondary-900: 43 61 148;
+        --color-secondary-50: 253 244 255;
+        --color-secondary-100: 250 232 255;
+        --color-secondary-200: 245 208 254;
+        --color-secondary-300: 235 180 252;
+        --color-secondary-400: 216 150 250;
+        --color-secondary-500: 192 109 240;
+        --color-secondary-600: 168 85 227;
+        --color-secondary-700: 147 51 234;
+        --color-secondary-800: 126 34 206;
+        --color-secondary-900: 107 33 168;
 
-        --on-surface: 35 24 29;
+        --on-surface: 18 30 39;
         --on-primary: 255 255 255;
 
-        --hero-gradient-from: 255 246 234;
-        --hero-gradient-to: 240 235 255;
-        --hero-glow-primary: 255 225 214;
-        --hero-glow-secondary: 216 222 255;
-        --overlay-backdrop: 22 18 27;
+        --hero-gradient-from: 240 249 255;
+        --hero-gradient-to: 253 244 255;
+        --hero-glow-primary: 186 230 253;
+        --hero-glow-secondary: 235 180 252;
+        --overlay-backdrop: 9 16 26;
 }
 
 @layer base {
@@ -53,8 +53,8 @@
 
         body {
                 font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                background: radial-gradient(120% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.55), transparent 60%),
-                        radial-gradient(120% 120% at 90% 10%, rgb(var(--hero-gradient-to) / 0.5), transparent 65%),
+                background: radial-gradient(140% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.65), transparent 60%),
+                        radial-gradient(110% 130% at 90% 10%, rgb(var(--hero-gradient-to) / 0.55), transparent 65%),
                         linear-gradient(180deg, rgb(var(--color-surface-50)) 0%, rgb(var(--color-surface-100)) 100%);
                 color: rgb(var(--on-surface));
                 min-height: 100vh;
