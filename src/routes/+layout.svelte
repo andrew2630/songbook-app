@@ -7,7 +7,7 @@
 	import { get } from 'svelte/store';
         import AppHeader from '$lib/components/layout/AppHeader.svelte';
         import SearchOverlay from '$lib/components/search/SearchOverlay.svelte';
-        import { loadSongs } from '$lib/stores/songStore';
+        import { loadSongs, startPeriodicSync } from '$lib/stores/songStore';
         import { language } from '$lib/stores/preferences';
         import pl from '$lib/locales/pl.json';
         import en from '$lib/locales/en.json';
@@ -26,8 +26,11 @@
 
 	let lenisController: { destroy: () => void } | null = null;
 
-	onMount(() => {
-		loadSongs();
+        let cancelPeriodicSync: (() => void) | null = null;
+
+        onMount(() => {
+                loadSongs();
+                cancelPeriodicSync = startPeriodicSync();
 
                 const handleOnline = () => loadSongs(true);
                 const handleBeforeInstallPrompt = (event: Event) => {
@@ -64,6 +67,7 @@
                 }
 
                 return () => {
+                        cancelPeriodicSync?.();
                         if (browser) {
                                 window.removeEventListener('online', handleOnline);
                                 window.removeEventListener(
