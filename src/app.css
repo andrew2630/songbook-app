@@ -39,10 +39,12 @@
         --on-surface: 18 30 39;
         --on-primary: 255 255 255;
 
+        --accent-gold: 234 179 8;
         --hero-gradient-from: 240 249 255;
+        --hero-gradient-mid: 255 247 237;
         --hero-gradient-to: 253 244 255;
-        --hero-glow-primary: 186 230 253;
-        --hero-glow-secondary: 235 180 252;
+        --hero-glow-primary: 253 224 130;
+        --hero-glow-secondary: 186 230 253;
         --overlay-backdrop: 9 16 26;
 }
 
@@ -53,7 +55,8 @@
 
         body {
                 font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                background: radial-gradient(140% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.65), transparent 60%),
+                background: radial-gradient(120% 110% at 15% -5%, rgb(var(--accent-gold) / 0.18), transparent 60%),
+                        radial-gradient(140% 120% at 10% 0%, rgb(var(--hero-gradient-from) / 0.65), transparent 60%),
                         radial-gradient(110% 130% at 90% 10%, rgb(var(--hero-gradient-to) / 0.55), transparent 65%),
                         linear-gradient(180deg, rgb(var(--color-surface-50)) 0%, rgb(var(--color-surface-100)) 100%);
                 color: rgb(var(--on-surface));

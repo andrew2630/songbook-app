@@ -44,24 +44,27 @@
 
 <section class="pt-6 sm:pt-12 lg:pt-16">
         <div
-                class="relative overflow-hidden rounded-3xl border border-white/40 bg-white/70 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-6"
+                class="relative overflow-hidden rounded-3xl border border-white/60 bg-white/80 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.12)] backdrop-blur-2xl sm:p-6"
         >
                 <div class="pointer-events-none absolute inset-0 -z-10">
                         <div
-                                class="absolute inset-0 bg-[linear-gradient(140deg,rgb(var(--hero-gradient-from))_0%,rgba(255,255,255,0.92)_55%,rgb(var(--hero-gradient-to))_100%)]"
+                                class="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.94)_0%,rgba(var(--accent-gold),0.28)_45%,rgba(var(--hero-gradient-to),0.82)_100%)]"
                         ></div>
                         <div
-                                class="absolute -top-24 right-6 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.45),rgba(255,255,255,0))] blur-3xl"
+                                class="absolute -top-24 right-6 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.55),rgba(255,255,255,0))] blur-3xl"
                         ></div>
                         <div
-                                class="absolute bottom-[-28%] left-[-12%] h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.5),rgba(255,255,255,0))] blur-3xl"
+                                class="absolute bottom-[-28%] left-[-12%] h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.6),rgba(255,255,255,0))] blur-3xl"
+                        ></div>
+                        <div
+                                class="absolute bottom-[18%] right-[-8%] h-52 w-52 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--accent-gold)/0.45),rgba(255,255,255,0))] blur-[120px]"
                         ></div>
                 </div>
 
                 <div class="relative flex flex-col gap-8">
                         <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
                                 <div class="space-y-4 text-center lg:max-w-2xl lg:text-left">
-                                        <div class="inline-flex items-center gap-2 self-center rounded-full bg-primary-50/80 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-primary-600 shadow-sm shadow-primary-500/20 lg:self-start">
+                                        <div class="inline-flex items-center gap-2 self-center rounded-full border border-[rgb(var(--accent-gold)/0.4)] bg-[rgb(var(--accent-gold)/0.15)] px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgb(var(--accent-gold)/0.95)] shadow-sm shadow-[rgba(234,179,8,0.25)] lg:self-start">
                                                 {$t('app.brand_global')}
                                         </div>
                                         <div class="space-y-2">
@@ -71,7 +74,7 @@
                                         </div>
                                 </div>
                                 <div class="flex w-full flex-col lg:max-w-sm">
-                                        <div class="rounded-2xl border border-white/50 bg-white/80 p-4 shadow-lg shadow-primary-500/10 backdrop-blur">
+                                        <div class="rounded-2xl border border-white/60 bg-white/80 p-4 shadow-lg shadow-primary-500/10 backdrop-blur">
                                                 <div class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-on-surface-subtle">
                                                         <span class="inline-flex items-center gap-2 text-on-surface">
                                                                 <Languages class="h-4 w-4 text-primary-500" />
@@ -83,8 +86,8 @@
                                                                 <button
                                                                         class={`rounded-xl px-3 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.2em] transition ${
                                                                                 $language === option.code
-                                                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/40'
-                                                                                        : 'bg-white/70 text-on-surface hover:bg-primary-50 hover:text-primary-600'
+                                                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/40'
+                                                                                        : 'bg-white/70 text-on-surface hover:bg-[rgb(var(--accent-gold)/0.12)] hover:text-primary-600'
                                                                         }`}
                                                                         type="button"
                                                                         aria-pressed={$language === option.code}
@@ -102,7 +105,7 @@
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                                         <button
-                                                class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(14,165,233,0.32)] transition hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+                                                class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(234,179,8,0.24)] transition hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent-gold))]"
                                                 on:click={focusSearch}
                                                 type="button"
                                         >
@@ -111,10 +114,10 @@
                                         </button>
                                 </div>
                                 <div class="flex flex-col gap-2 text-xs text-on-surface-soft sm:flex-row sm:items-center sm:gap-3">
-                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/40 bg-white/70 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
+                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
                                                 {$syncStatus}
                                         </div>
-                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/40 bg-white/70 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
+                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
                                                 <span class="text-on-surface-muted">{$t('app.last_synced')}</span>
                                                 <span class="text-on-surface">
                                                         {$lastSynced ? new Date($lastSynced).toLocaleString() : '—'}

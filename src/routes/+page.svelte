@@ -96,7 +96,7 @@
 
 <section class="space-y-6 pb-14 sm:space-y-8">
         <div
-                class="space-y-5 rounded-3xl border border-white/40 bg-white/80 p-4 shadow-[0_25px_70px_rgba(15,23,42,0.08)] backdrop-blur-2xl sm:p-6"
+                class="space-y-5 rounded-3xl border border-white/60 bg-[linear-gradient(160deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.86)_100%)] p-4 shadow-[0_25px_70px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-6"
                 use:fadeSlide
         >
 		<div class="space-y-2">
@@ -107,7 +107,7 @@
         {$t('app.search_placeholder')}
       </label> -->
                         <div
-                                class="flex items-center gap-3 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 shadow-inner shadow-primary-500/10"
+                                class="flex items-center gap-3 rounded-2xl border border-white/60 bg-[rgba(255,255,255,0.9)] px-4 py-3 shadow-inner shadow-[rgba(14,165,233,0.12)]"
                         >
                                 <Search class="h-4 w-4 text-primary-500" />
                                 <input
@@ -120,7 +120,7 @@
 				/>
                                 {#if query}
                                         <button
-                                                class="rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-600 shadow-sm transition hover:bg-white"
+                                                class="rounded-full border border-white/70 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-600 shadow-sm transition hover:bg-[rgb(var(--accent-gold)/0.16)] hover:text-[rgb(var(--accent-gold)/0.9)]"
                                                 on:click={() => (query = '')}
                                                 type="button"
                                         >
@@ -136,8 +136,8 @@
 			<span>/</span>
 			<span>{availableSongs.length}</span>
 			{#if pageFilter}
-				<span
-                                        class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500"
+                                <span
+                                        class="rounded-full border border-[rgb(var(--accent-gold)/0.4)] bg-[rgb(var(--accent-gold)/0.16)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[rgb(var(--accent-gold)/0.95)]"
                                 >
                                         {$t('app.page_label')}
                                         {pageFilter}
@@ -149,7 +149,7 @@
                         <div class="flex flex-wrap gap-2">
                                 {#each filterBadges as badge}
                                         <span
-                                                class="inline-flex items-center gap-2 rounded-full border border-primary-100/70 bg-primary-50/90 px-3 py-1 text-xs font-semibold text-primary-600 shadow-sm"
+                                                class="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-gold)/0.35)] bg-[rgb(var(--accent-gold)/0.12)] px-3 py-1 text-xs font-semibold text-[rgb(var(--accent-gold)/0.95)] shadow-sm"
                                         >
                                                 {badge}
                                         </span>
@@ -159,7 +159,7 @@
         </div>
 
         <div
-                class="space-y-5 rounded-3xl border border-white/40 bg-white/80 p-4 shadow-[0_25px_70px_rgba(15,23,42,0.08)] backdrop-blur-2xl sm:p-6"
+                class="space-y-5 rounded-3xl border border-white/60 bg-[linear-gradient(160deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.86)_100%)] p-4 shadow-[0_25px_70px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-6"
                 use:fadeSlide={{ axis: 'y', from: 30, delay: 0.05 }}
         >
                 <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -167,8 +167,8 @@
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'index'
-                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
-                                                        : 'border border-white/50 bg-white/70 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'index')}
                                         type="button"
@@ -179,8 +179,8 @@
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'favourites'
-                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
-                                                        : 'border border-white/50 bg-white/70 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'favourites')}
                                         type="button"
@@ -189,7 +189,7 @@
 					{$t('app.toggle_favourites')}
 				</button>
                                 <button
-                                        class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/70 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted transition hover:border-primary-200/70 hover:text-primary-600"
+                                        class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted transition hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-[rgb(var(--accent-gold)/0.95)]"
                                         on:click={handleClearFilters}
                                         type="button"
                                 >
