@@ -86,7 +86,7 @@
                                                                 <button
                                                                         class={`rounded-xl px-3 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.2em] transition ${
                                                                                 $language === option.code
-                                                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/40'
+                                                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
                                                                                         : 'bg-white/70 text-on-surface hover:bg-[rgb(var(--accent-gold)/0.12)] hover:text-primary-600'
                                                                         }`}
                                                                         type="button"
@@ -105,7 +105,7 @@
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                                         <button
-                                                class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(234,179,8,0.24)] transition hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent-gold))]"
+                                                class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 px-5 py-2.5 text-sm font-semibold text-on-surface shadow-[0_16px_32px_rgba(234,179,8,0.24)] transition hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent-gold))]"
                                                 on:click={focusSearch}
                                                 type="button"
                                         >

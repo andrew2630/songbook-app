@@ -107,7 +107,7 @@
         {$t('app.search_placeholder')}
       </label> -->
                         <div
-                                class="flex items-center gap-3 rounded-2xl border border-white/60 bg-[rgba(255,255,255,0.9)] px-4 py-3 shadow-inner shadow-[rgba(14,165,233,0.12)]"
+                                class="flex items-center gap-3 rounded-2xl border border-white/60 bg-[rgba(255,255,255,0.9)] px-4 py-3 shadow-inner shadow-[rgba(245,158,11,0.12)]"
                         >
                                 <Search class="h-4 w-4 text-primary-500" />
                                 <input
@@ -167,7 +167,7 @@
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'index'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
                                                         : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'index')}
@@ -179,7 +179,7 @@
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'favourites'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
                                                         : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'favourites')}
@@ -262,7 +262,7 @@
                     <button
                       class={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                         pageFilter === pageNumber
-                          ? 'border-transparent bg-primary-500 text-white shadow-sm'
+                          ? 'border-transparent bg-primary-500 text-on-surface shadow-sm'
                           : 'border-surface-200/60 bg-surface-100/70 text-surface-600 hover:border-primary-400 hover:text-primary-500'
                       }`}
                       type="button"
@@ -272,7 +272,7 @@
                       <span
                         class={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                           pageFilter === pageNumber
-                            ? 'bg-primary-500/20 text-white shadow-inner shadow-primary-500/20'
+                            ? 'bg-primary-500/20 text-on-surface shadow-inner shadow-primary-500/20'
                             : 'bg-primary-500/10 text-primary-500'
                         }`}
                       >
@@ -312,8 +312,8 @@
 </section>
 
 {#if showScrollTop}
-	<button
-		class="fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600"
+        <button
+                class="fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-on-surface shadow-lg transition hover:bg-primary-600"
 		on:click={scrollToTop}
 		type="button"
 	>

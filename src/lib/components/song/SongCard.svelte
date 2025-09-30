@@ -132,7 +132,7 @@
                                                 <button
                                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
                                                                 isFavourite
-                                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-[0_18px_32px_rgba(14,165,233,0.28)]'
+                                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-[0_18px_32px_rgba(245,158,11,0.28)]'
                                                                         : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
                                                         }`}
                                                         on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
@@ -142,7 +142,7 @@
 							{isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
 						</button>
                                                 <button
-                                                        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-[0_20px_36px_rgba(14,165,233,0.28)] transition hover:scale-[1.01] hover:from-primary-500/90 hover:to-secondary-500/90"
+                                                        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-primary-700 px-3.5 py-1.5 text-sm font-semibold text-on-surface shadow-[0_20px_36px_rgba(245,158,11,0.28)] transition hover:scale-[1.01] hover:from-primary-500/90 hover:to-primary-700/90"
                                                         on:click={() => dispatch('open', song)}
                                                         type="button"
                                                 >

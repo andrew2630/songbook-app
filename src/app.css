@@ -14,16 +14,16 @@
         --color-surface-800: 50 64 83;
         --color-surface-900: 28 36 50;
 
-        --color-primary-50: 240 249 255;
-        --color-primary-100: 224 242 254;
-        --color-primary-200: 186 230 253;
-        --color-primary-300: 125 211 252;
-        --color-primary-400: 56 189 248;
-        --color-primary-500: 14 165 233;
-        --color-primary-600: 2 132 199;
-        --color-primary-700: 3 105 161;
-        --color-primary-800: 7 89 133;
-        --color-primary-900: 12 74 110;
+        --color-primary-50: 255 251 235;
+        --color-primary-100: 254 243 199;
+        --color-primary-200: 253 230 138;
+        --color-primary-300: 252 211 77;
+        --color-primary-400: 251 191 36;
+        --color-primary-500: 245 158 11;
+        --color-primary-600: 217 119 6;
+        --color-primary-700: 180 83 9;
+        --color-primary-800: 146 64 14;
+        --color-primary-900: 120 53 15;
 
         --color-secondary-50: 253 244 255;
         --color-secondary-100: 250 232 255;
@@ -37,7 +37,7 @@
         --color-secondary-900: 107 33 168;
 
         --on-surface: 18 30 39;
-        --on-primary: 255 255 255;
+        --on-primary: 45 32 11;
 
         --accent-gold: 234 179 8;
         --hero-gradient-from: 240 249 255;

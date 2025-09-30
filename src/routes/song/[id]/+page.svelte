@@ -135,7 +135,7 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 $favourites.includes(favouriteKey)
-                                                        ? 'bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 text-white shadow-[0_20px_36px_rgba(14,165,233,0.28)]'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-500 to-primary-700 text-on-surface shadow-[0_20px_36px_rgba(245,158,11,0.28)]'
                                                         : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
                                         }`}
                                         type="button"
@@ -185,7 +185,7 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'basic'
-                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
                                                         : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
 					type="button"
@@ -200,7 +200,7 @@
                                 <button
                                         class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                                                 activeViewMode === 'chords'
-                                                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg shadow-primary-500/30'
+                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
                                                         : 'border border-white/50 bg-white/80 text-on-surface'
                                         }`}
 					type="button"
