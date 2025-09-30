@@ -130,19 +130,6 @@ import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'luc
 					</div>
                                         <div class="flex flex-wrap justify-end gap-2.5 text-sm">
                                                 <button
-                                                        class={`icon-button ${isFavourite ? 'btn-gold' : ''}`}
-                                                        on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
-                                                        type="button"
-                                                        aria-pressed={isFavourite}
-                                                        aria-label={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-                                                        title={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-                                                >
-                                                        <Heart class={`h-5 w-5 transition ${isFavourite ? 'fill-current' : ''}`} />
-                                                        <span class="sr-only">
-                                                                {isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-                                                        </span>
-                                                </button>
-                                                <button
                                                         class="btn-gold inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition"
                                                         on:click={() => dispatch('open', song)}
                                                         type="button"
@@ -169,6 +156,19 @@ import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'luc
                                                                 </span>
                                                         </button>
                                                 {/if}
+                                                <button
+                                                        class={`icon-button ${isFavourite ? 'btn-gold' : ''}`}
+                                                        on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
+                                                        type="button"
+                                                        aria-pressed={isFavourite}
+                                                        aria-label={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
+                                                        title={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
+                                                >
+                                                        <Heart class={`h-5 w-5 transition ${isFavourite ? 'fill-current' : ''}`} />
+                                                        <span class="sr-only">
+                                                                {isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
+                                                        </span>
+                                                </button>
                                                 <button
                                                         class={`icon-button ${
                                                                 copyState === 'copied'
