@@ -313,11 +313,13 @@
 
 {#if showScrollTop}
         <button
-                class="btn-gold fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                class="btn-gold icon-button fixed bottom-6 right-5 z-40"
                 on:click={scrollToTop}
                 type="button"
+                aria-label={$t('app.scroll_to_top')}
+                title={$t('app.scroll_to_top')}
         >
-                <ArrowUp class="h-4 w-4" />
-                <span>{$t('app.scroll_to_top')}</span>
+                <ArrowUp class="h-5 w-5" />
+                <span class="sr-only">{$t('app.scroll_to_top')}</span>
         </button>
 {/if}

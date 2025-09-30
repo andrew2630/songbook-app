@@ -73,9 +73,9 @@
         .btn-gold {
                 background: linear-gradient(
                         120deg,
-                        rgba(var(--accent-gold), 0.85) 0%,
-                        rgba(var(--accent-gold), 0.82) 68%,
-                        rgba(var(--color-primary-600), 0.88) 100%
+                        rgba(var(--accent-gold), 1) 0%,
+                        rgba(var(--accent-gold), 0.98) 68%,
+                        rgba(var(--color-primary-600), 0.98) 100%
                 );
                 color: rgb(var(--on-surface));
                 box-shadow: 0 20px 42px rgba(var(--accent-gold), 0.18);
@@ -89,9 +89,9 @@
         .btn-gold:hover {
                 background: linear-gradient(
                         120deg,
-                        rgba(var(--accent-gold), 0.88) 0%,
-                        rgba(var(--accent-gold), 0.84) 72%,
-                        rgba(var(--color-primary-600), 0.92) 100%
+                        rgba(var(--accent-gold), 1) 0%,
+                        rgba(var(--accent-gold), 1) 72%,
+                        rgba(var(--color-primary-600), 1) 100%
                 );
                 box-shadow: 0 24px 52px rgba(var(--accent-gold), 0.22);
                 transform: translateY(-1px);
@@ -100,5 +100,59 @@
         .btn-gold:focus-visible {
                 outline: 2px solid rgba(var(--accent-gold), 0.6);
                 outline-offset: 2px;
+        }
+
+        .icon-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.75rem;
+                height: 2.75rem;
+                border-radius: 9999px;
+                border: 1px solid rgba(255, 255, 255, 0.7);
+                background-color: rgba(255, 255, 255, 0.96);
+                color: rgb(var(--on-surface));
+                box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
+                transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 180ms ease,
+                        background-color 180ms ease,
+                        color 180ms ease;
+        }
+
+        .icon-button:hover {
+                transform: translateY(-1px);
+                border-color: rgba(var(--accent-gold), 0.5);
+                box-shadow: 0 20px 44px rgba(15, 23, 42, 0.16);
+                color: rgb(var(--color-primary-600));
+        }
+
+        .icon-button:focus-visible {
+                outline: 2px solid rgba(var(--accent-gold), 0.6);
+                outline-offset: 2px;
+        }
+
+        .icon-button--success {
+                background-color: rgba(16, 185, 129, 0.16);
+                border-color: rgba(16, 185, 129, 0.35);
+                color: rgb(5, 150, 105);
+                box-shadow: 0 18px 42px rgba(16, 185, 129, 0.18);
+        }
+
+        .icon-button--success:hover {
+                border-color: rgba(16, 185, 129, 0.45);
+                box-shadow: 0 22px 48px rgba(16, 185, 129, 0.22);
+        }
+
+        .icon-button--danger {
+                background-color: rgba(248, 113, 113, 0.16);
+                border-color: rgba(248, 113, 113, 0.35);
+                color: rgb(220, 38, 38);
+                box-shadow: 0 18px 42px rgba(248, 113, 113, 0.18);
+        }
+
+        .icon-button--danger:hover {
+                border-color: rgba(248, 113, 113, 0.45);
+                box-shadow: 0 22px 48px rgba(248, 113, 113, 0.22);
         }
 }

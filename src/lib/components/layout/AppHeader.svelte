@@ -117,7 +117,7 @@
                                         <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
                                                 {$syncStatus}
                                         </div>
-                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">
+                                        <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.12em] text-on-surface">
                                                 <span class="text-on-surface-muted">{$t('app.last_synced')}</span>
                                                 <span class="text-on-surface">
                                                         {$lastSynced ? new Date($lastSynced).toLocaleString() : '—'}
