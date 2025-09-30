@@ -107,14 +107,6 @@
 
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                                        <button
-                                                class="btn-gold inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition"
-                                                on:click={focusSearch}
-                                                type="button"
-                                        >
-                                                <Search class="h-4 w-4" />
-                                                {$t('app.search_placeholder')}
-                                        </button>
                                         {#if $canInstall && !$isStandalone}
                                                 <div class="flex flex-col items-center gap-2 sm:items-start">
                                                         <button
@@ -124,15 +116,23 @@
                                                         >
                                                                 {$t('app.install_cta')}
                                                         </button>
-                                                        <p class="max-w-[16rem] text-center text-xs font-medium text-on-surface-soft sm:text-left">
+                                                        <!-- <p class="max-w-[16rem] text-center text-xs font-medium text-on-surface-soft sm:text-left">
                                                                 {$t('app.install_hint')}
-                                                        </p>
+                                                        </p> -->
                                                 </div>
-                                        {:else if $isStandalone}
+                                        <!-- {:else if $isStandalone}
                                                 <div class="inline-flex items-center justify-center gap-2 rounded-full border border-white/60 bg-white/70 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary-600">
                                                         {$t('app.install_installed')}
-                                                </div>
+                                                </div> -->
                                         {/if}
+                                        <button
+                                                class="btn-gold inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition"
+                                                on:click={focusSearch}
+                                                type="button"
+                                        >
+                                                <Search class="h-4 w-4" />
+                                                {$t('app.search_placeholder')}
+                                        </button>
                                 </div>
                                 <div class="flex flex-col gap-2 text-xs text-on-surface-soft sm:flex-row sm:items-center sm:gap-3">
                                         <div class="inline-flex items-center gap-3 rounded-full border border-white/60 bg-white/75 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-on-surface">

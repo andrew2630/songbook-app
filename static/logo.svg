@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Śpiewnik Wspólnoty Biblijnej KWCh logo">
-  <rect width="512" height="512" rx="120" fill="#0b1020" />
-  <circle cx="256" cy="256" r="192" fill="#caa545" />
-  <path
-    fill="#fef7e5"
-    d="M228 96h56c17 0 30 13 30 30v106h106c17 0 30 13 30 30v56c0 17-13 30-30 30H314v106c0 17-13 30-30 30h-56c-17 0-30-13-30-30V348H92c-17 0-30-13-30-30v-56c0-17 13-30 30-30h106V126c0-17 13-30 30-30Z"
-  />
-  <rect x="176" y="332" width="160" height="54" rx="27" fill="#0b1020" />
-</svg>

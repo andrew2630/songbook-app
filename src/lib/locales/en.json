@@ -1,10 +1,10 @@
 {
         "app": {
-                "title": "Śpiewnik Wspólnoty Biblijnej KWCh",
+                "title": "Songbook",
                 "tagline": "Church worship songs at your fingertips",
                 "search_placeholder": "Search by title, lyric, page or index…",
                 "install_cta": "Install app",
-                "install_hint": "Install Śpiewnik Wspólnoty Biblijnej KWCh to keep the library one tap away on your device.",
+                "install_hint": "Install Songbook to keep the library one tap away on your device.",
                 "install_installed": "Installed",
                 "language_label": "Language",
                 "view": {
@@ -28,11 +28,11 @@
                 "toggle_favourites": "Favourites",
                 "add_favourite": "Add to favourites",
                 "remove_favourite": "Remove from favourites",
-                "go_to_song": "Open song",
+                "go_to_song": "Open",
                 "back_action": "Back",
                 "back_to_index": "Back to song list",
                 "page_label": "Page",
-                "source_label": "Source",
+                "source_label": "Source:",
                 "external_index": "Index",
                 "view_song": "Viewing mode",
                 "brand_global": "KWCh Bible Fellowship",
