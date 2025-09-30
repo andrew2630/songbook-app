@@ -167,19 +167,19 @@
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'index'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
+                                                        ? 'btn-gold'
                                                         : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'index')}
                                         type="button"
                                 >
-					<LayoutList class="h-4 w-4" />
-					{$t('app.toggle_index')}
-				</button>
+                                        <LayoutList class="h-4 w-4" />
+                                        {$t('app.toggle_index')}
+                                </button>
                                 <button
                                         class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 menuView === 'favourites'
-                                                        ? 'bg-gradient-to-r from-[rgb(var(--accent-gold))] via-primary-400 to-primary-600 text-on-surface shadow-lg shadow-primary-500/30'
+                                                        ? 'btn-gold'
                                                         : 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
                                         }`}
                                         on:click={() => (menuView = 'favourites')}
@@ -313,11 +313,11 @@
 
 {#if showScrollTop}
         <button
-                class="fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-on-surface shadow-lg transition hover:bg-primary-600"
-		on:click={scrollToTop}
-		type="button"
-	>
-		<ArrowUp class="h-4 w-4" />
-		<span>{$t('app.scroll_to_top')}</span>
-	</button>
+                class="btn-gold fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                on:click={scrollToTop}
+                type="button"
+        >
+                <ArrowUp class="h-4 w-4" />
+                <span>{$t('app.scroll_to_top')}</span>
+        </button>
 {/if}
