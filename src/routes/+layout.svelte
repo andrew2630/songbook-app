@@ -63,13 +63,16 @@
 <div class="relative min-h-screen overflow-hidden text-on-surface">
         <div class="pointer-events-none absolute inset-0 -z-10">
                 <div
-                        class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.78)_40%,rgba(255,255,255,0.88)_100%)]"
+                        class="absolute inset-0 bg-[linear-gradient(190deg,rgba(255,255,255,0.95)_0%,rgba(var(--hero-gradient-mid),0.58)_38%,rgba(255,255,255,0.9)_100%)]"
                 ></div>
                 <div
-                        class="absolute left-[8%] top-[-16%] h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.5),rgba(255,255,255,0))] blur-[140px]"
+                        class="absolute left-[8%] top-[-16%] h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.55),rgba(255,255,255,0))] blur-[140px]"
                 ></div>
                 <div
-                        class="absolute right-[-12%] top-[0%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.55),rgba(255,255,255,0))] blur-[150px]"
+                        class="absolute right-[-12%] top-[0%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.65),rgba(255,255,255,0))] blur-[150px]"
+                ></div>
+                <div
+                        class="absolute bottom-[8%] right-[12%] h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--accent-gold)/0.42),rgba(255,255,255,0))] blur-[140px]"
                 ></div>
                 <div
                         class="absolute bottom-[-26%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.92),rgba(255,255,255,0))] blur-[170px]"
