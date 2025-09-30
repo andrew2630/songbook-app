@@ -1,8 +1,11 @@
 {
         "app": {
-                "title": "Śpiewnik",
+                "title": "Śpiewnik Wspólnoty Biblijnej KWCh",
                 "tagline": "Zborowy śpiewnik zawsze pod ręką",
                 "search_placeholder": "Szukaj po tytule, tekście, stronie lub indeksie…",
+                "install_cta": "Zainstaluj aplikację",
+                "install_hint": "Dodaj Śpiewnik Wspólnoty Biblijnej KWCh na ekran główny, aby mieć go zawsze pod ręką.",
+                "install_installed": "Zainstalowano",
                 "language_label": "Język",
                 "view": {
                         "basic": "Tekst",

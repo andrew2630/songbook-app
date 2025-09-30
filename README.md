@@ -1,12 +1,12 @@
-# Songbook App
+# Śpiewnik Wspólnoty Biblijnej KWCh
 
-A modern, bilingual worship songbook for the Bretheren Fellowship. The app ships with an offline-first experience, polished gold-and-navy branding, and installable PWA support for phones, tablets, and desktops.
+A modern, bilingual worship songbook for the KWCh Bible Fellowship. The app ships with an offline-first experience, polished gold-and-navy branding, and installable PWA support for phones, tablets, and desktops.
 
 ## Features
 
 - ✨ **Responsive worship library** – adaptive layout keeps search, filters, and song cards easy to use from small phones to large displays.
-- 🌍 **Bilingual experience** – quick language switcher (PL/EN) with updated copy that reinforces the global community message.
-- 📲 **Installable PWA** – updated manifest, SVG icons, and theme colour so the app can be installed to home screens on iOS, Android, and desktop.
+- 🌍 **Bilingual experience** – compact language switcher (PL/EN) with updated copy that reinforces the global community message.
+- 📲 **Installable PWA** – install button and updated manifest/icons let the app live on home screens for iOS, Android, and desktop.
 - 🔄 **Smart sync status** – real-time syncing banner and offline-ready messaging to keep teams informed.
 - 🎨 **Brand-aligned UI** – gold-accent palette, globe cross mark, and refined chip/heading treatments inspired by the provided logo.
 
@@ -42,16 +42,23 @@ npm run preview
 
 `npm run preview` serves the production build so you can verify manifest and service worker behaviour before deployment.
 
-## Progressive Web App checklist
+### Deploying to a subdirectory
 
-1. Build the project: `npm run build`
-2. Serve the output with `npm run preview` or your preferred static host
-3. Open Chrome/Edge DevTools → Application → Manifest to confirm the new icons, theme colour, and installability status
-4. On iOS Safari, use the share sheet → “Add to Home Screen”
+Set the `BASE_PATH` environment variable to the public directory you will host under (for example `BASE_PATH=songbook`) before running `npm run build`. The generated site will include the correct paths for routing, service worker registration, and static assets when served from `https://kwch.wroclaw.pl/songbook/` or another subdirectory.
+
+## Install as a standalone app
+
+- **Desktop (Chrome/Edge)** – open the site, click the “Install app” pill in the hero, or use the browser’s install icon in the address bar.
+- **Android** – open the site in Chrome, accept the install prompt, or use the overflow menu → *Install app*.
+- **iOS/iPadOS** – open the site in Safari, tap the share icon → *Add to Home Screen*.
+
+When testing locally, run `npm run preview` so the service worker and install prompt are available.
 
 ## Branding assets
 
-- `static/logo.svg`: Primary vector globe-cross brand mark (also referenced by the PWA manifest)
-- `static/favicon.svg`: Scalable favicon and mask icon used across browsers
+- `static/logo.png`: Raster logo used for install icons, Apple touch icons, and favicon fallbacks. Replace with your own branding asset.
+- `static/favicon.ico`: Legacy favicon for browsers that prefer `.ico` files. Add your copy to `static/` to override the default.
+- `static/logo.svg`: Primary vector logo for large surfaces and sharing previews.
+- `static/favicon.svg`: Scalable favicon and mask icon used across browsers.
 
 Feel free to adapt the colours or typography in `src/app.css` if your design system evolves.

@@ -1,13 +1,26 @@
 {
-  "name": "Songbook",
-  "short_name": "Songbook",
-  "start_url": "/",
+  "name": "Śpiewnik Wspólnoty Biblijnej KWCh",
+  "short_name": "Śpiewnik KWCh",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0b1020",
   "theme_color": "#caa545",
   "icons": [
     {
-      "src": "/logo.svg",
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
