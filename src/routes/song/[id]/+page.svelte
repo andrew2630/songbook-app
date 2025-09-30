@@ -4,7 +4,7 @@
         import { page } from '$app/stores';
         import { t } from 'svelte-i18n';
         import { onMount } from 'svelte';
-        import { ArrowUp } from 'lucide-svelte';
+        import { ArrowUp, Heart } from 'lucide-svelte';
         import { getSongByKey } from '$lib/stores/songStore';
         import { favourites, toggleFavourite, language, viewMode } from '$lib/stores/preferences';
         import type { Song, SongLanguage } from '$lib/types/song';
@@ -152,19 +152,34 @@
                                         </button>
                                 </div>
                                 <button
-                                        class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+                                        class={`icon-button ${
                                                 $favourites.includes(favouriteKey)
                                                         ? 'btn-gold'
-                                                        : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
+                                                        : ''
                                         }`}
                                         type="button"
                                         aria-pressed={$favourites.includes(favouriteKey)}
+                                        aria-label={$favourites.includes(favouriteKey)
+                                                ? $t('app.remove_favourite')
+                                                : $t('app.add_favourite')}
+                                        title={$favourites.includes(favouriteKey)
+                                                ? $t('app.remove_favourite')
+                                                : $t('app.add_favourite')}
                                         on:click={() => toggleFavourite(favouriteKey)}
                                 >
-					{$favourites.includes(favouriteKey)
-						? $t('app.remove_favourite')
-						: $t('app.add_favourite')}
-				</button>
+                                        <Heart
+                                                class={`h-5 w-5 transition ${
+                                                        $favourites.includes(favouriteKey)
+                                                                ? 'fill-current'
+                                                                : ''
+                                                }`}
+                                        />
+                                        <span class="sr-only">
+                                                {$favourites.includes(favouriteKey)
+                                                        ? $t('app.remove_favourite')
+                                                        : $t('app.add_favourite')}
+                                        </span>
+                                </button>
 			</div>
 
 			<div class="space-y-3">
@@ -265,12 +280,14 @@
         </article>
         {#if showScrollTop}
                 <button
-                        class="btn-gold fixed bottom-6 right-5 z-40 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                        class="btn-gold icon-button fixed bottom-6 right-5 z-40"
                         type="button"
+                        aria-label={$t('app.scroll_to_top')}
+                        title={$t('app.scroll_to_top')}
                         on:click={scrollToTop}
                 >
-                        <ArrowUp class="h-4 w-4" />
-                        <span>{$t('app.scroll_to_top')}</span>
+                        <ArrowUp class="h-5 w-5" />
+                        <span class="sr-only">{$t('app.scroll_to_top')}</span>
                 </button>
         {/if}
 {:else}

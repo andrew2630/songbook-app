@@ -5,7 +5,7 @@
 	import { t } from 'svelte-i18n';
 	import { listTransition } from '$lib/actions/listTransition';
 	import { inView } from '$lib/actions/inView';
-	import { Heart, ExternalLink, Eye, EyeOff, Link2 } from 'lucide-svelte';
+import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
 
 	export let song: Song;
@@ -128,19 +128,20 @@
                                                 </span>
                                         </div>
 					</div>
-					<div class="flex flex-wrap justify-end gap-2 text-sm">
+                                        <div class="flex flex-wrap justify-end gap-2.5 text-sm">
                                                 <button
-                                                        class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-                                                                isFavourite
-                                                                        ? 'btn-gold'
-                                                                        : 'border border-white/50 bg-white/80 text-on-surface hover:border-primary-200/70 hover:text-primary-600'
-                                                        }`}
+                                                        class={`icon-button ${isFavourite ? 'btn-gold' : ''}`}
                                                         on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
                                                         type="button"
+                                                        aria-pressed={isFavourite}
+                                                        aria-label={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
+                                                        title={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
                                                 >
-							<Heart class={`h-4 w-4 ${isFavourite ? 'fill-current' : ''}`} />
-							{isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-						</button>
+                                                        <Heart class={`h-5 w-5 transition ${isFavourite ? 'fill-current' : ''}`} />
+                                                        <span class="sr-only">
+                                                                {isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
+                                                        </span>
+                                                </button>
                                                 <button
                                                         class="btn-gold inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition"
                                                         on:click={() => dispatch('open', song)}
@@ -148,32 +149,69 @@
                                                 >
                                                         <ExternalLink class="h-4 w-4" />
                                                         {$t('app.go_to_song')}
-						</button>
-						{#if remainingItems.length}
+                                                </button>
+                                                {#if remainingItems.length}
                                                         <button
-                                                                class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/80 px-3.5 py-1.5 text-sm font-medium text-on-surface transition hover:border-primary-200/70 hover:text-primary-600"
+                                                                class="icon-button"
                                                                 on:click={() => (expanded = !expanded)}
                                                                 type="button"
                                                                 aria-expanded={expanded}
+                                                                aria-label={expanded ? $t('app.hide_preview') : $t('app.preview')}
+                                                                title={expanded ? $t('app.hide_preview') : $t('app.preview')}
                                                         >
-								{#if expanded}
-									<EyeOff class="h-4 w-4" />
-									{$t('app.hide_preview')}
-								{:else}
-									<Eye class="h-4 w-4" />
-									{$t('app.preview')}
-								{/if}
-							</button>
-						{/if}
+                                                                {#if expanded}
+                                                                        <EyeOff class="h-5 w-5" />
+                                                                {:else}
+                                                                        <Eye class="h-5 w-5" />
+                                                                {/if}
+                                                                <span class="sr-only">
+                                                                        {expanded ? $t('app.hide_preview') : $t('app.preview')}
+                                                                </span>
+                                                        </button>
+                                                {/if}
                                                 <button
-                                                        class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/80 px-3.5 py-1.5 text-sm font-medium text-on-surface transition hover:border-primary-200/70 hover:text-primary-600"
+                                                        class={`icon-button ${
+                                                                copyState === 'copied'
+                                                                        ? 'icon-button--success'
+                                                                        : copyState === 'error'
+                                                                                ? 'icon-button--danger'
+                                                                                : ''
+                                                        }`}
                                                         on:click={copyShareLink}
                                                         type="button"
+                                                        aria-label={
+                                                                copyState === 'copied'
+                                                                        ? $t('app.copied_link')
+                                                                        : copyState === 'error'
+                                                                                ? $t('app.copy_failed')
+                                                                                : $t('app.copy_link')
+                                                        }
+                                                        title={
+                                                                copyState === 'copied'
+                                                                        ? $t('app.copied_link')
+                                                                        : copyState === 'error'
+                                                                                ? $t('app.copy_failed')
+                                                                                : $t('app.copy_link')
+                                                        }
                                                 >
-							<Link2 class="h-4 w-4" />
-							{copyState === 'copied' ? $t('app.copied_link') : $t('app.copy_link')}
-						</button>
-					</div>
+                                                        {#if copyState === 'copied'}
+                                                                <Check class="h-5 w-5" />
+                                                        {:else if copyState === 'error'}
+                                                                <AlertCircle class="h-5 w-5" />
+                                                        {:else}
+                                                                <Link2 class="h-5 w-5" />
+                                                        {/if}
+                                                        <span class="sr-only" aria-live="polite">
+                                                                {#if copyState === 'copied'}
+                                                                        {$t('app.copied_link')}
+                                                                {:else if copyState === 'error'}
+                                                                        {$t('app.copy_failed')}
+                                                                {:else}
+                                                                        {$t('app.copy_link')}
+                                                                {/if}
+                                                        </span>
+                                                </button>
+                                        </div>
 				</div>
 
 				<!-- <div class="rounded-xl border border-surface-200/70 bg-white px-4 py-4 text-xs">
