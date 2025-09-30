@@ -6,7 +6,6 @@
         import { derived } from 'svelte/store';
         import { Languages, Search } from 'lucide-svelte';
         import type { SongLanguage } from '$lib/types/song';
-        import ThemeSelector from '$lib/components/preferences/ThemeSelector.svelte';
         import { openSearchOverlay } from '$lib/stores/ui';
 
         type LanguageOption = {
@@ -74,9 +73,8 @@
                                                 </p>
                                         </div>
                                 </div>
-                                <div class="flex w-full flex-col gap-4 lg:max-w-sm">
-                                        <ThemeSelector />
-                                        <div class="rounded-[26px] border border-white/40 bg-white/40 p-4 shadow-lg shadow-primary-500/10 backdrop-blur">
+                                <div class="flex w-full flex-col lg:max-w-sm">
+                                        <div class="rounded-[26px] border border-white/40 bg-white/70 p-4 shadow-lg shadow-primary-500/10 backdrop-blur">
                                                 <div class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-on-surface-subtle">
                                                         <span class="inline-flex items-center gap-2 text-on-surface">
                                                                 <Languages class="h-4 w-4 text-primary-500" />

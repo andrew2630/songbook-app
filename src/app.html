@@ -18,48 +18,7 @@
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
-		<script>
-			(() => {
-			        const FALLBACK = 'songbook-dawn';
-			        const THEMES = {
-			                'songbook-dawn': { scheme: 'light', meta: '#fde68a' },
-			                'songbook-meadow': { scheme: 'light', meta: '#86efac' },
-			                'songbook-aurora': { scheme: 'light', meta: '#a5b4fc' },
-			                'songbook-dusk': { scheme: 'dark', meta: '#5b21b6' },
-			                'songbook-midnight': { scheme: 'dark', meta: '#0f172a' }
-			        } as const;
-
-			        try {
-			                const stored = localStorage.getItem('songbook-theme');
-			                let themeId = FALLBACK;
-
-			                if (stored) {
-			                        const parsed = JSON.parse(stored);
-			                        if (typeof parsed === 'string') {
-			                                themeId = parsed;
-			                        } else if (typeof parsed === 'object' && parsed?.theme) {
-			                                themeId = parsed.theme;
-			                        }
-			                }
-
-			                if (!(themeId in THEMES)) {
-			                        themeId = FALLBACK;
-			                }
-
-			                const theme = THEMES[themeId];
-			                document.documentElement.dataset.theme = themeId;
-			                document.documentElement.style.colorScheme = theme.scheme;
-
-			                const metaThemeColor = document.querySelector("meta[name='theme-color']");
-			                if (metaThemeColor instanceof HTMLMetaElement) {
-			                        metaThemeColor.content = theme.meta;
-			                }
-			        } catch (error) {
-			                console.warn('Failed to restore theme', error);
-			        }
-			})();
-		</script>
-		%sveltekit.head%
+                %sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
