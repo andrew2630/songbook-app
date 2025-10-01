@@ -5,12 +5,12 @@ const scopeUrl = new URL(self.registration?.scope ?? self.location.href);
 const basePath = scopeUrl.pathname.replace(/\/$/, '');
 
 const resolvePath = (path: string) => {
-        if (path === '/') {
-                return basePath || '/';
-        }
+	if (path === '/') {
+		return basePath || '/';
+	}
 
-        const normalized = path.startsWith('/') ? path : `/${path}`;
-        return `${basePath}${normalized}`;
+	const normalized = path.startsWith('/') ? path : `/${path}`;
+	return `${basePath}${normalized}`;
 };
 
 const assetPaths = [resolvePath('/'), ...build.map(resolvePath), ...files.map(resolvePath)];
