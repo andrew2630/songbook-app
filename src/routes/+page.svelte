@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { t } from 'svelte-i18n';
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+        import { t } from 'svelte-i18n';
+        import { browser } from '$app/environment';
+        import { goto } from '$app/navigation';
+        import { base } from '$app/paths';
 	import { favourites, language, toggleFavourite, viewMode } from '$lib/stores/preferences';
 	import { filterSongs, searchableSongs, songs, type SongSortMode } from '$lib/stores/songStore';
 	import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
@@ -79,9 +80,9 @@
 		pageSearch = '';
 	}
 
-	function openSong(song: Song) {
-		goto(`/song/${song.id}?lang=${song.language}`);
-	}
+        function openSong(song: Song) {
+                goto(`${base}/song/${song.id}?lang=${song.language}`);
+        }
 
 	function handlePageSelect(pageNumber: number) {
 		pageFilter = pageNumber;

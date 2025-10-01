@@ -1,12 +1,24 @@
 /// <reference lib="webworker" />
 import { build, files, version } from '$service-worker';
 
-const ASSETS = ['/', ...build, ...files];
-const ASSET_URLS = ASSETS.map((path) => new URL(path, self.location.origin).toString());
+const scopeUrl = new URL(self.registration?.scope ?? self.location.href);
+const basePath = scopeUrl.pathname.replace(/\/$/, '');
+
+const resolvePath = (path: string) => {
+        if (path === '/') {
+                return basePath || '/';
+        }
+
+        const normalized = path.startsWith('/') ? path : `/${path}`;
+        return `${basePath}${normalized}`;
+};
+
+const assetPaths = [resolvePath('/'), ...build.map(resolvePath), ...files.map(resolvePath)];
+const ASSET_URLS = assetPaths.map((path) => new URL(path, scopeUrl.origin).toString());
 const ASSET_SET = new Set(ASSET_URLS);
 const CACHE = `songbook-cache-${version}`;
 const DATA_CACHE = `songbook-data-${version}`;
-const APP_SHELL = new URL('/', self.location.origin).toString();
+const APP_SHELL = new URL(resolvePath('/'), scopeUrl.origin).toString();
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? '';
 
 self.addEventListener('install', (event) => {

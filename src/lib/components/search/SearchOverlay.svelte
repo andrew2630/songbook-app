@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { afterNavigate, goto } from '$app/navigation';
+        import { browser } from '$app/environment';
+        import { afterNavigate, goto } from '$app/navigation';
+        import { base } from '$app/paths';
 	import { tick } from 'svelte';
 	import { t } from 'svelte-i18n';
 	import { Search, X } from 'lucide-svelte';
@@ -38,11 +39,11 @@
 		}
 	}
 
-	async function handleSongSelect(song: Song) {
-		const url = `/song/${song.id}?lang=${song.language}`;
-		handleClose();
-		await goto(url, { noScroll: false });
-	}
+        async function handleSongSelect(song: Song) {
+                const url = `${base}/song/${song.id}?lang=${song.language}`;
+                handleClose();
+                await goto(url, { noScroll: false });
+        }
 
 	async function focusInput() {
 		await tick();
