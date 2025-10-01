@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+        import { goto } from '$app/navigation';
+        import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { t } from 'svelte-i18n';
 	import { onMount } from 'svelte';
@@ -9,7 +10,9 @@
 	import { favourites, toggleFavourite, language, viewMode } from '$lib/stores/preferences';
 	import type { Song, SongLanguage } from '$lib/types/song';
 
-	let song: Song | null = null;
+        const indexPath = base || '/';
+
+        let song: Song | null = null;
 	let loading = true;
 	let activeViewMode: 'basic' | 'chords' = 'basic';
 	let lastUpdatedLabel: string | null = null;
@@ -105,10 +108,10 @@
 	function goBack() {
 		if (typeof window !== 'undefined' && window.history.length > 1) {
 			window.history.back();
-		} else {
-			goto('/');
-		}
-	}
+                } else {
+                        goto(indexPath);
+                }
+        }
 
 	function scrollToTop() {
 		if (!browser) return;
@@ -138,20 +141,20 @@
 		<header class="relative space-y-5 text-center lg:text-left">
 			<div class="flex flex-1 flex-wrap items-center justify-between gap-3">
 				<div class="flex flex-wrap items-center gap-2.5">
-					<button
-						class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
-						type="button"
-						on:click={goBack}
-					>
-						{$t('app.back_action')}
-					</button>
-					<button
-						class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
-						type="button"
-						on:click={() => goto('/')}
-					>
-						{$t('app.back_to_index')}
-					</button>
+                                        <button
+                                                class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+                                                type="button"
+                                                on:click={goBack}
+                                        >
+                                                {$t('app.back_action')}
+                                        </button>
+                                        <button
+                                                class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+                                                type="button"
+                                                on:click={() => goto(indexPath)}
+                                        >
+                                                {$t('app.back_to_index')}
+                                        </button>
 				</div>
 				<button
 					class={`icon-button ${$favourites.includes(favouriteKey) ? 'btn-gold' : ''}`}

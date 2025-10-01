@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
+        import { browser } from '$app/environment';
+        import { base } from '$app/paths';
+        import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { t } from 'svelte-i18n';
 	import { listTransition } from '$lib/actions/listTransition';
@@ -45,9 +46,9 @@
 				year: 'numeric'
 			})
 		: null;
-	$: shareUrl = browser
-		? new URL(`/song/${song.id}?lang=${song.language}`, window.location.origin).toString()
-		: '';
+        $: shareUrl = browser
+                ? new URL(`${base}/song/${song.id}?lang=${song.language}`, window.location.origin).toString()
+                : '';
 
 	function handleEnter() {
 		visible = true;
