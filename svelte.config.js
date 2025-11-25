@@ -37,10 +37,10 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [vitePreprocess({ postcss: true })],
 
-	kit: {
-		adapter: adapter({
-			fallback: '200.html'
-		}),
+        kit: {
+                adapter: adapter({
+                        fallback: 'index.html'
+                }),
 		paths: {
 			base: normalizedBasePath,
 			...(normalizedAssetsPath ? { assets: normalizedAssetsPath } : {})
