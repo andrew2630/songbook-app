@@ -33,19 +33,18 @@ const normalizedAssetsPath = (() => {
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://svelte.dev/docs/kit/integrations
-	// for more information about preprocessors
 	preprocess: [vitePreprocess({ postcss: true })],
 
 	kit: {
 		adapter: adapter({
-			// Generate a dedicated 404.html so static hosts (e.g. GitHub Pages)
-			// can serve client-side routes on refresh instead of returning a
-			// server-level 404 page.
 			fallback: '404.html'
 		}),
 		paths: {
 			base: normalizedBasePath,
+			// 🔴 IMPORTANT: use absolute URLs for assets + SW
+			relative: false,
+			// ⛔ For this WordPress deployment, leave ASSETS_PATH empty,
+			// otherwise service workers are not supported.
 			...(normalizedAssetsPath ? { assets: normalizedAssetsPath } : {})
 		}
 	}
