@@ -1,0 +1,11 @@
+# Serve the SPA fallback when a client-side route is refreshed directly
+# so Apache (e.g. when hosted behind WordPress) does not return its own 404 page.
+RewriteEngine On
+
+# Let existing files or directories be served as-is
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# For everything else, send the request to the static SPA fallback.
+RewriteRule . /404.html [L]

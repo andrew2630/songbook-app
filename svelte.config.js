@@ -39,7 +39,10 @@ const config = {
 
         kit: {
                 adapter: adapter({
-                        fallback: 'index.html'
+                        // Generate a dedicated 404.html so static hosts (e.g. GitHub Pages)
+                        // can serve client-side routes on refresh instead of returning a
+                        // server-level 404 page.
+                        fallback: '404.html'
                 }),
 		paths: {
 			base: normalizedBasePath,
