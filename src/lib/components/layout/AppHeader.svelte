@@ -128,11 +128,11 @@
                                                         {$t('app.install_installed')}
                                                 </div> -->
 					{/if}
-					<button
-						class="btn-gold inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition"
-						on:click={focusSearch}
-						type="button"
-					>
+                                        <button
+                                                class="btn-gold inline-flex items-center justify-center gap-2 rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-on-surface shadow-md shadow-[rgba(234,179,8,0.35)] transition hover:-translate-y-[1px] focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                                                on:click={focusSearch}
+                                                type="button"
+                                        >
 						<Search class="h-4 w-4" />
 						{$t('app.search_placeholder')}
 					</button>
