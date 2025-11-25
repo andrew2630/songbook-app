@@ -1,11 +1,12 @@
-# Serve the SPA fallback when a client-side route is refreshed directly
-# so Apache (e.g. when hosted behind WordPress) does not return its own 404 page.
-RewriteEngine On
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /songbook/
 
-# Let existing files or directories be served as-is
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+  # If the request is for an existing file or directory, serve it normally
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
 
-# For everything else, send the request to the static SPA fallback.
-RewriteRule . /404.html [L]
+  # Otherwise, always send everything to index.html (your Svelte app)
+  RewriteRule . index.html [L]
+</IfModule>
