@@ -250,25 +250,40 @@ export const searchableSongs = derived(songs, ($songs) =>
 export type SongSortMode = 'page' | 'alpha' | 'recent';
 
 export function filterSongs(
-	collection: { key: string; song: Song; search: string }[],
-	query: string,
-	language: SongLanguage,
-	favouritesOnly: boolean,
-	favouritesList: string[],
-	pageFilter?: number | null,
-	sortMode: SongSortMode = 'page'
+        collection: { key: string; song: Song; search: string }[],
+        query: string,
+        language: SongLanguage,
+        favouritesOnly: boolean,
+        favouritesList: string[],
+        pageFilter?: number | null,
+        sortMode: SongSortMode = 'page'
 ) {
-	const normalisedQuery = normalise(query.trim());
-	return collection
-		.filter(({ song, search }) => {
-			if (song.language !== language) return false;
-			if (favouritesOnly && !favouritesList.includes(`${song.id}-${song.language}`)) return false;
-			if (pageFilter && song.page !== pageFilter) return false;
-			if (!normalisedQuery) return true;
-			return search.includes(normalisedQuery);
-		})
-		.map(({ song }) => song)
-		.sort((a, b) => {
+        const trimmedQuery = query.trim();
+        const normalisedQuery = normalise(trimmedQuery);
+        const numericQuery = /^\d+$/.test(trimmedQuery) ? trimmedQuery : null;
+        return collection
+                .filter(({ song, search }) => {
+                        if (song.language !== language) return false;
+                        if (favouritesOnly && !favouritesList.includes(`${song.id}-${song.language}`)) return false;
+                        if (pageFilter && song.page !== pageFilter) return false;
+                        if (!normalisedQuery) return true;
+
+                        if (numericQuery) {
+                                const source = song.source.toUpperCase();
+                                const isZborowy = source.includes('ZBOROWY');
+                                const isPielgrzyma = source.includes('PIELGRZYM');
+
+                                const matchesZborowy = isZborowy && String(song.page).includes(numericQuery);
+                                const matchesPielgrzyma =
+                                        isPielgrzyma && normalise(song.externalIndex).includes(normalisedQuery);
+
+                                return matchesZborowy || matchesPielgrzyma;
+                        }
+
+                        return search.includes(normalisedQuery);
+                })
+                .map(({ song }) => song)
+                .sort((a, b) => {
 			if (sortMode === 'alpha') {
 				return a.title.localeCompare(b.title);
 			}
