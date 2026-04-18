@@ -30,6 +30,7 @@
 	let loadMoreSentinel: HTMLDivElement | null = null;
 	let listStateKey = '';
 	let viewportFillFrame: number | null = null;
+	let hasInitialisedFiltersFromUrl = false;
 
 	const sortOptions: { value: SongSortMode; label: string }[] = [
 		{ value: 'page', label: 'app.sort.page' },
@@ -44,8 +45,56 @@
 	const INITIAL_RENDER_COUNT = 24;
 	const RENDER_BATCH_COUNT = 24;
 
+	function readFilterStateFromUrl() {
+		if (!browser) return;
+
+		const params = new URLSearchParams(window.location.search);
+		const nextQuery = params.get('q');
+		const nextMenuView = params.get('view');
+		const nextPageFilter = params.get('page');
+		const nextSortMode = params.get('sort');
+		const nextSourceFilter = params.get('source');
+
+		query = nextQuery ?? '';
+		menuView = nextMenuView === 'favourites' ? 'favourites' : 'index';
+		pageFilter = nextPageFilter && /^\d+$/.test(nextPageFilter) ? Number(nextPageFilter) : null;
+		sortMode =
+			nextSortMode === 'alpha' || nextSortMode === 'recent' || nextSortMode === 'page'
+				? nextSortMode
+				: 'page';
+		sourceFilter =
+			nextSourceFilter === 'zborowy' ||
+			nextSourceFilter === 'pielgrzym' ||
+			nextSourceFilter === 'all'
+				? nextSourceFilter
+				: 'all';
+	}
+
+	function syncFilterStateToUrl() {
+		if (!browser || !hasInitialisedFiltersFromUrl) return;
+
+		const params = new URLSearchParams();
+		const trimmedQuery = query.trim();
+		if (trimmedQuery) params.set('q', trimmedQuery);
+		if (menuView === 'favourites') params.set('view', menuView);
+		if (pageFilter !== null) params.set('page', String(pageFilter));
+		if (sortMode !== 'page') params.set('sort', sortMode);
+		if (sourceFilter !== 'all') params.set('source', sourceFilter);
+
+		const nextSearch = params.toString();
+		const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+		const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+		if (nextUrl !== currentUrl) {
+			window.history.replaceState(window.history.state, '', nextUrl);
+		}
+	}
+
 	onMount(() => {
 		if (!browser) return;
+		readFilterStateFromUrl();
+		hasInitialisedFiltersFromUrl = true;
+
 		const updateScrollState = () => {
 			showScrollTop = window.scrollY > 320;
 		};
@@ -63,6 +112,8 @@
 			}
 		};
 	});
+
+	$: syncFilterStateToUrl();
 
 	$: availableSongs = $songs.filter((song) => song.language === $language);
 	$: groupedByPage = songsByPage(availableSongs);
@@ -174,7 +225,10 @@
 </script>
 
 <section class="space-y-5 pb-14 sm:space-y-8">
-	<div class="glass-panel space-y-4 rounded-[1.9rem] p-3.5 sm:space-y-5 sm:rounded-3xl sm:p-6">
+	<div
+		id="song-filters-panel"
+		class="glass-panel space-y-4 rounded-[1.9rem] p-3.5 sm:space-y-5 sm:rounded-3xl sm:p-6"
+	>
 		<div class="space-y-2">
 			<!-- <label
         class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500"

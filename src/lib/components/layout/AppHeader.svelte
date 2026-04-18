@@ -38,11 +38,25 @@
 	function focusSearch() {
 		if (!browser) return;
 
+		const filtersPanel = document.getElementById('song-filters-panel') as HTMLElement | null;
 		const searchField = document.getElementById('song-search') as HTMLInputElement | null;
-		if (searchField) {
-			searchField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			searchField.focus({ preventScroll: true });
-			searchField.select();
+		if (filtersPanel && searchField) {
+			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const viewportOffset = Math.min(Math.max(window.innerHeight * 0.045, 12), 28);
+			const panelTop = window.scrollY + filtersPanel.getBoundingClientRect().top;
+
+			window.scrollTo({
+				top: Math.max(0, panelTop - viewportOffset),
+				behavior: prefersReducedMotion ? 'auto' : 'smooth'
+			});
+
+			window.setTimeout(
+				() => {
+					searchField.focus({ preventScroll: true });
+					searchField.select();
+				},
+				prefersReducedMotion ? 0 : 260
+			);
 			return;
 		}
 

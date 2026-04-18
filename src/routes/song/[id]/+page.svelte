@@ -9,6 +9,7 @@
 	import { getSongByKey } from '$lib/stores/songStore';
 	import { favourites, toggleFavourite, language, viewMode } from '$lib/stores/preferences';
 	import type { Song, SongLanguage } from '$lib/types/song';
+	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
 
 	const indexPath = base || '/';
 	const validLanguages: SongLanguage[] = ['PL', 'EN'];
@@ -148,6 +149,11 @@
 		if (!browser) return;
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
+
+	function displaySourceLabel(source: string) {
+		const translationKey = getSourceTranslationKey(source);
+		return translationKey ? $t(translationKey) : source;
+	}
 </script>
 
 <svelte:head>
@@ -232,7 +238,7 @@
 					</span>
 					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.source_label')}
-						{song.source}
+						{displaySourceLabel(song.source)}
 					</span>
 					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.external_index')}

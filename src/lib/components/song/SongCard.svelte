@@ -6,6 +6,7 @@
 	import { t } from 'svelte-i18n';
 	import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
+	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
 
 	export let song: Song;
 	export let isFavourite = false;
@@ -86,6 +87,11 @@
 		if (alignment === 'RIGHT') return 'text-right';
 		return 'text-left';
 	}
+
+	function displaySourceLabel(source: string) {
+		const translationKey = getSourceTranslationKey(source);
+		return translationKey ? $t(translationKey) : source;
+	}
 </script>
 
 <div>
@@ -114,7 +120,7 @@
 							class="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-on-surface-soft"
 						>
 							{$t('app.source_label')}
-							{song.source}
+							{displaySourceLabel(song.source)}
 						</span>
 						<span
 							class="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-on-surface-soft"

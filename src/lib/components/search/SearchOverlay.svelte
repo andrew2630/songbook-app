@@ -9,6 +9,7 @@
 	import { closeSearchOverlay, isSearchOverlayOpen } from '$lib/stores/ui';
 	import { filterSongs, searchableSongs } from '$lib/stores/songStore';
 	import type { Song } from '$lib/types/song';
+	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
 
 	let query = '';
 	let inputRef: HTMLInputElement | null = null;
@@ -80,6 +81,11 @@
 	).slice(0, 10);
 
 	$: hasQuery = query.trim().length > 0;
+
+	function displaySourceLabel(source: string) {
+		const translationKey = getSourceTranslationKey(source);
+		return translationKey ? $t(translationKey) : source;
+	}
 </script>
 
 {#if $isSearchOverlayOpen}
@@ -139,7 +145,7 @@
 								<p class="font-semibold text-on-surface">{song.title}</p>
 								<p class="text-xs text-on-surface-muted">
 									{$t('app.page_label')}
-									{song.page} · {song.source}
+									{song.page} · {displaySourceLabel(song.source)}
 								</p>
 							</div>
 							<span
