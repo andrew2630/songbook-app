@@ -7,9 +7,18 @@
 	import { onMount } from 'svelte';
 	import { ArrowUp, Heart } from 'lucide-svelte';
 	import { getSongByKey } from '$lib/stores/songStore';
-	import { favourites, toggleFavourite, language, viewMode } from '$lib/stores/preferences';
+	import {
+		favourites,
+		toggleFavourite,
+		language,
+		viewMode,
+		songTextScale
+	} from '$lib/stores/preferences';
 	import type { Song, SongLanguage } from '$lib/types/song';
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
+	import { getSongTextSizeRem, getSongTextSpacerHeightRem } from '$lib/utils/songTextScale';
+	import { getRememberedSongListPath } from '$lib/utils/songNavigation';
+	import TextZoomControl from '$lib/components/song/TextZoomControl.svelte';
 
 	const indexPath = base || '/';
 	const validLanguages: SongLanguage[] = ['PL', 'EN'];
@@ -49,7 +58,22 @@
 	});
 
 	$: favouriteKey = song ? `${song.id}-${song.language}` : '';
-	$: activeViewMode = $viewMode;
+	$: if ($viewMode !== activeViewMode) {
+		activeViewMode = $viewMode;
+	}
+	$: songTextSizeRem = getSongTextSizeRem($songTextScale);
+	$: songTextSpacerHeightRem = getSongTextSpacerHeightRem($songTextScale);
+	$: returnPath = resolveReturnPath($page.url.searchParams.get('returnTo'));
+	$: rememberedListPath = resolveReturnPath(getRememberedSongListPath());
+	$: returnListPath =
+		returnPath && !isSongRoute(returnPath)
+			? returnPath
+			: returnPath &&
+				  isSongRoute(returnPath) &&
+				  rememberedListPath &&
+				  !isSongRoute(rememberedListPath)
+				? rememberedListPath
+				: indexPath;
 	$: lastUpdatedLabel = song?.lastUpdatedAt
 		? new Date(song.lastUpdatedAt).toLocaleDateString(undefined, {
 				day: 'numeric',
@@ -90,17 +114,42 @@
 		return typeof item.text === 'string' ? item.text : '';
 	}
 
-	function isChordLike(itemType: Song['items'][number]['type']) {
-		return itemType === 'CHORDS' || itemType === 'TABS';
+	function hasMeaningfulContent(item: Song['items'][number]) {
+		const text = itemText(item);
+		return isChordLike(item) ? text.length > 0 : text.trim().length > 0;
+	}
+
+	function normaliseItemType(itemType: Song['items'][number]['type']) {
+		return typeof itemType === 'string' ? itemType.trim().toUpperCase() : '';
+	}
+
+	function looksLikeChordLine(text: string) {
+		const normalizedText = text.trim();
+		if (!normalizedText) return false;
+
+		const tokens = normalizedText.split(/\s+/);
+		const chordTokenPattern =
+			/^(?:[A-H](?:#|b)?(?:m|maj|min|sus|add|dim|aug)?\d*(?:\/[A-H](?:#|b)?)?|N\.C\.|NC|x|X|[|()[\]{}:/\\.-]+)$/;
+
+		return tokens.every((token) => chordTokenPattern.test(token));
+	}
+
+	function isChordLike(item: Song['items'][number]) {
+		const normalizedType = normaliseItemType(item.type);
+		if (normalizedType === 'CHORDS' || normalizedType === 'CORDS' || normalizedType === 'TABS') {
+			return true;
+		}
+
+		return normalizedType === '' && looksLikeChordLine(itemText(item));
 	}
 
 	function isAdditional(itemType: Song['items'][number]['type']) {
-		return itemType === 'ADDITIONAL';
+		return normaliseItemType(itemType) === 'ADDITIONAL';
 	}
 
 	function itemClass(item: Song['items'][number]) {
 		return [
-			isChordLike(item.type) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
+			isChordLike(item) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
 			item.alignment === 'CENTER'
 				? 'text-center'
 				: item.alignment === 'RIGHT'
@@ -134,15 +183,20 @@
 
 		event.preventDefault();
 		const next = mode === 'basic' ? 'chords' : 'basic';
-		viewMode.set(next);
+		setActiveViewMode(next);
+	}
+
+	function setActiveViewMode(mode: 'basic' | 'chords') {
+		activeViewMode = mode;
+		viewMode.set(mode);
 	}
 
 	function goBack() {
-		if (typeof window !== 'undefined' && window.history.length > 1) {
-			window.history.back();
-		} else {
-			goto(indexPath);
-		}
+		goto(returnListPath);
+	}
+
+	function returnToList() {
+		goto(returnListPath);
 	}
 
 	function scrollToTop() {
@@ -153,6 +207,16 @@
 	function displaySourceLabel(source: string) {
 		const translationKey = getSourceTranslationKey(source);
 		return translationKey ? $t(translationKey) : source;
+	}
+
+	function resolveReturnPath(value: string | null) {
+		if (!value) return null;
+		if (value.startsWith('/')) return value;
+		return null;
+	}
+
+	function isSongRoute(path: string) {
+		return path.startsWith(`${base}/song/`) || (base === '' && path.startsWith('/song/'));
 	}
 </script>
 
@@ -176,44 +240,47 @@
 		</div>
 
 		<header class="relative space-y-5 text-center lg:text-left">
-			<div class="flex flex-1 flex-wrap items-center justify-between gap-3">
-				<div class="flex flex-wrap items-center gap-2.5">
+			<div class="flex items-start justify-between gap-3 sm:items-center">
+				<div class="flex min-w-0 flex-wrap items-center gap-2">
 					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em]"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
 						type="button"
 						on:click={goBack}
 					>
 						{$t('app.back_action')}
 					</button>
 					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em]"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
 						type="button"
-						on:click={() => goto(indexPath)}
+						on:click={returnToList}
 					>
 						{$t('app.back_to_index')}
 					</button>
 				</div>
-				<button
-					class={`icon-button ${$favourites.includes(favouriteKey) ? 'btn-gold' : ''}`}
-					type="button"
-					aria-pressed={$favourites.includes(favouriteKey)}
-					aria-label={$favourites.includes(favouriteKey)
-						? $t('app.remove_favourite')
-						: $t('app.add_favourite')}
-					title={$favourites.includes(favouriteKey)
-						? $t('app.remove_favourite')
-						: $t('app.add_favourite')}
-					on:click={() => toggleFavourite(favouriteKey)}
-				>
-					<Heart
-						class={`h-5 w-5 transition ${$favourites.includes(favouriteKey) ? 'fill-current' : ''}`}
-					/>
-					<span class="sr-only">
-						{$favourites.includes(favouriteKey)
+				<div class="ml-auto inline-flex shrink-0 items-center gap-2">
+					<button
+						class={`icon-button ${$favourites.includes(favouriteKey) ? 'btn-gold' : ''}`}
+						type="button"
+						aria-pressed={$favourites.includes(favouriteKey)}
+						aria-label={$favourites.includes(favouriteKey)
 							? $t('app.remove_favourite')
 							: $t('app.add_favourite')}
-					</span>
-				</button>
+						title={$favourites.includes(favouriteKey)
+							? $t('app.remove_favourite')
+							: $t('app.add_favourite')}
+						on:click={() => toggleFavourite(favouriteKey)}
+					>
+						<Heart
+							class={`h-5 w-5 transition ${$favourites.includes(favouriteKey) ? 'fill-current' : ''}`}
+						/>
+						<span class="sr-only">
+							{$favourites.includes(favouriteKey)
+								? $t('app.remove_favourite')
+								: $t('app.add_favourite')}
+						</span>
+					</button>
+					<TextZoomControl />
+				</div>
 			</div>
 
 			<div class="space-y-3">
@@ -258,7 +325,7 @@
 					role="tab"
 					aria-selected={activeViewMode === 'basic'}
 					tabindex={activeViewMode === 'basic' ? 0 : -1}
-					on:click={() => viewMode.set('basic')}
+					on:click={() => setActiveViewMode('basic')}
 					on:keydown={(event) => handleTabKeydown(event, 'basic')}
 				>
 					{$t('app.view.basic')}
@@ -269,7 +336,7 @@
 					role="tab"
 					aria-selected={activeViewMode === 'chords'}
 					tabindex={activeViewMode === 'chords' ? 0 : -1}
-					on:click={() => viewMode.set('chords')}
+					on:click={() => setActiveViewMode('chords')}
 					on:keydown={(event) => handleTabKeydown(event, 'chords')}
 				>
 					{$t('app.view.chords')}
@@ -278,15 +345,18 @@
 		</header>
 
 		<section
-			class={`glass-panel--soft relative space-y-3 rounded-[26px] p-5 text-left text-sm leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 sm:text-base ${
+			class={`glass-panel--soft relative space-y-3 rounded-[26px] p-5 text-left leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 ${
 				activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
 			}`}
+			style={`font-size: ${songTextSizeRem}rem;`}
 		>
 			{#each song.items as item}
-				{#if itemText(item).trim().length && (!isChordLike(item.type) || activeViewMode === 'chords')}
+				{#if hasMeaningfulContent(item) && (!isChordLike(item) || activeViewMode === 'chords')}
 					<p class={itemClass(item)}>
 						{itemText(item)}
 					</p>
+				{:else if !hasMeaningfulContent(item) && (!isChordLike(item) || activeViewMode === 'chords')}
+					<div aria-hidden="true" style={`height: ${songTextSpacerHeightRem}rem;`}></div>
 				{/if}
 			{/each}
 		</section>

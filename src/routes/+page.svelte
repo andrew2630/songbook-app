@@ -15,8 +15,14 @@
 	import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
 	import SongCard from '$lib/components/song/SongCard.svelte';
 	import { onMount, tick } from 'svelte';
-	import { ArrowUp, Heart, LayoutList, Search } from 'lucide-svelte';
+	import { ArrowUp, Heart, LayoutList, RotateCcw, Search } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
+	import {
+		getCurrentAppPath,
+		rememberSongListPath,
+		rememberSongReturnPath
+	} from '$lib/utils/songNavigation';
+	import TextZoomControl from '$lib/components/song/TextZoomControl.svelte';
 
 	let query = '';
 	let menuView: 'index' | 'favourites' = 'index';
@@ -45,6 +51,21 @@
 	const INITIAL_RENDER_COUNT = 24;
 	const RENDER_BATCH_COUNT = 24;
 
+	function buildListUrl() {
+		if (!browser) return `${base || '/'}`;
+
+		const params = new URLSearchParams();
+		const trimmedQuery = query.trim();
+		if (trimmedQuery) params.set('q', trimmedQuery);
+		if (menuView === 'favourites') params.set('view', menuView);
+		if (pageFilter !== null) params.set('page', String(pageFilter));
+		if (sortMode !== 'page') params.set('sort', sortMode);
+		if (sourceFilter !== 'all') params.set('source', sourceFilter);
+
+		const nextSearch = params.toString();
+		return `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+	}
+
 	function readFilterStateFromUrl() {
 		if (!browser) return;
 
@@ -72,22 +93,14 @@
 
 	function syncFilterStateToUrl() {
 		if (!browser || !hasInitialisedFiltersFromUrl) return;
-
-		const params = new URLSearchParams();
-		const trimmedQuery = query.trim();
-		if (trimmedQuery) params.set('q', trimmedQuery);
-		if (menuView === 'favourites') params.set('view', menuView);
-		if (pageFilter !== null) params.set('page', String(pageFilter));
-		if (sortMode !== 'page') params.set('sort', sortMode);
-		if (sourceFilter !== 'all') params.set('source', sourceFilter);
-
-		const nextSearch = params.toString();
-		const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+		const nextUrl = buildListUrl();
 		const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
 
 		if (nextUrl !== currentUrl) {
 			window.history.replaceState(window.history.state, '', nextUrl);
 		}
+
+		rememberSongListPath(nextUrl);
 	}
 
 	onMount(() => {
@@ -180,7 +193,13 @@
 	}
 
 	function openSong(song: Song) {
-		goto(`${base}/song/${song.id}?lang=${song.language}`);
+		const returnTo = browser ? buildListUrl() : getCurrentAppPath(`${base}/`);
+		rememberSongReturnPath(returnTo);
+		const params = new URLSearchParams({
+			lang: song.language,
+			returnTo
+		});
+		goto(`${base}/song/${song.id}?${params.toString()}`);
 	}
 
 	function handlePageSelect(pageNumber: number) {
@@ -237,34 +256,49 @@
         {$t('app.search_placeholder')}
       </label> -->
 			<div class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
-				<div class="flex flex-wrap gap-1.5 sm:gap-2">
-					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
-							menuView === 'index' ? 'btn-gold' : 'btn-secondary'
-						}`}
-						on:click={() => (menuView = 'index')}
-						type="button"
-					>
-						<LayoutList class="h-4 w-4" />
-						{$t('app.toggle_index')}
-					</button>
-					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
-							menuView === 'favourites' ? 'btn-gold' : 'btn-secondary'
-						}`}
-						on:click={() => (menuView = 'favourites')}
-						type="button"
-					>
-						<Heart class="h-4 w-4" />
-						{$t('app.toggle_favourites')}
-					</button>
-					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted hover:text-primary-500 sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
-						on:click={handleClearFilters}
-						type="button"
-					>
-						{$t('app.reset_filters')}
-					</button>
+				<div class="flex items-center justify-between gap-2">
+					<div class="flex min-w-0 flex-wrap gap-1.5 sm:gap-2">
+						<button
+							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
+								menuView === 'index' ? 'btn-gold' : 'btn-secondary'
+							}`}
+							on:click={() => (menuView = 'index')}
+							type="button"
+						>
+							<LayoutList class="h-4 w-4" />
+							{$t('app.toggle_index')}
+						</button>
+						<button
+							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
+								menuView === 'favourites' ? 'btn-gold' : 'btn-secondary'
+							}`}
+							on:click={() => (menuView = 'favourites')}
+							type="button"
+						>
+							<Heart class="h-4 w-4" />
+							{$t('app.toggle_favourites')}
+						</button>
+						<button
+							class="btn-secondary hidden items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted hover:text-primary-500 sm:inline-flex sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
+							on:click={handleClearFilters}
+							type="button"
+						>
+							{$t('app.reset_filters')}
+						</button>
+					</div>
+					<div class="inline-flex shrink-0 items-center gap-2">
+						<button
+							class="icon-button sm:hidden"
+							on:click={handleClearFilters}
+							type="button"
+							aria-label={$t('app.reset_filters')}
+							title={$t('app.reset_filters')}
+						>
+							<RotateCcw class="h-4 w-4" />
+							<span class="sr-only">{$t('app.reset_filters')}</span>
+						</button>
+						<TextZoomControl />
+					</div>
 				</div>
 
 				<label class="flex items-center gap-2.5 text-sm font-medium text-surface-600 lg:ml-auto">

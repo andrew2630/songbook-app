@@ -10,6 +10,7 @@
 	import { filterSongs, searchableSongs } from '$lib/stores/songStore';
 	import type { Song } from '$lib/types/song';
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
+	import { getCurrentAppPath, rememberSongReturnPath } from '$lib/utils/songNavigation';
 
 	let query = '';
 	let inputRef: HTMLInputElement | null = null;
@@ -41,7 +42,13 @@
 	}
 
 	async function handleSongSelect(song: Song) {
-		const url = `${base}/song/${song.id}?lang=${song.language}`;
+		const returnTo = getCurrentAppPath(`${base}/`);
+		rememberSongReturnPath(returnTo);
+		const params = new URLSearchParams({
+			lang: song.language,
+			returnTo
+		});
+		const url = `${base}/song/${song.id}?${params.toString()}`;
 		handleClose();
 		await goto(url, { noScroll: false });
 	}

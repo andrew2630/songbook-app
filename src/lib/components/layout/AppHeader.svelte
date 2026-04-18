@@ -3,7 +3,7 @@
 	import { t } from 'svelte-i18n';
 	import { language, theme, type ThemePreference } from '$lib/stores/preferences';
 	import { get } from 'svelte/store';
-	import { Languages, Monitor, Search } from 'lucide-svelte';
+	import { Languages, Monitor, Moon, Search, SunMedium } from 'lucide-svelte';
 	import type { SongLanguage } from '$lib/types/song';
 	import { openSearchOverlay } from '$lib/stores/ui';
 	import { canInstall, installPrompt, isStandalone, setInstallPrompt } from '$lib/stores/pwa';
@@ -33,6 +33,17 @@
 
 	function setThemePreference(preference: ThemePreference) {
 		theme.set(preference);
+	}
+
+	function cycleLanguage() {
+		setLanguage(get(language) === 'PL' ? 'EN' : 'PL');
+	}
+
+	function cycleThemePreference() {
+		const currentTheme = get(theme);
+		const nextTheme: ThemePreference =
+			currentTheme === 'system' ? 'light' : currentTheme === 'light' ? 'dark' : 'system';
+		setThemePreference(nextTheme);
 	}
 
 	function focusSearch() {
@@ -74,6 +85,10 @@
 			setInstallPrompt(null);
 		}
 	}
+
+	function languageLabel(code: SongLanguage) {
+		return languageOptions.find((option) => option.code === code)?.label ?? code;
+	}
 </script>
 
 <section class="pt-3 sm:pt-12 lg:pt-16">
@@ -109,7 +124,7 @@
 						</h1>
 					</div>
 				</div>
-				<div class="flex w-full items-start justify-center lg:max-w-sm lg:justify-end">
+				<div class="hidden w-full items-start justify-center sm:flex lg:max-w-sm lg:justify-end">
 					<div class="flex flex-wrap items-center justify-center gap-2 lg:justify-end">
 						<div
 							class="glass-pill inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface sm:gap-2 sm:px-3 sm:text-[11px] sm:tracking-[0.2em]"
@@ -153,8 +168,48 @@
 
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-4">
+					<div class="flex items-center justify-center gap-2 sm:hidden">
+						{#if $canInstall && !$isStandalone}
+							<button
+								class="btn-secondary inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold text-primary-600 hover:text-primary-700"
+								type="button"
+								on:click={installApp}
+							>
+								{$t('app.install_cta')}
+							</button>
+						{/if}
+						<button
+							class="icon-button relative shrink-0"
+							type="button"
+							aria-label={`${$t('app.language_label')}: ${languageLabel($language)}`}
+							title={`${$t('app.language_label')}: ${languageLabel($language)}`}
+							on:click={cycleLanguage}
+						>
+							<Languages class="h-4 w-4" aria-hidden="true" />
+							<span
+								class="pointer-events-none absolute -right-1 -top-1 inline-flex min-w-[1.15rem] items-center justify-center rounded-full bg-primary-500 px-1 text-[9px] font-semibold uppercase leading-none text-[rgb(var(--interactive-accent-text))]"
+							>
+								{$language}
+							</span>
+						</button>
+						<button
+							class="icon-button shrink-0"
+							type="button"
+							aria-label={`${$t('app.theme_label')}: ${$t(`app.theme.${$theme}`)}`}
+							title={`${$t('app.theme_label')}: ${$t(`app.theme.${$theme}`)}`}
+							on:click={cycleThemePreference}
+						>
+							{#if $theme === 'light'}
+								<SunMedium class="h-4 w-4" aria-hidden="true" />
+							{:else if $theme === 'dark'}
+								<Moon class="h-4 w-4" aria-hidden="true" />
+							{:else}
+								<Monitor class="h-4 w-4" aria-hidden="true" />
+							{/if}
+						</button>
+					</div>
 					{#if $canInstall && !$isStandalone}
-						<div class="flex flex-col items-center gap-2 sm:items-start">
+						<div class="hidden flex-col items-center gap-2 sm:flex sm:items-start">
 							<button
 								class="btn-secondary inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary-600 hover:text-primary-700 sm:px-5 sm:py-2.5"
 								type="button"

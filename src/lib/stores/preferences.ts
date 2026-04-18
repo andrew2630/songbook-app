@@ -2,11 +2,13 @@ import { browser } from '$app/environment';
 import { derived, writable } from 'svelte/store';
 import { locale } from 'svelte-i18n';
 import type { SongLanguage, SongViewMode } from '$lib/types/song';
+import { DEFAULT_SONG_TEXT_SCALE, isSongTextScale } from '$lib/utils/songTextScale';
 
 const LANGUAGE_KEY = 'songbook-language';
 const VIEW_KEY = 'songbook-view-mode';
 const FAV_KEY = 'songbook-favourites';
 const THEME_KEY = 'songbook-theme';
+const TEXT_SIZE_KEY = 'songbook-text-size';
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const LIGHT_THEME_NAME = 'songbook-dawn';
 const DARK_THEME_NAME = 'songbook-dusk';
@@ -73,6 +75,11 @@ export const theme = createPersistedStore<ThemePreference>(
 	THEME_KEY,
 	defaultTheme,
 	isThemePreference
+);
+export const songTextScale = createPersistedStore<number>(
+	TEXT_SIZE_KEY,
+	DEFAULT_SONG_TEXT_SCALE,
+	isSongTextScale
 );
 
 function resolveTheme(preference: ThemePreference) {

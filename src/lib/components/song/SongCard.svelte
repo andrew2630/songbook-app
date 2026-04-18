@@ -6,7 +6,9 @@
 	import { t } from 'svelte-i18n';
 	import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
+	import { songTextScale } from '$lib/stores/preferences';
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
+	import { getSongTextSizeRem, getSongTextSpacerHeightRem } from '$lib/utils/songTextScale';
 
 	export let song: Song;
 	export let isFavourite = false;
@@ -27,12 +29,32 @@
 		return typeof item.text === 'string' ? item.text : '';
 	}
 
-	function isChordLike(itemType: Song['items'][number]['type']) {
-		return itemType === 'CHORDS' || itemType === 'TABS';
+	function normaliseItemType(itemType: Song['items'][number]['type']) {
+		return typeof itemType === 'string' ? itemType.trim().toUpperCase() : '';
+	}
+
+	function looksLikeChordLine(text: string) {
+		const normalizedText = text.trim();
+		if (!normalizedText) return false;
+
+		const tokens = normalizedText.split(/\s+/);
+		const chordTokenPattern =
+			/^(?:[A-H](?:#|b)?(?:m|maj|min|sus|add|dim|aug)?\d*(?:\/[A-H](?:#|b)?)?|N\.C\.|NC|x|X|[|()[\]{}:/\\.-]+)$/;
+
+		return tokens.every((token) => chordTokenPattern.test(token));
+	}
+
+	function isChordLike(item: Song['items'][number]) {
+		const normalizedType = normaliseItemType(item.type);
+		if (normalizedType === 'CHORDS' || normalizedType === 'CORDS' || normalizedType === 'TABS') {
+			return true;
+		}
+
+		return normalizedType === '' && looksLikeChordLine(itemText(item));
 	}
 
 	function isAdditional(itemType: Song['items'][number]['type']) {
-		return itemType === 'ADDITIONAL';
+		return normaliseItemType(itemType) === 'ADDITIONAL';
 	}
 
 	function itemClass(item: Song['items'][number]) {
@@ -47,11 +69,42 @@
 			.join(' ');
 	}
 
-	$: printableItems = song.items.filter(
-		(item) => itemText(item).trim().length && !isChordLike(item.type)
-	);
-	$: previewItems = printableItems.slice(0, PREVIEW_LENGTH);
-	$: remainingItems = printableItems.slice(PREVIEW_LENGTH);
+	function isPreviewRenderable(item: Song['items'][number]) {
+		return !isChordLike(item);
+	}
+
+	function splitPreviewItems(items: Song['items'], visibleLineLimit: number) {
+		const printableItems = items.filter(isPreviewRenderable);
+		let visibleLineCount = 0;
+		let cutoffIndex = printableItems.length;
+
+		for (let index = 0; index < printableItems.length; index += 1) {
+			if (itemText(printableItems[index]).trim().length) {
+				visibleLineCount += 1;
+			}
+			if (visibleLineCount >= visibleLineLimit) {
+				cutoffIndex = index + 1;
+				break;
+			}
+		}
+
+		while (
+			cutoffIndex < printableItems.length &&
+			itemText(printableItems[cutoffIndex]).trim().length === 0
+		) {
+			cutoffIndex += 1;
+		}
+
+		return {
+			previewItems: printableItems.slice(0, cutoffIndex),
+			remainingItems: printableItems.slice(cutoffIndex)
+		};
+	}
+
+	$: ({ previewItems, remainingItems } = splitPreviewItems(song.items, PREVIEW_LENGTH));
+	$: remainingLineCount = remainingItems.filter((item) => itemText(item).trim().length).length;
+	$: previewTextSizeRem = getSongTextSizeRem($songTextScale, 0.97);
+	$: previewSpacerHeightRem = getSongTextSpacerHeightRem($songTextScale, 0.5);
 	$: lastUpdatedLabel = song.lastUpdatedAt
 		? new Date(song.lastUpdatedAt).toLocaleDateString(undefined, {
 				day: 'numeric',
@@ -139,7 +192,7 @@
 						<ExternalLink class="h-4 w-4" />
 						{$t('app.go_to_song')}
 					</button>
-					{#if remainingItems.length}
+					{#if remainingLineCount}
 						<button
 							class="icon-button"
 							on:click={() => (expanded = !expanded)}
@@ -233,25 +286,40 @@
           </div>
         </div> -->
 
-			<div class="space-y-3 text-sm leading-relaxed text-on-surface">
+			<div
+				class="space-y-3 leading-relaxed text-on-surface"
+				style={`font-size: ${previewTextSizeRem}rem;`}
+			>
 				{#each previewItems as item}
-					<p class={itemClass(item)}>
-						{itemText(item)}
-					</p>
+					{#if itemText(item).trim().length}
+						<p class={itemClass(item)}>
+							{itemText(item)}
+						</p>
+					{:else}
+						<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
+					{/if}
 				{/each}
-				{#if remainingItems.length && !expanded}
+				{#if remainingLineCount && !expanded}
 					<p class="text-xs italic text-surface-500">
-						{$t('app.preview_remaining', { values: { count: remainingItems.length } })}
+						{$t('app.preview_remaining', { values: { count: remainingLineCount } })}
 					</p>
 				{/if}
 			</div>
 
-			{#if remainingItems.length && expanded}
-				<div class="space-y-3 text-sm leading-relaxed text-on-surface" transition:fade>
+			{#if remainingLineCount && expanded}
+				<div
+					class="space-y-3 leading-relaxed text-on-surface"
+					style={`font-size: ${previewTextSizeRem}rem;`}
+					transition:fade
+				>
 					{#each remainingItems as item}
-						<p class={itemClass(item)}>
-							{itemText(item)}
-						</p>
+						{#if itemText(item).trim().length}
+							<p class={itemClass(item)}>
+								{itemText(item)}
+							</p>
+						{:else}
+							<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
+						{/if}
 					{/each}
 				</div>
 			{/if}
