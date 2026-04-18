@@ -13,7 +13,7 @@ export function buildPageIndex(songs: Song[]): PageIndexGroup[] {
 		const chunk = uniquePages.slice(i, i + 10);
 		const first = chunk[0];
 		const last = chunk[chunk.length - 1];
-		groups.push({ label: `${first} – ${last}`, pages: chunk });
+		groups.push({ label: `${first} - ${last}`, pages: chunk });
 	}
 
 	return groups;

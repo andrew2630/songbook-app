@@ -9,6 +9,12 @@
 	import { songTextScale } from '$lib/stores/preferences';
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
 	import { getSongTextSizeRem, getSongTextSpacerHeightRem } from '$lib/utils/songTextScale';
+	import {
+		getSongItemText,
+		isAdditionalSongItem,
+		isTechnicalSongItem,
+		splitPreviewSongItems
+	} from '$lib/utils/songContent';
 
 	export let song: Song;
 	export let isFavourite = false;
@@ -25,49 +31,15 @@
 
 	const PREVIEW_LENGTH = 3;
 
-	function itemText(item: Song['items'][number]) {
-		return typeof item.text === 'string' ? item.text : '';
-	}
-
-	function normaliseItemType(itemType: Song['items'][number]['type']) {
-		return typeof itemType === 'string' ? itemType.trim().toUpperCase() : '';
-	}
-
-	function looksLikeChordLine(text: string) {
-		const normalizedText = text.trim();
-		if (!normalizedText) return false;
-
-		const tokens = normalizedText.split(/\s+/);
-		const chordTokenPattern =
-			/^(?:[A-H](?:#|b)?(?:m|maj|min|sus|add|dim|aug)?\d*(?:\/[A-H](?:#|b)?)?|N\.C\.|NC|x|X|[|()[\]{}:/\\.-]+)$/;
-
-		return tokens.every((token) => chordTokenPattern.test(token));
-	}
-
-	function isChordLike(item: Song['items'][number]) {
-		const normalizedType = normaliseItemType(item.type);
-		if (normalizedType === 'CHORDS' || normalizedType === 'CORDS' || normalizedType === 'TABS') {
-			return true;
-		}
-
-		return normalizedType === '' && looksLikeChordLine(itemText(item));
-	}
-
-	function isAdditional(itemType: Song['items'][number]['type']) {
-		return normaliseItemType(itemType) === 'ADDITIONAL';
-	}
-
-	function isTechnical(itemType: Song['items'][number]['type']) {
-		return normaliseItemType(itemType) === 'TECHNICAL';
-	}
-
 	function itemClass(item: Song['items'][number]) {
 		return [
 			'whitespace-pre-line',
 			alignmentClass(item.alignment),
 			item.isBold ? 'font-semibold' : '',
-			item.isItalics || isAdditional(item.type) || isTechnical(item.type) ? 'italic' : '',
-			isAdditional(item.type) || isTechnical(item.type)
+			item.isItalics || isAdditionalSongItem(item.type) || isTechnicalSongItem(item.type)
+				? 'italic'
+				: '',
+			isAdditionalSongItem(item.type) || isTechnicalSongItem(item.type)
 				? 'text-xs text-on-surface-muted sm:text-sm'
 				: ''
 		]
@@ -75,40 +47,10 @@
 			.join(' ');
 	}
 
-	function isPreviewRenderable(item: Song['items'][number]) {
-		return !isChordLike(item) && !isTechnical(item.type);
-	}
-
-	function splitPreviewItems(items: Song['items'], visibleLineLimit: number) {
-		const printableItems = items.filter(isPreviewRenderable);
-		let visibleLineCount = 0;
-		let cutoffIndex = printableItems.length;
-
-		for (let index = 0; index < printableItems.length; index += 1) {
-			if (itemText(printableItems[index]).trim().length) {
-				visibleLineCount += 1;
-			}
-			if (visibleLineCount >= visibleLineLimit) {
-				cutoffIndex = index + 1;
-				break;
-			}
-		}
-
-		while (
-			cutoffIndex < printableItems.length &&
-			itemText(printableItems[cutoffIndex]).trim().length === 0
-		) {
-			cutoffIndex += 1;
-		}
-
-		return {
-			previewItems: printableItems.slice(0, cutoffIndex),
-			remainingItems: printableItems.slice(cutoffIndex)
-		};
-	}
-
-	$: ({ previewItems, remainingItems } = splitPreviewItems(song.items, PREVIEW_LENGTH));
-	$: remainingLineCount = remainingItems.filter((item) => itemText(item).trim().length).length;
+	$: ({ previewItems, remainingItems } = splitPreviewSongItems(song.items, PREVIEW_LENGTH));
+	$: remainingLineCount = remainingItems.filter(
+		(item) => getSongItemText(item).trim().length
+	).length;
 	$: previewTextSizeRem = getSongTextSizeRem($songTextScale, 0.97);
 	$: previewSpacerHeightRem = getSongTextSpacerHeightRem($songTextScale, 0.5);
 	$: lastUpdatedLabel = song.lastUpdatedAt
@@ -297,9 +239,9 @@
 				style={`font-size: ${previewTextSizeRem}rem;`}
 			>
 				{#each previewItems as item}
-					{#if itemText(item).trim().length}
+					{#if getSongItemText(item).trim().length}
 						<p class={itemClass(item)}>
-							{itemText(item)}
+							{getSongItemText(item)}
 						</p>
 					{:else}
 						<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
@@ -319,9 +261,9 @@
 					transition:fade
 				>
 					{#each remainingItems as item}
-						{#if itemText(item).trim().length}
+						{#if getSongItemText(item).trim().length}
 							<p class={itemClass(item)}>
-								{itemText(item)}
+								{getSongItemText(item)}
 							</p>
 						{:else}
 							<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
