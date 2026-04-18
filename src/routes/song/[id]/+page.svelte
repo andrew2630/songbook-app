@@ -18,10 +18,18 @@
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
 	import { getSongTextSizeRem, getSongTextSpacerHeightRem } from '$lib/utils/songTextScale';
 	import { getRememberedSongListPath } from '$lib/utils/songNavigation';
+	import {
+		getSongItemText,
+		hasMeaningfulSongItemContent,
+		isAdditionalSongItem,
+		isChordLikeSongItem,
+		isTechnicalSongItem,
+		parseSongLanguage,
+		shouldDisplaySongItem
+	} from '$lib/utils/songContent';
 	import TextZoomControl from '$lib/components/song/TextZoomControl.svelte';
 
 	const indexPath = base || '/';
-	const validLanguages: SongLanguage[] = ['PL', 'EN'];
 
 	let song: Song | null = null;
 	let loading = true;
@@ -110,71 +118,24 @@
 		}
 	}
 
-	function itemText(item: Song['items'][number]) {
-		return typeof item.text === 'string' ? item.text : '';
-	}
-
-	function hasMeaningfulContent(item: Song['items'][number]) {
-		const text = itemText(item);
-		return isChordLike(item) ? text.length > 0 : text.trim().length > 0;
-	}
-
-	function normaliseItemType(itemType: Song['items'][number]['type']) {
-		return typeof itemType === 'string' ? itemType.trim().toUpperCase() : '';
-	}
-
-	function looksLikeChordLine(text: string) {
-		const normalizedText = text.trim();
-		if (!normalizedText) return false;
-
-		const tokens = normalizedText.split(/\s+/);
-		const chordTokenPattern =
-			/^(?:[A-H](?:#|b)?(?:m|maj|min|sus|add|dim|aug)?\d*(?:\/[A-H](?:#|b)?)?|N\.C\.|NC|x|X|[|()[\]{}:/\\.-]+)$/;
-
-		return tokens.every((token) => chordTokenPattern.test(token));
-	}
-
-	function isChordLike(item: Song['items'][number]) {
-		const normalizedType = normaliseItemType(item.type);
-		if (normalizedType === 'CHORDS' || normalizedType === 'CORDS' || normalizedType === 'TABS') {
-			return true;
-		}
-
-		return normalizedType === '' && looksLikeChordLine(itemText(item));
-	}
-
-	function isAdditional(itemType: Song['items'][number]['type']) {
-		return normaliseItemType(itemType) === 'ADDITIONAL';
-	}
-
-	function isTechnical(itemType: Song['items'][number]['type']) {
-		return normaliseItemType(itemType) === 'TECHNICAL';
-	}
-
 	function itemClass(item: Song['items'][number]) {
 		return [
-			isChordLike(item) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
+			isChordLikeSongItem(item) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
 			item.alignment === 'CENTER'
 				? 'text-center'
 				: item.alignment === 'RIGHT'
 					? 'text-right'
 					: 'text-left',
 			item.isBold ? 'font-semibold' : '',
-			item.isItalics || isAdditional(item.type) || isTechnical(item.type) ? 'italic' : '',
-			isAdditional(item.type) || isTechnical(item.type)
+			item.isItalics || isAdditionalSongItem(item.type) || isTechnicalSongItem(item.type)
+				? 'italic'
+				: '',
+			isAdditionalSongItem(item.type) || isTechnicalSongItem(item.type)
 				? 'text-xs text-on-surface-muted sm:text-sm'
 				: 'text-on-surface'
 		]
 			.filter(Boolean)
 			.join(' ');
-	}
-
-	function parseSongLanguage(value: string | null): SongLanguage | undefined {
-		if (!value) return undefined;
-		const normalizedValue = value.toUpperCase();
-		return validLanguages.includes(normalizedValue as SongLanguage)
-			? (normalizedValue as SongLanguage)
-			: undefined;
 	}
 
 	function handleTabKeydown(event: KeyboardEvent, mode: 'basic' | 'chords') {
@@ -223,14 +184,6 @@
 
 	function isSongRoute(path: string) {
 		return path.startsWith(`${base}/song/`) || (base === '' && path.startsWith('/song/'));
-	}
-
-	function shouldDisplayItem(item: Song['items'][number]) {
-		if (isTechnical(item.type)) {
-			return activeViewMode === 'chords';
-		}
-
-		return !isChordLike(item) || activeViewMode === 'chords';
 	}
 </script>
 
@@ -365,11 +318,11 @@
 			style={`font-size: ${songTextSizeRem}rem;`}
 		>
 			{#each song.items as item}
-				{#if hasMeaningfulContent(item) && shouldDisplayItem(item)}
+				{#if hasMeaningfulSongItemContent(item) && shouldDisplaySongItem(item, activeViewMode)}
 					<p class={itemClass(item)}>
-						{itemText(item)}
+						{getSongItemText(item)}
 					</p>
-				{:else if !hasMeaningfulContent(item) && shouldDisplayItem(item)}
+				{:else if !hasMeaningfulSongItemContent(item) && shouldDisplaySongItem(item, activeViewMode)}
 					<div aria-hidden="true" style={`height: ${songTextSpacerHeightRem}rem;`}></div>
 				{/if}
 			{/each}
