@@ -147,6 +147,10 @@
 		return normaliseItemType(itemType) === 'ADDITIONAL';
 	}
 
+	function isTechnical(itemType: Song['items'][number]['type']) {
+		return normaliseItemType(itemType) === 'TECHNICAL';
+	}
+
 	function itemClass(item: Song['items'][number]) {
 		return [
 			isChordLike(item) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
@@ -156,8 +160,10 @@
 					? 'text-right'
 					: 'text-left',
 			item.isBold ? 'font-semibold' : '',
-			item.isItalics || isAdditional(item.type) ? 'italic' : '',
-			isAdditional(item.type) ? 'text-xs text-on-surface-muted sm:text-sm' : 'text-on-surface'
+			item.isItalics || isAdditional(item.type) || isTechnical(item.type) ? 'italic' : '',
+			isAdditional(item.type) || isTechnical(item.type)
+				? 'text-xs text-on-surface-muted sm:text-sm'
+				: 'text-on-surface'
 		]
 			.filter(Boolean)
 			.join(' ');
@@ -217,6 +223,14 @@
 
 	function isSongRoute(path: string) {
 		return path.startsWith(`${base}/song/`) || (base === '' && path.startsWith('/song/'));
+	}
+
+	function shouldDisplayItem(item: Song['items'][number]) {
+		if (isTechnical(item.type)) {
+			return activeViewMode === 'chords';
+		}
+
+		return !isChordLike(item) || activeViewMode === 'chords';
 	}
 </script>
 
@@ -351,11 +365,11 @@
 			style={`font-size: ${songTextSizeRem}rem;`}
 		>
 			{#each song.items as item}
-				{#if hasMeaningfulContent(item) && (!isChordLike(item) || activeViewMode === 'chords')}
+				{#if hasMeaningfulContent(item) && shouldDisplayItem(item)}
 					<p class={itemClass(item)}>
 						{itemText(item)}
 					</p>
-				{:else if !hasMeaningfulContent(item) && (!isChordLike(item) || activeViewMode === 'chords')}
+				{:else if !hasMeaningfulContent(item) && shouldDisplayItem(item)}
 					<div aria-hidden="true" style={`height: ${songTextSpacerHeightRem}rem;`}></div>
 				{/if}
 			{/each}

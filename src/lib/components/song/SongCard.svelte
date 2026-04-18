@@ -57,20 +57,26 @@
 		return normaliseItemType(itemType) === 'ADDITIONAL';
 	}
 
+	function isTechnical(itemType: Song['items'][number]['type']) {
+		return normaliseItemType(itemType) === 'TECHNICAL';
+	}
+
 	function itemClass(item: Song['items'][number]) {
 		return [
 			'whitespace-pre-line',
 			alignmentClass(item.alignment),
 			item.isBold ? 'font-semibold' : '',
-			item.isItalics || isAdditional(item.type) ? 'italic' : '',
-			isAdditional(item.type) ? 'text-xs text-on-surface-muted sm:text-sm' : ''
+			item.isItalics || isAdditional(item.type) || isTechnical(item.type) ? 'italic' : '',
+			isAdditional(item.type) || isTechnical(item.type)
+				? 'text-xs text-on-surface-muted sm:text-sm'
+				: ''
 		]
 			.filter(Boolean)
 			.join(' ');
 	}
 
 	function isPreviewRenderable(item: Song['items'][number]) {
-		return !isChordLike(item);
+		return !isChordLike(item) && !isTechnical(item.type);
 	}
 
 	function splitPreviewItems(items: Song['items'], visibleLineLimit: number) {
