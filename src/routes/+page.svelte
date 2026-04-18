@@ -173,8 +173,8 @@
 	}
 </script>
 
-<section class="space-y-6 pb-14 sm:space-y-8">
-	<div class="glass-panel space-y-5 rounded-3xl p-4 sm:p-6">
+<section class="space-y-5 pb-14 sm:space-y-8">
+	<div class="glass-panel space-y-4 rounded-[1.9rem] p-3.5 sm:space-y-5 sm:rounded-3xl sm:p-6">
 		<div class="space-y-2">
 			<!-- <label
         class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500"
@@ -182,10 +182,10 @@
       >
         {$t('app.search_placeholder')}
       </label> -->
-			<div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-				<div class="flex flex-wrap gap-2">
+			<div class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
+				<div class="flex flex-wrap gap-1.5 sm:gap-2">
 					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
+						class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
 							menuView === 'index' ? 'btn-gold' : 'btn-secondary'
 						}`}
 						on:click={() => (menuView = 'index')}
@@ -195,7 +195,7 @@
 						{$t('app.toggle_index')}
 					</button>
 					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
+						class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
 							menuView === 'favourites' ? 'btn-gold' : 'btn-secondary'
 						}`}
 						on:click={() => (menuView = 'favourites')}
@@ -205,7 +205,7 @@
 						{$t('app.toggle_favourites')}
 					</button>
 					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted hover:text-primary-500"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted hover:text-primary-500 sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
 						on:click={handleClearFilters}
 						type="button"
 					>
@@ -213,12 +213,14 @@
 					</button>
 				</div>
 
-				<label class="flex items-center gap-3 text-sm font-medium text-surface-600 lg:ml-auto">
-					<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500">
+				<label class="flex items-center gap-2.5 text-sm font-medium text-surface-600 lg:ml-auto">
+					<span
+						class="text-[10px] font-semibold uppercase tracking-[0.18em] text-surface-500 sm:text-[11px] sm:tracking-[0.2em]"
+					>
 						{$t('app.sort.label')}
 					</span>
 					<select
-						class="rounded-full border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none"
+						class="rounded-[1.15rem] border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none sm:rounded-full"
 						bind:value={sortMode}
 					>
 						{#each sortOptions as option}
@@ -227,7 +229,9 @@
 					</select>
 				</label>
 			</div>
-			<div class="glass-input flex items-center gap-3 rounded-2xl px-4 py-3">
+			<div
+				class="glass-input flex items-center gap-3 rounded-[1.35rem] px-4 py-2.5 sm:rounded-2xl sm:py-3"
+			>
 				<Search class="h-4 w-4 text-primary-500" />
 				<input
 					id="song-search"
@@ -239,7 +243,7 @@
 				/>
 				{#if query}
 					<button
-						class="btn-secondary rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-600"
+						class="btn-secondary rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-600 sm:text-[11px] sm:tracking-[0.22em]"
 						on:click={() => (query = '')}
 						type="button"
 					>
@@ -247,15 +251,19 @@
 					</button>
 				{/if}
 			</div>
-			<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+			<div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
 				<div class="flex flex-wrap items-center gap-2">
-					<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface-muted">
+					<span
+						class="text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted sm:text-[11px] sm:tracking-[0.2em]"
+					>
 						{$t('app.source.label')}
 					</span>
-					<div class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-full p-1">
+					<div
+						class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-[1.55rem] p-[3px] sm:rounded-full sm:p-1"
+					>
 						{#each sourceOptions as option}
 							<button
-								class="segmented-toggle__button inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]"
+								class="segmented-toggle__button inline-flex items-center rounded-[1.1rem] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] sm:rounded-full sm:px-3 sm:text-xs sm:tracking-[0.18em]"
 								type="button"
 								aria-pressed={sourceFilter === option.value}
 								on:click={() => (sourceFilter = option.value)}

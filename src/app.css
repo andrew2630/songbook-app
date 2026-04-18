@@ -16,12 +16,12 @@
 
 	--color-primary-50: 249 246 239;
 	--color-primary-100: 239 231 217;
-	--color-primary-200: 223 208 185;
-	--color-primary-300: 202 180 148;
-	--color-primary-400: 180 152 115;
-	--color-primary-500: 156 126 89;
-	--color-primary-600: 129 101 69;
-	--color-primary-700: 103 79 54;
+	--color-primary-200: 227 211 184;
+	--color-primary-300: 207 183 146;
+	--color-primary-400: 186 155 112;
+	--color-primary-500: 162 129 84;
+	--color-primary-600: 134 103 66;
+	--color-primary-700: 108 81 51;
 	--color-primary-800: 80 61 42;
 	--color-primary-900: 61 47 33;
 
@@ -42,22 +42,22 @@
 	--on-surface-subtle: 123 141 161;
 	--on-primary: 45 32 11;
 
-	--accent-gold: 168 138 101;
+	--accent-gold: 174 142 101;
 	--hero-gradient-from: 250 246 241;
 	--hero-gradient-mid: 246 239 231;
 	--hero-gradient-to: 240 233 226;
-	--hero-glow-primary: 204 178 139;
+	--hero-glow-primary: 212 184 139;
 	--hero-glow-secondary: 178 158 170;
 	--overlay-backdrop: 9 16 26;
 	--panel-bg: 255 255 255;
 	--panel-bg-strong: 255 255 255;
 	--panel-border: 255 255 255;
 	--panel-shadow-rgb: 15 23 42;
-	--interactive-accent-start: 150 122 87;
-	--interactive-accent-end: 122 96 67;
+	--interactive-accent-start: 156 126 85;
+	--interactive-accent-end: 128 99 64;
 	--interactive-accent-text: 250 247 241;
-	--interactive-accent-ring: 193 171 137;
-	--interactive-accent-shadow-rgb: 109 83 56;
+	--interactive-accent-ring: 199 176 138;
+	--interactive-accent-shadow-rgb: 112 85 53;
 	--shell-gradient-start: 255 255 255;
 	--shell-gradient-end: 255 255 255;
 	--hero-card-start: 255 255 255;
@@ -422,6 +422,31 @@
 
 	.song-preview-card {
 		contain: layout paint style;
+	}
+
+	@media (max-width: 639px) {
+		.glass-panel {
+			border-radius: 1.85rem;
+		}
+
+		.glass-panel--soft {
+			border-radius: 1.65rem;
+		}
+
+		.btn-gold,
+		.btn-secondary {
+			border-radius: 1.15rem;
+		}
+
+		.segmented-toggle {
+			border-radius: 1.5rem;
+			padding: 0.2rem;
+			gap: 0.15rem;
+		}
+
+		.segmented-toggle__button {
+			border-radius: 1.15rem;
+		}
 	}
 
 	@supports (content-visibility: auto) {

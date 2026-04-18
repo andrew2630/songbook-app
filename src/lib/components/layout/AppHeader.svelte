@@ -62,8 +62,8 @@
 	}
 </script>
 
-<section class="pt-6 sm:pt-12 lg:pt-16">
-	<div class="glass-panel relative overflow-hidden rounded-3xl p-4 sm:p-6">
+<section class="pt-3 sm:pt-12 lg:pt-16">
+	<div class="glass-panel relative overflow-hidden rounded-[1.9rem] p-3.5 sm:rounded-3xl sm:p-6">
 		<div class="pointer-events-none absolute inset-0 -z-10">
 			<div
 				class="absolute inset-0 bg-[linear-gradient(135deg,rgb(var(--hero-card-start)/0.94)_0%,rgb(var(--accent-gold)/0.28)_45%,rgb(var(--hero-card-end)/0.82)_100%)]"
@@ -79,16 +79,18 @@
 			></div>
 		</div>
 
-		<div class="relative flex flex-col gap-8">
-			<div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-				<div class="space-y-4 text-center lg:max-w-2xl lg:text-left">
+		<div class="relative flex flex-col gap-5 sm:gap-8">
+			<div class="flex flex-col gap-5 sm:gap-8 lg:flex-row lg:items-start lg:justify-between">
+				<div class="space-y-3 text-center lg:max-w-2xl lg:text-left">
 					<div
-						class="inline-flex items-center gap-2 self-center rounded-full border border-[rgb(var(--accent-gold)/0.35)] bg-[rgb(var(--accent-gold)/0.12)] px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgb(var(--accent-gold)/0.92)] shadow-sm shadow-[0_10px_24px_rgb(var(--panel-shadow-rgb)/0.12)] lg:self-start"
+						class="inline-flex items-center gap-2 self-center rounded-full border border-[rgb(var(--accent-gold)/0.35)] bg-[rgb(var(--accent-gold)/0.12)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgb(var(--accent-gold)/0.92)] shadow-sm shadow-[0_10px_24px_rgb(var(--panel-shadow-rgb)/0.12)] sm:px-4 sm:text-[11px] sm:tracking-[0.24em] lg:self-start"
 					>
 						{$t('app.brand_global')}
 					</div>
 					<div class="space-y-2">
-						<h1 class="text-balance text-3xl font-semibold text-on-surface sm:text-4xl lg:text-5xl">
+						<h1
+							class="text-balance text-[2.15rem] font-semibold leading-none text-on-surface sm:text-4xl lg:text-5xl"
+						>
 							{$t('app.title')}
 						</h1>
 					</div>
@@ -96,13 +98,13 @@
 				<div class="flex w-full items-start justify-center lg:max-w-sm lg:justify-end">
 					<div class="flex flex-wrap items-center justify-center gap-2 lg:justify-end">
 						<div
-							class="glass-pill inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface"
+							class="glass-pill inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface sm:gap-2 sm:px-3 sm:text-[11px] sm:tracking-[0.2em]"
 						>
 							<Languages class="h-3 w-3 text-primary-500" aria-hidden="true" />
 							<label class="sr-only" for="language-select">{$t('app.language_label')}</label>
 							<select
 								id="language-select"
-								class="cursor-pointer appearance-none bg-transparent text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface outline-none focus-visible:text-primary-600"
+								class="cursor-pointer appearance-none bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface outline-none focus-visible:text-primary-600 sm:text-[11px] sm:tracking-[0.2em]"
 								value={$language}
 								on:change={(event) =>
 									setLanguage((event.currentTarget as HTMLSelectElement).value as SongLanguage)}
@@ -113,13 +115,13 @@
 							</select>
 						</div>
 						<div
-							class="glass-pill inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface"
+							class="glass-pill inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface sm:gap-2 sm:px-3 sm:text-[11px] sm:tracking-[0.2em]"
 						>
 							<Monitor class="h-3 w-3 text-primary-500" aria-hidden="true" />
 							<label class="sr-only" for="theme-select">{$t('app.theme_label')}</label>
 							<select
 								id="theme-select"
-								class="cursor-pointer appearance-none bg-transparent text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface outline-none focus-visible:text-primary-600"
+								class="cursor-pointer appearance-none bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface outline-none focus-visible:text-primary-600 sm:text-[11px] sm:tracking-[0.2em]"
 								value={$theme}
 								on:change={(event) =>
 									setThemePreference(
@@ -135,12 +137,12 @@
 				</div>
 			</div>
 
-			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+				<div class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-4">
 					{#if $canInstall && !$isStandalone}
 						<div class="flex flex-col items-center gap-2 sm:items-start">
 							<button
-								class="btn-secondary inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-primary-600 hover:text-primary-700"
+								class="btn-secondary inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary-600 hover:text-primary-700 sm:px-5 sm:py-2.5"
 								type="button"
 								on:click={installApp}
 							>
@@ -156,12 +158,12 @@
                                                 </div> -->
 					{/if}
 					<button
-						class="btn-gold inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition hover:-translate-y-[1px] focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--panel-bg))]"
+						class="btn-gold inline-flex w-full items-center justify-center gap-2 rounded-[1.4rem] px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-[1px] sm:w-auto sm:rounded-full sm:px-6 sm:py-3 focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--panel-bg))]"
 						on:click={focusSearch}
 						type="button"
 					>
-						<Search class="h-4 w-4" />
-						{$t('app.search_placeholder')}
+						<Search class="h-4 w-4 shrink-0" />
+						<span class="text-balance">{$t('app.search_placeholder')}</span>
 					</button>
 				</div>
 				<!-- <div
