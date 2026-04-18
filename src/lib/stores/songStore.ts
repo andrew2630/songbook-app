@@ -9,12 +9,18 @@ const DB_VERSION = 1;
 const STORE_NAME = 'songs';
 const META_STORE = 'meta';
 const SUPABASE_PAGE_SIZE = 1000;
+const ITEM_FETCH_BATCH_SIZE = 150;
 const PERIODIC_SYNC_INTERVAL_MS = 1000 * 60 * 60; // 1 hour
 type SupabaseClient = NonNullable<typeof supabase>;
 
 interface SongRecord {
 	key: string;
 	song: Song;
+}
+
+interface SyncResult {
+	changed: boolean;
+	songs: Song[];
 }
 
 async function getDb() {
@@ -60,6 +66,13 @@ async function readCachedSongs(): Promise<Song[]> {
 	return records.map((record: SongRecord) => record.song);
 }
 
+async function readCachedSong(key: string): Promise<Song | null> {
+	if (!browser) return null;
+	const db = await getDb();
+	const record = await db.transaction(STORE_NAME).objectStore(STORE_NAME).get(key);
+	return (record as SongRecord | undefined)?.song ?? null;
+}
+
 async function readLastSynced(): Promise<string | null> {
 	if (!browser) return null;
 	const db = await getDb();
@@ -67,30 +80,72 @@ async function readLastSynced(): Promise<string | null> {
 	return meta?.value ?? null;
 }
 
-async function fetchSongsFromSupabase(): Promise<Song[]> {
-	if (!supabase) return [];
+function songKey(song: Pick<Song, 'id' | 'language'>) {
+	return `${song.id}-${song.language}`;
+}
 
-	const client = supabase;
-	const headers = await fetchAllHeaders(client);
-	const items = await fetchAllItems(client);
+function hasSongHeaderChanged(cachedSong: Song | undefined, remoteHeader: Song) {
+	if (!cachedSong) return true;
+	return (
+		cachedSong.version !== remoteHeader.version ||
+		(cachedSong.lastUpdatedAt ?? null) !== (remoteHeader.lastUpdatedAt ?? null) ||
+		cachedSong.title !== remoteHeader.title ||
+		cachedSong.source !== remoteHeader.source ||
+		cachedSong.page !== remoteHeader.page ||
+		cachedSong.externalIndex !== remoteHeader.externalIndex ||
+		cachedSong.isPublic !== remoteHeader.isPublic
+	);
+}
 
+function groupItemsBySong(items: SongItem[]) {
 	const groupedItems = new Map<string, SongItem[]>();
-	for (const item of items ?? []) {
-		const key = `${item.id}-${item.language}`;
+	for (const item of items) {
+		const key = songKey(item);
 		if (!groupedItems.has(key)) {
 			groupedItems.set(key, []);
 		}
-		groupedItems.get(key)!.push(item as unknown as SongItem);
+		groupedItems.get(key)!.push(item);
+	}
+	return groupedItems;
+}
+
+async function fetchSongsFromSupabase(cachedSongs: Song[]): Promise<SyncResult> {
+	if (!supabase) {
+		return {
+			changed: false,
+			songs: cachedSongs
+		};
 	}
 
-	return (headers ?? []).map((header) => {
-		const key = `${header.id}-${header.language}`;
-		const songItems = groupedItems.get(key) ?? [];
+	const client = supabase;
+	const headers = (await fetchAllHeaders(client)) as unknown as Song[];
+	const cachedByKey = new Map(cachedSongs.map((song) => [songKey(song), song]));
+	const staleHeaders = headers.filter((header) =>
+		hasSongHeaderChanged(cachedByKey.get(songKey(header)), header)
+	);
+	const fetchedItems = (await fetchAllItems(client, staleHeaders)) as unknown as SongItem[];
+	const groupedItems = groupItemsBySong(fetchedItems);
+
+	const mergedSongs = headers.map((header) => {
+		const key = songKey(header);
+		const cachedSong = cachedByKey.get(key);
+		if (!hasSongHeaderChanged(cachedSong, header) && cachedSong) {
+			return cachedSong;
+		}
+
+		const songItems = (groupedItems.get(key) ?? []).sort((a, b) => a.lineNumber - b.lineNumber);
 		return {
-			...(header as unknown as Song),
-			items: songItems.sort((a, b) => a.lineNumber - b.lineNumber)
+			...header,
+			items: songItems
 		} satisfies Song;
 	});
+
+	const changed =
+		staleHeaders.length > 0 ||
+		mergedSongs.length !== cachedSongs.length ||
+		cachedSongs.some((song) => !headers.some((header) => songKey(header) === songKey(song)));
+
+	return { changed, songs: mergedSongs };
 }
 
 async function fetchAllHeaders(client: SupabaseClient) {
@@ -113,21 +168,49 @@ async function fetchAllHeaders(client: SupabaseClient) {
 	return rows;
 }
 
-async function fetchAllItems(client: SupabaseClient) {
-	const rows: Record<string, unknown>[] = [];
-	let from = 0;
-	while (true) {
-		const { data, error } = await client
-			.from('songsItems')
-			.select('*')
-			.order('lineNumber')
-			.range(from, from + SUPABASE_PAGE_SIZE - 1);
+function chunk<T>(items: T[], size: number) {
+	const chunks: T[][] = [];
+	for (let index = 0; index < items.length; index += size) {
+		chunks.push(items.slice(index, index + size));
+	}
+	return chunks;
+}
 
-		if (error) throw error;
-		if (!data?.length) break;
-		rows.push(...data);
-		if (data.length < SUPABASE_PAGE_SIZE) break;
-		from += SUPABASE_PAGE_SIZE;
+function groupHeaderIdsByLanguage(headers: Pick<Song, 'id' | 'language'>[]) {
+	const grouped = new Map<SongLanguage, number[]>();
+	for (const { id, language } of headers) {
+		if (!grouped.has(language)) {
+			grouped.set(language, []);
+		}
+		grouped.get(language)!.push(id);
+	}
+	return grouped;
+}
+
+async function fetchAllItems(client: SupabaseClient, headers: Pick<Song, 'id' | 'language'>[]) {
+	if (!headers.length) return [];
+
+	const rows: Record<string, unknown>[] = [];
+	for (const [language, ids] of groupHeaderIdsByLanguage(headers)) {
+		for (const batch of chunk(ids, ITEM_FETCH_BATCH_SIZE)) {
+			let from = 0;
+			while (true) {
+				const { data, error } = await client
+					.from('songsItems')
+					.select('*')
+					.eq('language', language)
+					.in('id', batch)
+					.order('id')
+					.order('lineNumber')
+					.range(from, from + SUPABASE_PAGE_SIZE - 1);
+
+				if (error) throw error;
+				if (!data?.length) break;
+				rows.push(...data);
+				if (data.length < SUPABASE_PAGE_SIZE) break;
+				from += SUPABASE_PAGE_SIZE;
+			}
+		}
 	}
 	return rows;
 }
@@ -137,6 +220,17 @@ function normalise(text: string) {
 		.normalize('NFD')
 		.replace(/\p{Diacritic}/gu, '')
 		.toLowerCase();
+}
+
+function sourceSortRank(source: string) {
+	const normalisedSource = normalise(source);
+	if (normalisedSource.includes('zborowy')) return 0;
+	if (normalisedSource.includes('pielgrzym')) return 1;
+	return 2;
+}
+
+function compareBySourcePriority(a: Pick<Song, 'source'>, b: Pick<Song, 'source'>) {
+	return sourceSortRank(a.source) - sourceSortRank(b.source) || a.source.localeCompare(b.source);
 }
 
 function mapSearchable(song: Song) {
@@ -160,43 +254,41 @@ let periodicSyncInFlight = false;
 export async function loadSongs(force = false) {
 	if (!browser) return;
 	isSyncing.set(true);
+	let cached: Song[] = [];
+	let cachedLastSynced: string | null = null;
 	try {
-		const cached = await readCachedSongs();
+		cached = await readCachedSongs();
+		cachedLastSynced = await readLastSynced();
 		if (cached.length && !force) {
 			songs.set(cached);
+			lastSynced.set(cachedLastSynced);
 		}
 		const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 		if (online && supabase) {
-			const remoteSongs = await fetchSongsFromSupabase();
-			songs.set(remoteSongs);
-			await persistSongs(remoteSongs);
-			lastSynced.set(new Date().toISOString());
+			const syncResult = await fetchSongsFromSupabase(cached);
+			const syncedAt = new Date().toISOString();
+			if (!cached.length || syncResult.changed) {
+				songs.set(syncResult.songs);
+				await persistSongs(syncResult.songs, syncedAt);
+			} else {
+				await persistLastSynced(syncedAt);
+			}
+			lastSynced.set(syncedAt);
 		} else if (!cached.length) {
 			songs.set([]);
-		} else {
-			lastSynced.set(await readLastSynced());
 		}
 	} catch (error) {
 		console.error('Failed to load songs', error);
-		songs.set([]);
+		if (cached.length) {
+			songs.set(cached);
+			lastSynced.set(cachedLastSynced);
+		} else {
+			songs.set([]);
+			lastSynced.set(null);
+		}
 	} finally {
 		isSyncing.set(false);
 	}
-}
-
-function haveSongsChanged(current: Song[], remote: Song[]) {
-	if (current.length !== remote.length) return true;
-	const map = new Map<string, Song>(current.map((song) => [`${song.id}-${song.language}`, song]));
-	for (const song of remote) {
-		const key = `${song.id}-${song.language}`;
-		const existing = map.get(key);
-		if (!existing) return true;
-		if (existing.version !== song.version) return true;
-		const existingUpdated = existing.lastUpdatedAt ?? null;
-		const remoteUpdated = song.lastUpdatedAt ?? null;
-		if (existingUpdated !== remoteUpdated) return true;
-	}
-	return false;
 }
 
 async function performPeriodicSync() {
@@ -209,12 +301,12 @@ async function performPeriodicSync() {
 	periodicSyncInFlight = true;
 	isSyncing.set(true);
 	try {
-		const remoteSongs = await fetchSongsFromSupabase();
 		const currentSongs = getSnapshot(songs);
+		const syncResult = await fetchSongsFromSupabase(currentSongs);
 		const syncedAt = new Date().toISOString();
-		if (haveSongsChanged(currentSongs, remoteSongs)) {
-			songs.set(remoteSongs);
-			await persistSongs(remoteSongs, syncedAt);
+		if (syncResult.changed) {
+			songs.set(syncResult.songs);
+			await persistSongs(syncResult.songs, syncedAt);
 		} else {
 			await persistLastSynced(syncedAt);
 		}
@@ -248,6 +340,14 @@ export const searchableSongs = derived(songs, ($songs) =>
 );
 
 export type SongSortMode = 'page' | 'alpha' | 'recent';
+export type SongSourceFilter = 'all' | 'zborowy' | 'pielgrzym';
+
+function matchesSourceFilter(song: Pick<Song, 'source'>, sourceFilter: SongSourceFilter) {
+	const rank = sourceSortRank(song.source);
+	if (sourceFilter === 'zborowy') return rank === 0;
+	if (sourceFilter === 'pielgrzym') return rank === 1;
+	return true;
+}
 
 export function filterSongs(
 	collection: { key: string; song: Song; search: string }[],
@@ -256,7 +356,8 @@ export function filterSongs(
 	favouritesOnly: boolean,
 	favouritesList: string[],
 	pageFilter?: number | null,
-	sortMode: SongSortMode = 'page'
+	sortMode: SongSortMode = 'page',
+	sourceFilter: SongSourceFilter = 'all'
 ) {
 	const trimmedQuery = query.trim();
 	const normalisedQuery = normalise(trimmedQuery);
@@ -266,12 +367,13 @@ export function filterSongs(
 			if (song.language !== language) return false;
 			if (favouritesOnly && !favouritesList.includes(`${song.id}-${song.language}`)) return false;
 			if (pageFilter && song.page !== pageFilter) return false;
+			if (!matchesSourceFilter(song, sourceFilter)) return false;
 			if (!normalisedQuery) return true;
 
 			if (numericQuery) {
-				const source = song.source.toUpperCase();
-				const isZborowy = source.includes('ZBOROWY');
-				const isPielgrzyma = source.includes('PIELGRZYM');
+				const rank = sourceSortRank(song.source);
+				const isZborowy = rank === 0;
+				const isPielgrzyma = rank === 1;
 
 				const matchesZborowy = isZborowy && String(song.page).includes(numericQuery);
 				const matchesPielgrzyma =
@@ -284,6 +386,9 @@ export function filterSongs(
 		})
 		.map(({ song }) => song)
 		.sort((a, b) => {
+			const sourcePriority = compareBySourcePriority(a, b);
+			if (sourcePriority !== 0) return sourcePriority;
+
 			if (sortMode === 'alpha') {
 				return a.title.localeCompare(b.title);
 			}
@@ -301,11 +406,10 @@ export function filterSongs(
 export async function getSongByKey(key: string): Promise<Song | null> {
 	const [id, language] = key.split('-');
 	const $songs = getSnapshot(songs);
-	const existing = $songs.find((song) => `${song.id}-${song.language}` === key);
+	const existing = $songs.find((song) => songKey(song) === key);
 	if (existing) return existing;
 	if (!browser) return null;
-	const cached = await readCachedSongs();
-	const cachedSong = cached.find((song) => `${song.id}-${song.language}` === key);
+	const cachedSong = await readCachedSong(key);
 	if (cachedSong) return cachedSong;
 	if (!supabase) return null;
 	const { data: header } = await supabase
@@ -332,6 +436,5 @@ function getSnapshot<T>(store: { subscribe: (run: (value: T) => void) => () => v
 	let value: T;
 	const unsubscribe = store.subscribe(($value) => (value = $value));
 	unsubscribe();
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	return value!;
 }

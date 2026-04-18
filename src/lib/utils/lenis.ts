@@ -6,10 +6,11 @@ interface LenisController {
 
 export async function initLenis(): Promise<LenisController | null> {
 	if (!browser) return null;
+	if (window.matchMedia('(pointer: coarse)').matches) return null;
 
 	const { default: Lenis } = await import('lenis');
 	const lenis = new Lenis({
-		duration: 1.1
+		duration: 0.32
 	});
 
 	const root = document.documentElement;

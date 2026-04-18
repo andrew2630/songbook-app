@@ -15,7 +15,7 @@ export interface SongItem {
 	id: number;
 	language: SongLanguage;
 	lineNumber: number;
-	type: 'TEXT' | 'CHORD' | 'SECTION';
+	type: 'TEXT' | 'TABS' | 'CHORDS' | 'ADDITIONAL' | null;
 	text: string;
 	alignment: 'LEFT' | 'CENTER' | 'RIGHT';
 	isBold: boolean;

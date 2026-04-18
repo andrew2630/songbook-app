@@ -74,16 +74,15 @@ self.addEventListener('fetch', (event) => {
 	if (request.mode === 'navigate') {
 		event.respondWith(
 			caches.open(CACHE).then(async (cache) => {
-				const cachedPage = await cache.match(request);
-				if (cachedPage) {
-					return cachedPage;
-				}
-
 				try {
 					const response = await fetch(request);
 					cache.put(request, response.clone());
 					return response;
 				} catch (error) {
+					const cachedPage = await cache.match(request);
+					if (cachedPage) {
+						return cachedPage;
+					}
 					const fallback = await cache.match(APP_SHELL);
 					if (fallback) return fallback;
 					throw error;

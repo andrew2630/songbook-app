@@ -11,8 +11,42 @@
 			href="%sveltekit.assets%/manifest.webmanifest"
 			crossorigin="use-credentials"
 		/>
-		<meta name="theme-color" content="#caa545" />
+		<meta name="theme-color" content="#93725f" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script>
+			(() => {
+				const storageKey = 'songbook-theme';
+				const resolveTheme = (preference) => {
+					if (preference === 'light' || preference === 'dark') return preference;
+					return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				};
+
+				let preference = 'system';
+				try {
+					const stored = window.localStorage.getItem(storageKey);
+					if (stored) {
+						const parsed = JSON.parse(stored);
+						if (parsed === 'light' || parsed === 'dark' || parsed === 'system') {
+							preference = parsed;
+						}
+					}
+				} catch {}
+
+				const resolvedTheme = resolveTheme(preference);
+				const isDark = resolvedTheme === 'dark';
+				const root = document.documentElement;
+				root.dataset.theme = isDark ? 'songbook-dusk' : 'songbook-dawn';
+				root.dataset.colorMode = resolvedTheme;
+				root.style.colorScheme = resolvedTheme;
+				root.classList.toggle('theme-dark', isDark);
+				root.classList.toggle('theme-light', !isDark);
+
+				const themeMeta = document.querySelector("meta[name='theme-color']");
+				if (themeMeta) {
+					themeMeta.setAttribute('content', isDark ? '#141216' : '#93725f');
+				}
+			})();
+		</script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

@@ -7,6 +7,18 @@
 		"install_hint": "Install Songbook to keep the library one tap away on your device.",
 		"install_installed": "Installed",
 		"language_label": "Language",
+		"theme_label": "Theme",
+		"theme": {
+			"system": "System",
+			"light": "Light",
+			"dark": "Dark"
+		},
+		"source": {
+			"label": "Source",
+			"all": "All",
+			"zborowy": "Zborowy",
+			"pielgrzym": "Pielgrzym"
+		},
 		"view": {
 			"basic": "Lyrics",
 			"chords": "Chords view"
@@ -48,6 +60,7 @@
 			"none": "No filters applied",
 			"search": "Search: {query}",
 			"page": "Page {page}",
+			"source": "Source: {source}",
 			"favourites": "Favourites only",
 			"page_search": "Page search: {query}",
 			"no_page_results": "No pages match this search"

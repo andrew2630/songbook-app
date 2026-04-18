@@ -85,13 +85,13 @@
 {#if $isSearchOverlayOpen}
 	<div
 		class="fixed inset-0 z-50 flex items-start justify-center px-3 py-12 backdrop-blur-2xl sm:px-4 sm:py-16"
-		style="background-color: rgba(var(--overlay-backdrop), 0.58);"
+		style="background-color: rgb(var(--overlay-backdrop) / 0.58);"
 		role="presentation"
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
 	>
 		<div
-			class="flex w-full max-w-2xl flex-col overflow-hidden rounded-[28px] border border-white/30 bg-white/85 p-4 shadow-[0_34px_110px_rgba(15,23,42,0.24)] sm:max-h-[min(85vh,640px)] sm:p-6"
+			class="glass-overlay-panel flex w-full max-w-2xl flex-col overflow-hidden rounded-[28px] p-4 sm:max-h-[min(85vh,640px)] sm:p-6"
 			role="dialog"
 			aria-modal="true"
 			tabindex="-1"
@@ -104,9 +104,7 @@
 					>
 						{$t('app.search_placeholder')}
 					</label>
-					<div
-						class="mt-3 flex items-center gap-3 rounded-2xl border border-white/40 bg-white/70 px-4 py-3 shadow-inner shadow-primary-500/10"
-					>
+					<div class="glass-input mt-3 flex items-center gap-3 rounded-2xl px-4 py-3">
 						<Search class="h-4 w-4 text-primary-500" aria-hidden="true" />
 						<input
 							id="search-overlay-input"
@@ -120,7 +118,7 @@
 					</div>
 				</div>
 				<button
-					class="inline-flex shrink-0 items-center justify-center rounded-full border border-white/40 bg-white/70 p-2 text-on-surface-soft transition hover:border-primary-200 hover:text-primary-500"
+					class="btn-secondary inline-flex shrink-0 items-center justify-center rounded-full p-2 text-on-surface-soft hover:text-primary-500"
 					type="button"
 					on:click={handleClose}
 				>
@@ -133,7 +131,7 @@
 				<div class="mt-6 flex-1 overflow-y-auto space-y-3 pr-1" bind:this={resultsRef}>
 					{#each results as song (song.id + song.language)}
 						<button
-							class="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/40 bg-white/70 px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition hover:border-primary-300 hover:text-primary-600 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+							class="btn-secondary flex w-full items-center justify-between gap-4 rounded-2xl px-5 py-3.5 text-left text-sm font-semibold text-on-surface transition-[transform,box-shadow,border-color,color] duration-180 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_16px_32px_rgb(var(--panel-shadow-rgb)/0.16)]"
 							type="button"
 							on:click={() => handleSongSelect(song)}
 						>

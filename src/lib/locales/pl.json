@@ -7,6 +7,18 @@
 		"install_hint": "Dodaj Śpiewnik Wspólnoty Biblijnej KWCh na ekran główny, aby mieć go zawsze pod ręką.",
 		"install_installed": "Zainstalowano",
 		"language_label": "Język",
+		"theme_label": "Motyw",
+		"theme": {
+			"system": "System",
+			"light": "Jasny",
+			"dark": "Ciemny"
+		},
+		"source": {
+			"label": "Źródło",
+			"all": "Wszystkie",
+			"zborowy": "Zborowy",
+			"pielgrzym": "Pielgrzym"
+		},
 		"view": {
 			"basic": "Tekst",
 			"chords": "Akordy"
@@ -48,6 +60,7 @@
 			"none": "Brak filtrów",
 			"search": "Szukaj: {query}",
 			"page": "Strona {page}",
+			"source": "Źródło: {source}",
 			"favourites": "Tylko ulubione",
 			"page_search": "Wyszukiwanie stron: {query}",
 			"no_page_results": "Brak stron spełniających kryteria"

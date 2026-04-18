@@ -11,6 +11,7 @@
 	import type { Song, SongLanguage } from '$lib/types/song';
 
 	const indexPath = base || '/';
+	const validLanguages: SongLanguage[] = ['PL', 'EN'];
 
 	let song: Song | null = null;
 	let loading = true;
@@ -68,9 +69,7 @@
 				lastRequestedKey = null;
 			}
 
-			const langParam = $page.url.searchParams.get('lang')?.toUpperCase() as
-				| SongLanguage
-				| undefined;
+			const langParam = parseSongLanguage($page.url.searchParams.get('lang'));
 			const shouldRespectParam = Boolean(langParam) && !initialised;
 			if (shouldRespectParam && langParam && $language !== langParam) {
 				language.set(langParam);
@@ -88,6 +87,38 @@
 
 	function itemText(item: Song['items'][number]) {
 		return typeof item.text === 'string' ? item.text : '';
+	}
+
+	function isChordLike(itemType: Song['items'][number]['type']) {
+		return itemType === 'CHORDS' || itemType === 'TABS';
+	}
+
+	function isAdditional(itemType: Song['items'][number]['type']) {
+		return itemType === 'ADDITIONAL';
+	}
+
+	function itemClass(item: Song['items'][number]) {
+		return [
+			isChordLike(item.type) ? 'whitespace-pre-wrap font-mono' : 'whitespace-pre-line',
+			item.alignment === 'CENTER'
+				? 'text-center'
+				: item.alignment === 'RIGHT'
+					? 'text-right'
+					: 'text-left',
+			item.isBold ? 'font-semibold' : '',
+			item.isItalics || isAdditional(item.type) ? 'italic' : '',
+			isAdditional(item.type) ? 'text-xs text-on-surface-muted sm:text-sm' : 'text-on-surface'
+		]
+			.filter(Boolean)
+			.join(' ');
+	}
+
+	function parseSongLanguage(value: string | null): SongLanguage | undefined {
+		if (!value) return undefined;
+		const normalizedValue = value.toUpperCase();
+		return validLanguages.includes(normalizedValue as SongLanguage)
+			? (normalizedValue as SongLanguage)
+			: undefined;
 	}
 
 	function handleTabKeydown(event: KeyboardEvent, mode: 'basic' | 'chords') {
@@ -124,10 +155,10 @@
 </svelte:head>
 
 {#if loading}
-	<div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">{$t('app.syncing')}</div>
+	<div class="py-20 text-center text-sm text-on-surface-muted">{$t('app.syncing')}</div>
 {:else if song}
 	<article
-		class="relative mx-auto max-w-4xl space-y-7 overflow-hidden rounded-[3rem] border border-white/30 bg-white/80 p-6 shadow-[0_40px_110px_rgba(15,23,42,0.18)] backdrop-blur-2xl sm:space-y-8 sm:p-10 lg:p-12"
+		class="glass-panel relative mx-auto max-w-4xl space-y-7 overflow-hidden rounded-[3rem] p-6 sm:space-y-8 sm:p-10 lg:p-12"
 	>
 		<div class="pointer-events-none absolute inset-0 -z-10">
 			<div
@@ -142,14 +173,14 @@
 			<div class="flex flex-1 flex-wrap items-center justify-between gap-3">
 				<div class="flex flex-wrap items-center gap-2.5">
 					<button
-						class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em]"
 						type="button"
 						on:click={goBack}
 					>
 						{$t('app.back_action')}
 					</button>
 					<button
-						class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition hover:-translate-y-0.5 hover:border-primary-200/70 hover:text-primary-600"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em]"
 						type="button"
 						on:click={() => goto(indexPath)}
 					>
@@ -199,15 +230,11 @@
 						{$t('app.page_label')}
 						{song.page}
 					</span>
-					<span
-						class="rounded-full border border-white/50 bg-white/70 px-3 py-1 text-[11px] text-on-surface-soft"
-					>
+					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.source_label')}
 						{song.source}
 					</span>
-					<span
-						class="rounded-full border border-white/50 bg-white/70 px-3 py-1 text-[11px] text-on-surface-soft"
-					>
+					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.external_index')}
 						{song.externalIndex}
 					</span>
@@ -215,16 +242,12 @@
 			</div>
 
 			<div
-				class="flex flex-wrap items-center justify-center gap-2 lg:justify-start"
+				class="segmented-toggle inline-flex flex-wrap items-center justify-center gap-2 rounded-full p-1.5 lg:justify-start"
 				role="tablist"
 				aria-label={$t('app.view_song')}
 			>
 				<button
-					class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
-						activeViewMode === 'basic'
-							? 'btn-gold'
-							: 'border border-white/50 bg-white/80 text-on-surface'
-					}`}
+					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
 					type="button"
 					role="tab"
 					aria-selected={activeViewMode === 'basic'}
@@ -235,11 +258,7 @@
 					{$t('app.view.basic')}
 				</button>
 				<button
-					class={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
-						activeViewMode === 'chords'
-							? 'btn-gold'
-							: 'border border-white/50 bg-white/80 text-on-surface'
-					}`}
+					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
 					type="button"
 					role="tab"
 					aria-selected={activeViewMode === 'chords'}
@@ -253,29 +272,14 @@
 		</header>
 
 		<section
-			class={`relative space-y-3 rounded-[26px] border border-white/40 bg-white/75 p-5 text-left text-sm leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 sm:text-base ${
+			class={`glass-panel--soft relative space-y-3 rounded-[26px] p-5 text-left text-sm leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 sm:text-base ${
 				activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
 			}`}
 		>
 			{#each song.items as item}
-				{#if itemText(item).trim().length}
-					<p
-						class={`whitespace-pre-line ${
-							item.alignment === 'CENTER'
-								? 'text-center'
-								: item.alignment === 'RIGHT'
-									? 'text-right'
-									: 'text-left'
-						} ${item.isBold ? 'font-semibold' : ''} ${item.isItalics ? 'italic' : ''} text-on-surface`}
-					>
-						{#if activeViewMode === 'chords' && item.type === 'CHORD'}
-							<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-400/80"
-								>CHORDS</span
-							>
-							<span class="mt-1 block text-sm font-medium sm:text-base">{itemText(item)}</span>
-						{:else}
-							{itemText(item)}
-						{/if}
+				{#if itemText(item).trim().length && (!isChordLike(item.type) || activeViewMode === 'chords')}
+					<p class={itemClass(item)}>
+						{itemText(item)}
 					</p>
 				{/if}
 			{/each}
@@ -294,5 +298,5 @@
 		</button>
 	{/if}
 {:else}
-	<div class="py-20 text-center text-sm text-[rgb(var(--text-secondary))]">Song not found.</div>
+	<div class="py-20 text-center text-sm text-on-surface-muted">Song not found.</div>
 {/if}

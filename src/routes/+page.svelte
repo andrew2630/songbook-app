@@ -3,41 +3,66 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { favourites, language, toggleFavourite, viewMode } from '$lib/stores/preferences';
-	import { filterSongs, searchableSongs, songs, type SongSortMode } from '$lib/stores/songStore';
+	import { favourites, language, toggleFavourite } from '$lib/stores/preferences';
+	import {
+		filterSongs,
+		searchableSongs,
+		songs,
+		type SongSortMode,
+		type SongSourceFilter
+	} from '$lib/stores/songStore';
+	import { inView } from '$lib/actions/inView';
 	import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
 	import SongCard from '$lib/components/song/SongCard.svelte';
-	import { fadeSlide } from '$lib/actions/fadeSlide';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { ArrowUp, Heart, LayoutList, Search } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
 
 	let query = '';
 	let menuView: 'index' | 'favourites' = 'index';
 	let pageFilter: number | null = null;
-	let activeViewMode: 'basic' | 'chords' = 'basic';
 	let sortMode: SongSortMode = 'page';
+	let sourceFilter: SongSourceFilter = 'all';
 	let searchRef: HTMLInputElement | null = null;
 	let pageSearch = '';
 	let showScrollTop = false;
+	let visibleCount = 24;
+	let loadMoreSentinel: HTMLDivElement | null = null;
+	let listStateKey = '';
+	let viewportFillFrame: number | null = null;
 
 	const sortOptions: { value: SongSortMode; label: string }[] = [
 		{ value: 'page', label: 'app.sort.page' },
 		{ value: 'alpha', label: 'app.sort.alpha' },
 		{ value: 'recent', label: 'app.sort.recent' }
 	];
+	const sourceOptions: { value: SongSourceFilter; label: string }[] = [
+		{ value: 'all', label: 'app.source.all' },
+		{ value: 'zborowy', label: 'app.source.zborowy' },
+		{ value: 'pielgrzym', label: 'app.source.pielgrzym' }
+	];
+	const INITIAL_RENDER_COUNT = 24;
+	const RENDER_BATCH_COUNT = 24;
 
 	onMount(() => {
 		if (!browser) return;
 		const updateScrollState = () => {
 			showScrollTop = window.scrollY > 320;
 		};
-		updateScrollState();
-		window.addEventListener('scroll', updateScrollState, { passive: true });
-		return () => window.removeEventListener('scroll', updateScrollState);
-	});
 
-	$: activeViewMode = $viewMode;
+		updateScrollState();
+		queueEnsureViewportFilled();
+		window.addEventListener('scroll', updateScrollState, { passive: true });
+		window.addEventListener('resize', queueEnsureViewportFilled, { passive: true });
+
+		return () => {
+			window.removeEventListener('scroll', updateScrollState);
+			window.removeEventListener('resize', queueEnsureViewportFilled);
+			if (viewportFillFrame !== null) {
+				cancelAnimationFrame(viewportFillFrame);
+			}
+		};
+	});
 
 	$: availableSongs = $songs.filter((song) => song.language === $language);
 	$: groupedByPage = songsByPage(availableSongs);
@@ -49,8 +74,10 @@
 		menuView === 'favourites',
 		$favourites,
 		pageFilter,
-		sortMode
+		sortMode,
+		sourceFilter
 	);
+	$: visibleSongs = filteredSongs.slice(0, visibleCount);
 	$: favouriteSongs = $favourites
 		.map((key) => $songs.find((song) => `${song.id}-${song.language}` === key) ?? null)
 		.filter((song): song is Song => song !== null);
@@ -58,10 +85,30 @@
 		query ? $t('app.filters.search', { values: { query } }) : null,
 		menuView === 'favourites' ? $t('app.filters.favourites') : null,
 		pageFilter ? $t('app.filters.page', { values: { page: pageFilter } }) : null,
+		sourceFilter !== 'all'
+			? $t('app.filters.source', { values: { source: $t(`app.source.${sourceFilter}`) } })
+			: null,
 		pageSearch.trim()
 			? $t('app.filters.page_search', { values: { query: pageSearch.trim() } })
 			: null
 	].filter((badge): badge is string => Boolean(badge));
+	$: {
+		const nextListState = [
+			$language,
+			menuView,
+			query.trim(),
+			pageFilter ?? '',
+			sortMode,
+			sourceFilter,
+			filteredSongs.length
+		].join('::');
+
+		if (nextListState !== listStateKey) {
+			listStateKey = nextListState;
+			visibleCount = Math.min(filteredSongs.length, INITIAL_RENDER_COUNT);
+			queueEnsureViewportFilled();
+		}
+	}
 
 	function matchesPageSearch(pageNumber: number) {
 		const trimmed = pageSearch.trim();
@@ -78,6 +125,7 @@
 		pageFilter = null;
 		menuView = 'index';
 		pageSearch = '';
+		sourceFilter = 'all';
 	}
 
 	function openSong(song: Song) {
@@ -93,13 +141,40 @@
 		if (!browser) return;
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
+
+	function loadMoreSongs() {
+		if (visibleCount >= filteredSongs.length) return;
+		visibleCount = Math.min(filteredSongs.length, visibleCount + RENDER_BATCH_COUNT);
+		queueEnsureViewportFilled();
+	}
+
+	function queueEnsureViewportFilled() {
+		if (!browser) return;
+		if (viewportFillFrame !== null) {
+			cancelAnimationFrame(viewportFillFrame);
+		}
+
+		viewportFillFrame = window.requestAnimationFrame(() => {
+			viewportFillFrame = null;
+			void ensureViewportFilled();
+		});
+	}
+
+	async function ensureViewportFilled() {
+		if (!browser || !loadMoreSentinel) return;
+		await tick();
+
+		while (visibleCount < filteredSongs.length && loadMoreSentinel) {
+			const rect = loadMoreSentinel.getBoundingClientRect();
+			if (rect.top > window.innerHeight + 220) break;
+			visibleCount = Math.min(filteredSongs.length, visibleCount + RENDER_BATCH_COUNT);
+			await tick();
+		}
+	}
 </script>
 
 <section class="space-y-6 pb-14 sm:space-y-8">
-	<div
-		class="space-y-5 rounded-3xl border border-white/60 bg-[linear-gradient(160deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.86)_100%)] p-4 shadow-[0_25px_70px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-6"
-		use:fadeSlide
-	>
+	<div class="glass-panel space-y-5 rounded-3xl p-4 sm:p-6">
 		<div class="space-y-2">
 			<!-- <label
         class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500"
@@ -110,10 +185,8 @@
 			<div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
 				<div class="flex flex-wrap gap-2">
 					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-							menuView === 'index'
-								? 'btn-gold'
-								: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
+						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
+							menuView === 'index' ? 'btn-gold' : 'btn-secondary'
 						}`}
 						on:click={() => (menuView = 'index')}
 						type="button"
@@ -122,10 +195,8 @@
 						{$t('app.toggle_index')}
 					</button>
 					<button
-						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
-							menuView === 'favourites'
-								? 'btn-gold'
-								: 'border border-white/60 bg-white/75 text-on-surface hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-primary-600'
+						class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
+							menuView === 'favourites' ? 'btn-gold' : 'btn-secondary'
 						}`}
 						on:click={() => (menuView = 'favourites')}
 						type="button"
@@ -134,7 +205,7 @@
 						{$t('app.toggle_favourites')}
 					</button>
 					<button
-						class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/75 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted transition hover:border-[rgb(var(--accent-gold)/0.45)] hover:text-[rgb(var(--accent-gold)/0.95)]"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface-muted hover:text-primary-500"
 						on:click={handleClearFilters}
 						type="button"
 					>
@@ -156,9 +227,7 @@
 					</select>
 				</label>
 			</div>
-			<div
-				class="flex items-center gap-3 rounded-2xl border border-white/60 bg-[rgba(255,255,255,0.9)] px-4 py-3 shadow-inner shadow-[rgba(245,158,11,0.12)]"
-			>
+			<div class="glass-input flex items-center gap-3 rounded-2xl px-4 py-3">
 				<Search class="h-4 w-4 text-primary-500" />
 				<input
 					id="song-search"
@@ -170,13 +239,32 @@
 				/>
 				{#if query}
 					<button
-						class="rounded-full border border-white/70 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-600 shadow-sm transition hover:bg-[rgb(var(--accent-gold)/0.16)] hover:text-[rgb(var(--accent-gold)/0.9)]"
+						class="btn-secondary rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-600"
 						on:click={() => (query = '')}
 						type="button"
 					>
 						{$t('app.clear_query')}
 					</button>
 				{/if}
+			</div>
+			<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+				<div class="flex flex-wrap items-center gap-2">
+					<span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface-muted">
+						{$t('app.source.label')}
+					</span>
+					<div class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-full p-1">
+						{#each sourceOptions as option}
+							<button
+								class="segmented-toggle__button inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]"
+								type="button"
+								aria-pressed={sourceFilter === option.value}
+								on:click={() => (sourceFilter = option.value)}
+							>
+								{$t(option.label)}
+							</button>
+						{/each}
+					</div>
+				</div>
 			</div>
 			<!-- <p class="text-xs text-surface-500">{$t('app.search_hint')}</p> -->
 		</div>
@@ -297,17 +385,30 @@
 			{$t('app.empty_state')}
 		</div>
 	{:else}
-		<div class="space-y-4" use:fadeSlide={{ axis: 'y', from: 20, delay: 0.08 }}>
-			{#each filteredSongs as song, index (song.id + '-' + song.language)}
+		<div class="space-y-4">
+			{#each visibleSongs as song (song.id + '-' + song.language)}
 				<SongCard
 					{song}
-					{index}
-					viewMode={activeViewMode}
 					isFavourite={$favourites.includes(`${song.id}-${song.language}`)}
 					on:open={(event) => openSong(event.detail)}
 					on:toggleFavourite={(event) => toggleFavourite(event.detail)}
 				/>
 			{/each}
+
+			{#if visibleSongs.length < filteredSongs.length}
+				<div class="flex justify-center pt-2">
+					<div
+						bind:this={loadMoreSentinel}
+						use:inView={{ once: false, threshold: 0, rootMargin: '0px 0px 480px 0px' }}
+						on:enterViewport={loadMoreSongs}
+						class="glass-pill inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-on-surface-soft"
+					>
+						<span>{visibleSongs.length}</span>
+						<span>/</span>
+						<span>{filteredSongs.length}</span>
+					</div>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </section>
