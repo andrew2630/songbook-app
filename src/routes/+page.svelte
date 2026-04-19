@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from 'svelte-i18n';
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { favourites, language, toggleFavourite } from '$lib/stores/preferences';
 	import {
@@ -18,19 +18,25 @@
 	import { ArrowUp, Heart, LayoutList, RotateCcw, Search } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
 	import {
+		buildListUrlFromState,
+		clearListFilterState,
+		DEFAULT_LIST_FILTER_STATE,
+		readListFilterStateFromSearch
+	} from '$lib/utils/listFilters';
+	import {
 		getCurrentAppPath,
 		rememberSongListPath,
 		rememberSongReturnPath
 	} from '$lib/utils/songNavigation';
 	import TextZoomControl from '$lib/components/song/TextZoomControl.svelte';
 
-	let query = '';
-	let menuView: 'index' | 'favourites' = 'index';
-	let pageFilter: number | null = null;
-	let sortMode: SongSortMode = 'page';
-	let sourceFilter: SongSourceFilter = 'all';
+	let query = DEFAULT_LIST_FILTER_STATE.query;
+	let menuView: 'index' | 'favourites' = DEFAULT_LIST_FILTER_STATE.menuView;
+	let pageFilter: number | null = DEFAULT_LIST_FILTER_STATE.pageFilter;
+	let sortMode: SongSortMode = DEFAULT_LIST_FILTER_STATE.sortMode;
+	let sourceFilter: SongSourceFilter = DEFAULT_LIST_FILTER_STATE.sourceFilter;
 	let searchRef: HTMLInputElement | null = null;
-	let pageSearch = '';
+	let pageSearch = DEFAULT_LIST_FILTER_STATE.pageSearch;
 	let showScrollTop = false;
 	let visibleCount = 24;
 	let loadMoreSentinel: HTMLDivElement | null = null;
@@ -54,53 +60,29 @@
 	function buildListUrl() {
 		if (!browser) return `${base || '/'}`;
 
-		const params = new URLSearchParams();
-		const trimmedQuery = query.trim();
-		if (trimmedQuery) params.set('q', trimmedQuery);
-		if (menuView === 'favourites') params.set('view', menuView);
-		if (pageFilter !== null) params.set('page', String(pageFilter));
-		if (sortMode !== 'page') params.set('sort', sortMode);
-		if (sourceFilter !== 'all') params.set('source', sourceFilter);
-
-		const nextSearch = params.toString();
-		return `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+		return buildListUrlFromState(
+			{
+				query,
+				menuView,
+				pageFilter,
+				sortMode,
+				sourceFilter
+			},
+			window.location.pathname,
+			window.location.hash
+		);
 	}
 
 	function readFilterStateFromUrl() {
 		if (!browser) return;
 
-		const params = new URLSearchParams(window.location.search);
-		const nextQuery = params.get('q');
-		const nextMenuView = params.get('view');
-		const nextPageFilter = params.get('page');
-		const nextSortMode = params.get('sort');
-		const nextSourceFilter = params.get('source');
-
-		query = nextQuery ?? '';
-		menuView = nextMenuView === 'favourites' ? 'favourites' : 'index';
-		pageFilter = nextPageFilter && /^\d+$/.test(nextPageFilter) ? Number(nextPageFilter) : null;
-		sortMode =
-			nextSortMode === 'alpha' || nextSortMode === 'recent' || nextSortMode === 'page'
-				? nextSortMode
-				: 'page';
-		sourceFilter =
-			nextSourceFilter === 'zborowy' ||
-			nextSourceFilter === 'pielgrzym' ||
-			nextSourceFilter === 'all'
-				? nextSourceFilter
-				: 'all';
-	}
-
-	function syncFilterStateToUrl() {
-		if (!browser || !hasInitialisedFiltersFromUrl) return;
-		const nextUrl = buildListUrl();
-		const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-
-		if (nextUrl !== currentUrl) {
-			window.history.replaceState(window.history.state, '', nextUrl);
-		}
-
-		rememberSongListPath(nextUrl);
+		const nextState = readListFilterStateFromSearch(window.location.search);
+		query = nextState.query;
+		menuView = nextState.menuView;
+		pageFilter = nextState.pageFilter;
+		sortMode = nextState.sortMode;
+		sourceFilter = nextState.sourceFilter;
+		pageSearch = nextState.pageSearch;
 	}
 
 	onMount(() => {
@@ -126,7 +108,32 @@
 		};
 	});
 
-	$: syncFilterStateToUrl();
+	afterNavigate(() => {
+		if (!browser) return;
+		readFilterStateFromUrl();
+		hasInitialisedFiltersFromUrl = true;
+	});
+
+	$: if (browser && hasInitialisedFiltersFromUrl) {
+		const nextUrl = buildListUrlFromState(
+			{
+				query,
+				menuView,
+				pageFilter,
+				sortMode,
+				sourceFilter
+			},
+			window.location.pathname,
+			window.location.hash
+		);
+		const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+		if (nextUrl !== currentUrl) {
+			window.history.replaceState(window.history.state, '', nextUrl);
+		}
+
+		rememberSongListPath(nextUrl);
+	}
 
 	$: availableSongs = $songs.filter((song) => song.language === $language);
 	$: groupedByPage = songsByPage(availableSongs);
@@ -185,11 +192,13 @@
 	}
 
 	function handleClearFilters() {
-		query = '';
-		pageFilter = null;
-		menuView = 'index';
-		pageSearch = '';
-		sourceFilter = 'all';
+		const clearedState = clearListFilterState();
+		query = clearedState.query;
+		pageFilter = clearedState.pageFilter;
+		menuView = clearedState.menuView;
+		pageSearch = clearedState.pageSearch;
+		sortMode = clearedState.sortMode;
+		sourceFilter = clearedState.sourceFilter;
 	}
 
 	function openSong(song: Song) {
@@ -243,20 +252,37 @@
 	}
 </script>
 
-<section class="space-y-5 pb-14 sm:space-y-8">
+<section class="space-y-5 pb-14 sm:space-y-7">
 	<div
 		id="song-filters-panel"
-		class="glass-panel space-y-4 rounded-[1.9rem] p-3.5 sm:space-y-5 sm:rounded-3xl sm:p-6"
+		class="glass-panel--soft space-y-4 rounded-[1.7rem] p-3.5 sm:space-y-4 sm:rounded-[2rem] sm:p-5"
 	>
-		<div class="space-y-2">
-			<!-- <label
-        class="text-[11px] font-semibold uppercase tracking-[0.2em] text-surface-500"
-        for="song-search"
-      >
-        {$t('app.search_placeholder')}
-      </label> -->
-			<div class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
-				<div class="flex items-center justify-between gap-2">
+		<div class="space-y-3">
+			<div
+				class="glass-input flex items-center gap-3 rounded-[1.2rem] px-4 py-2.5 sm:rounded-[1.45rem] sm:py-3"
+			>
+				<Search class="h-4 w-4 text-primary-500" />
+				<input
+					id="song-search"
+					class="w-full bg-transparent text-sm text-on-surface outline-none placeholder:text-on-surface-muted sm:text-base"
+					type="search"
+					placeholder={$t('app.search_placeholder')}
+					bind:value={query}
+					bind:this={searchRef}
+				/>
+				{#if query}
+					<button
+						class="btn-secondary rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-600 sm:text-[11px] sm:tracking-[0.22em]"
+						on:click={() => (query = '')}
+						type="button"
+					>
+						{$t('app.clear_query')}
+					</button>
+				{/if}
+			</div>
+
+			<div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+				<div class="flex items-start justify-between gap-3">
 					<div class="flex min-w-0 flex-wrap gap-1.5 sm:gap-2">
 						<button
 							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
@@ -301,77 +327,59 @@
 					</div>
 				</div>
 
-				<label class="flex items-center gap-2.5 text-sm font-medium text-surface-600 lg:ml-auto">
-					<span
-						class="text-[10px] font-semibold uppercase tracking-[0.18em] text-surface-500 sm:text-[11px] sm:tracking-[0.2em]"
-					>
-						{$t('app.sort.label')}
-					</span>
-					<select
-						class="rounded-[1.15rem] border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none sm:rounded-full"
-						bind:value={sortMode}
-					>
-						{#each sortOptions as option}
-							<option value={option.value}>{$t(option.label)}</option>
-						{/each}
-					</select>
-				</label>
-			</div>
-			<div
-				class="glass-input flex items-center gap-3 rounded-[1.35rem] px-4 py-2.5 sm:rounded-2xl sm:py-3"
-			>
-				<Search class="h-4 w-4 text-primary-500" />
-				<input
-					id="song-search"
-					class="w-full bg-transparent text-sm text-on-surface outline-none placeholder:text-on-surface-muted sm:text-base"
-					type="search"
-					placeholder={$t('app.search_placeholder')}
-					bind:value={query}
-					bind:this={searchRef}
-				/>
-				{#if query}
-					<button
-						class="btn-secondary rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-600 sm:text-[11px] sm:tracking-[0.22em]"
-						on:click={() => (query = '')}
-						type="button"
-					>
-						{$t('app.clear_query')}
-					</button>
-				{/if}
-			</div>
-			<div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
-				<div class="flex flex-wrap items-center gap-2">
-					<span
-						class="text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted sm:text-[11px] sm:tracking-[0.2em]"
-					>
-						{$t('app.source.label')}
-					</span>
-					<div
-						class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-[1.55rem] p-[3px] sm:rounded-full sm:p-1"
-					>
-						{#each sourceOptions as option}
-							<button
-								class="segmented-toggle__button inline-flex items-center rounded-[1.1rem] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] sm:rounded-full sm:px-3 sm:text-xs sm:tracking-[0.18em]"
-								type="button"
-								aria-pressed={sourceFilter === option.value}
-								on:click={() => (sourceFilter = option.value)}
+				<div class="flex flex-col gap-2.5 lg:min-w-[20rem] lg:items-end">
+					<label class="flex items-center gap-2.5 text-sm font-medium text-surface-600">
+						<span
+							class="text-[10px] font-semibold uppercase tracking-[0.18em] text-surface-500 sm:text-[11px] sm:tracking-[0.2em]"
+						>
+							{$t('app.sort.label')}
+						</span>
+						<select
+							class="rounded-[1.15rem] border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none sm:rounded-full"
+							bind:value={sortMode}
+						>
+							{#each sortOptions as option}
+								<option value={option.value}>{$t(option.label)}</option>
+							{/each}
+						</select>
+					</label>
+
+					<div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+						<div class="flex flex-wrap items-center gap-2">
+							<span
+								class="text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted sm:text-[11px] sm:tracking-[0.2em]"
 							>
-								{$t(option.label)}
-							</button>
-						{/each}
+								{$t('app.source.label')}
+							</span>
+							<div
+								class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-[1.4rem] p-[3px] sm:rounded-full sm:p-1"
+							>
+								{#each sourceOptions as option}
+									<button
+										class="segmented-toggle__button inline-flex items-center rounded-[1.05rem] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] sm:rounded-full sm:px-3 sm:text-xs sm:tracking-[0.18em]"
+										type="button"
+										aria-pressed={sourceFilter === option.value}
+										on:click={() => (sourceFilter = option.value)}
+									>
+										{$t(option.label)}
+									</button>
+								{/each}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- <p class="text-xs text-surface-500">{$t('app.search_hint')}</p> -->
 		</div>
 
-		<div class="flex flex-wrap items-center gap-3 text-xs text-on-surface-soft sm:text-sm">
-			<span class="font-semibold text-on-surface">{filteredSongs.length}</span>
-			<span>/</span>
-			<span>{availableSongs.length}</span>
+		<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-on-surface-muted sm:text-sm">
+			<p class="text-on-surface-soft">
+				<span class="font-semibold text-on-surface">{filteredSongs.length}</span>
+				<span class="mx-1 text-on-surface-muted">/</span>
+				<span>{availableSongs.length}</span>
+			</p>
 			{#if pageFilter}
 				<span
-					class="rounded-full border border-[rgb(var(--accent-gold)/0.4)] bg-[rgb(var(--accent-gold)/0.16)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[rgb(var(--accent-gold)/0.95)]"
+					class="rounded-full border border-[rgb(var(--accent-gold)/0.24)] bg-[rgb(var(--accent-gold)/0.08)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--accent-gold)/0.9)]"
 				>
 					{$t('app.page_label')}
 					{pageFilter}
@@ -383,7 +391,7 @@
 			<div class="flex flex-wrap gap-2">
 				{#each filterBadges as badge}
 					<span
-						class="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-gold)/0.35)] bg-[rgb(var(--accent-gold)/0.12)] px-3 py-1 text-xs font-semibold text-[rgb(var(--accent-gold)/0.95)] shadow-sm"
+						class="inline-flex items-center gap-2 rounded-full border border-surface-200/55 bg-surface-100/55 px-3 py-1 text-xs font-medium text-on-surface-soft"
 					>
 						{badge}
 					</span>

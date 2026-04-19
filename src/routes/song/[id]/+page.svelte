@@ -162,10 +162,6 @@
 		goto(returnListPath);
 	}
 
-	function returnToList() {
-		goto(returnListPath);
-	}
-
 	function scrollToTop() {
 		if (!browser) return;
 		window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -195,31 +191,24 @@
 	<div class="py-20 text-center text-sm text-on-surface-muted">{$t('app.syncing')}</div>
 {:else if song}
 	<article
-		class="glass-panel relative mx-auto max-w-4xl space-y-7 overflow-hidden rounded-[3rem] p-6 sm:space-y-8 sm:p-10 lg:p-12"
+		class="glass-panel--soft relative mx-auto max-w-4xl space-y-5 overflow-hidden rounded-[2rem] p-5 sm:space-y-6 sm:rounded-[2.35rem] sm:p-7 lg:p-8"
 	>
 		<div class="pointer-events-none absolute inset-0 -z-10">
 			<div
-				class="absolute -top-32 left-8 h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.4),rgba(255,255,255,0))] blur-[140px]"
+				class="absolute -top-28 left-8 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.24),rgba(255,255,255,0))] blur-[130px]"
 			></div>
 			<div
-				class="absolute bottom-[-12%] right-[-8%] h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.45),rgba(255,255,255,0))] blur-[160px]"
+				class="absolute bottom-[-12%] right-[-8%] h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.28),rgba(255,255,255,0))] blur-[150px]"
 			></div>
 		</div>
 
-		<header class="relative space-y-5 text-center lg:text-left">
+		<header class="relative space-y-4 text-left">
 			<div class="flex items-start justify-between gap-3 sm:items-center">
 				<div class="flex min-w-0 flex-wrap items-center gap-2">
 					<button
 						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
 						type="button"
 						on:click={goBack}
-					>
-						{$t('app.back_action')}
-					</button>
-					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
-						type="button"
-						on:click={returnToList}
 					>
 						{$t('app.back_to_index')}
 					</button>
@@ -250,31 +239,29 @@
 				</div>
 			</div>
 
-			<div class="space-y-3">
-				<div class="space-y-2">
-					<h1 class="text-balance text-3xl font-semibold text-on-surface sm:text-4xl lg:text-5xl">
+			<div class="space-y-2.5">
+				<div class="space-y-1.5">
+					<h1 class="text-balance text-3xl font-semibold text-on-surface sm:text-4xl lg:text-[2.9rem]">
 						{song.title}
 					</h1>
 					{#if lastUpdatedLabel}
-						<p class="text-[11px] uppercase tracking-[0.22em] text-primary-400/90">
+						<p class="text-[11px] uppercase tracking-[0.2em] text-on-surface-subtle">
 							{$t('app.updated_label')}: {lastUpdatedLabel}
 						</p>
 					{/if}
 				</div>
-				<div
-					class="flex flex-wrap justify-center gap-2 text-xs text-on-surface-subtle lg:justify-start"
-				>
+				<div class="flex flex-wrap gap-2 text-xs text-on-surface-subtle">
 					<span
-						class="rounded-full bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-500"
+						class="rounded-full bg-primary-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-500"
 					>
 						{$t('app.page_label')}
 						{song.page}
 					</span>
-					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
+					<span class="glass-chip rounded-full px-2.5 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.source_label')}
 						{displaySourceLabel(song.source)}
 					</span>
-					<span class="glass-chip rounded-full px-3 py-1 text-[11px] text-on-surface-soft">
+					<span class="glass-chip rounded-full px-2.5 py-1 text-[11px] text-on-surface-soft">
 						{$t('app.external_index')}
 						{song.externalIndex}
 					</span>
@@ -282,12 +269,12 @@
 			</div>
 
 			<div
-				class="segmented-toggle inline-flex flex-wrap items-center justify-center gap-2 rounded-full p-1.5 lg:justify-start"
+				class="segmented-toggle inline-flex flex-wrap items-center gap-1.5 rounded-full p-1"
 				role="tablist"
 				aria-label={$t('app.view_song')}
 			>
 				<button
-					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold"
 					type="button"
 					role="tab"
 					aria-selected={activeViewMode === 'basic'}
@@ -298,7 +285,7 @@
 					{$t('app.view.basic')}
 				</button>
 				<button
-					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+					class="segmented-toggle__button inline-flex items-center justify-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold"
 					type="button"
 					role="tab"
 					aria-selected={activeViewMode === 'chords'}
@@ -312,7 +299,7 @@
 		</header>
 
 		<section
-			class={`glass-panel--soft relative space-y-3 rounded-[26px] p-5 text-left leading-relaxed shadow-inner shadow-primary-500/10 sm:p-7 ${
+			class={`relative space-y-3 rounded-[1.55rem] border border-surface-200/50 bg-surface-50/45 p-4 text-left leading-relaxed shadow-inner shadow-primary-500/6 sm:rounded-[1.8rem] sm:p-6 ${
 				activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
 			}`}
 			style={`font-size: ${songTextSizeRem}rem;`}

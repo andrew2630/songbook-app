@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
+	import { page } from '$app/stores';
 	import { onDestroy, onMount } from 'svelte';
 	import { addMessages, init, locale as i18nLocale } from 'svelte-i18n';
 	import { get } from 'svelte/store';
@@ -82,31 +83,55 @@
 	onDestroy(() => {
 		lenisController?.destroy();
 	});
+
+	$: isSongRoute = $page.route.id === '/song/[id]';
 </script>
 
 <div class="relative min-h-screen overflow-x-hidden text-on-surface">
 	<div class="pointer-events-none fixed inset-0 -z-10">
 		<div
-			class="absolute inset-0 bg-[linear-gradient(190deg,rgb(var(--shell-gradient-start)/0.95)_0%,rgb(var(--hero-gradient-mid)/0.58)_38%,rgb(var(--shell-gradient-end)/0.9)_100%)]"
+			class={`absolute inset-0 ${
+				isSongRoute
+					? 'bg-[linear-gradient(190deg,rgb(var(--shell-gradient-start)/0.98)_0%,rgb(var(--hero-gradient-mid)/0.26)_38%,rgb(var(--shell-gradient-end)/0.94)_100%)]'
+					: 'bg-[linear-gradient(190deg,rgb(var(--shell-gradient-start)/0.95)_0%,rgb(var(--hero-gradient-mid)/0.58)_38%,rgb(var(--shell-gradient-end)/0.9)_100%)]'
+			}`}
 		></div>
 		<div
-			class="absolute left-[8%] top-[-16%] h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.55),rgba(255,255,255,0))] blur-[140px]"
+			class={`absolute left-[8%] rounded-full blur-[140px] ${
+				isSongRoute
+					? 'top-[-18%] h-[18rem] w-[18rem] bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.3),rgba(255,255,255,0))]'
+					: 'top-[-16%] h-[22rem] w-[22rem] bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.55),rgba(255,255,255,0))]'
+			}`}
 		></div>
 		<div
-			class="absolute right-[-12%] top-[0%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.65),rgba(255,255,255,0))] blur-[150px]"
+			class={`absolute right-[-12%] rounded-full blur-[150px] ${
+				isSongRoute
+					? 'top-[-8%] h-[20rem] w-[20rem] bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.34),rgba(255,255,255,0))]'
+					: 'top-[0%] h-[28rem] w-[28rem] bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.65),rgba(255,255,255,0))]'
+			}`}
 		></div>
 		<div
-			class="absolute bottom-[8%] right-[12%] h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--accent-gold)/0.42),rgba(255,255,255,0))] blur-[140px]"
+			class={`absolute bottom-[8%] right-[12%] rounded-full blur-[140px] ${
+				isSongRoute
+					? 'h-[14rem] w-[14rem] bg-[radial-gradient(circle_at_center,rgb(var(--accent-gold)/0.18),rgba(255,255,255,0))]'
+					: 'h-[20rem] w-[20rem] bg-[radial-gradient(circle_at_center,rgb(var(--accent-gold)/0.42),rgba(255,255,255,0))]'
+			}`}
 		></div>
 		<div
-			class="absolute bottom-[-26%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--shell-gradient-end)/0.9),rgba(255,255,255,0))] blur-[170px]"
+			class={`absolute bottom-[-26%] left-1/2 -translate-x-1/2 rounded-full blur-[170px] ${
+				isSongRoute
+					? 'h-[22rem] w-[22rem] bg-[radial-gradient(circle_at_center,rgb(var(--shell-gradient-end)/0.72),rgba(255,255,255,0))]'
+					: 'h-[28rem] w-[28rem] bg-[radial-gradient(circle_at_center,rgb(var(--shell-gradient-end)/0.9),rgba(255,255,255,0))]'
+			}`}
 		></div>
 	</div>
 	<div
-		class="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-3 pb-10 sm:px-6 lg:max-w-6xl lg:px-10"
+		class={`relative mx-auto flex min-h-screen w-full flex-col px-3 pb-10 sm:px-6 lg:px-10 ${
+			isSongRoute ? 'max-w-5xl' : 'max-w-5xl lg:max-w-6xl'
+		}`}
 	>
-		<AppHeader />
-		<main class="flex-1 py-5 sm:py-8 lg:py-10">
+		<AppHeader variant={isSongRoute ? 'compact' : 'hero'} />
+		<main class={`flex-1 ${isSongRoute ? 'py-3 sm:py-5 lg:py-6' : 'py-5 sm:py-8 lg:py-10'}`}>
 			<slot />
 		</main>
 		<footer
