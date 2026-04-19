@@ -22,7 +22,7 @@ test('cleared list filters are not restored after reopening and leaving a song',
 		.filter({ hasText: 'Sort by' })
 		.locator('select')
 		.selectOption('recent');
-	await page.getByRole('button', { name: 'Congregational' }).click();
+	await page.getByRole('combobox', { name: 'Source' }).selectOption('zborowy');
 
 	await expect(alphaCard).toBeVisible();
 	await expect(pilgrimCard).toHaveCount(0);
@@ -39,11 +39,7 @@ test('cleared list filters are not restored after reopening and leaving a song',
 	await expect(page).toHaveURL('http://127.0.0.1:4173/');
 	await expect(alphaCard).toBeVisible();
 	await expect(pilgrimCard).toBeVisible();
-	await expect(page.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true');
-	await expect(page.getByRole('button', { name: 'Congregational' })).toHaveAttribute(
-		'aria-pressed',
-		'false'
-	);
+	await expect(page.getByRole('combobox', { name: 'Source' })).toHaveValue('all');
 	await expect(page.getByRole('combobox', { name: 'Sort by' })).toHaveValue('page');
 
 	await pilgrimCard.getByRole('button', { name: 'Open' }).click();
@@ -54,10 +50,6 @@ test('cleared list filters are not restored after reopening and leaving a song',
 	await expect(page).toHaveURL('http://127.0.0.1:4173/');
 	await expect(alphaCard).toBeVisible();
 	await expect(pilgrimCard).toBeVisible();
-	await expect(page.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true');
-	await expect(page.getByRole('button', { name: 'Congregational' })).toHaveAttribute(
-		'aria-pressed',
-		'false'
-	);
+	await expect(page.getByRole('combobox', { name: 'Source' })).toHaveValue('all');
 	await expect(page.getByRole('combobox', { name: 'Sort by' })).toHaveValue('page');
 });

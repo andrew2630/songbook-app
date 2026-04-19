@@ -12,7 +12,6 @@
 		type SongSourceFilter
 	} from '$lib/stores/songStore';
 	import { inView } from '$lib/actions/inView';
-	import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
 	import SongCard from '$lib/components/song/SongCard.svelte';
 	import { onMount, tick } from 'svelte';
 	import {
@@ -46,8 +45,6 @@
 	let pageFilter: number | null = DEFAULT_LIST_FILTER_STATE.pageFilter;
 	let sortMode: SongSortMode = DEFAULT_LIST_FILTER_STATE.sortMode;
 	let sourceFilter: SongSourceFilter = DEFAULT_LIST_FILTER_STATE.sourceFilter;
-	let searchRef: HTMLInputElement | null = null;
-	let pageSearch = DEFAULT_LIST_FILTER_STATE.pageSearch;
 	let showScrollTop = false;
 	let visibleCount = 24;
 	let loadMoreSentinel: HTMLDivElement | null = null;
@@ -93,7 +90,6 @@
 		pageFilter = nextState.pageFilter;
 		sortMode = nextState.sortMode;
 		sourceFilter = nextState.sourceFilter;
-		pageSearch = nextState.pageSearch;
 	}
 
 	onMount(() => {
@@ -147,8 +143,6 @@
 	}
 
 	$: availableSongs = $songs.filter((song) => song.language === $language);
-	$: groupedByPage = songsByPage(availableSongs);
-	$: pageGroups = buildPageIndex(availableSongs);
 	$: filteredSongs = filterSongs(
 		$searchableSongs,
 		query,
@@ -160,18 +154,12 @@
 		sourceFilter
 	);
 	$: visibleSongs = filteredSongs.slice(0, visibleCount);
-	$: favouriteSongs = $favourites
-		.map((key) => $songs.find((song) => `${song.id}-${song.language}` === key) ?? null)
-		.filter((song): song is Song => song !== null);
 	$: filterBadges = [
 		query ? $t('app.filters.search', { values: { query } }) : null,
 		menuView === 'favourites' ? $t('app.filters.favourites') : null,
 		pageFilter ? $t('app.filters.page', { values: { page: pageFilter } }) : null,
 		sourceFilter !== 'all'
 			? $t('app.filters.source', { values: { source: $t(`app.source.${sourceFilter}`) } })
-			: null,
-		pageSearch.trim()
-			? $t('app.filters.page_search', { values: { query: pageSearch.trim() } })
 			: null
 	].filter((badge): badge is string => Boolean(badge));
 	$: {
@@ -192,22 +180,11 @@
 		}
 	}
 
-	function matchesPageSearch(pageNumber: number) {
-		const trimmed = pageSearch.trim();
-		if (!trimmed) return true;
-		return String(pageNumber).includes(trimmed);
-	}
-
-	function pagesForGroup(group: { label: string; pages: number[] }) {
-		return group.pages.filter((pageNumber) => matchesPageSearch(pageNumber));
-	}
-
 	function handleClearFilters() {
 		const clearedState = clearListFilterState();
 		query = clearedState.query;
 		pageFilter = clearedState.pageFilter;
 		menuView = clearedState.menuView;
-		pageSearch = clearedState.pageSearch;
 		sortMode = clearedState.sortMode;
 		sourceFilter = clearedState.sourceFilter;
 	}
@@ -220,11 +197,6 @@
 			returnTo
 		});
 		goto(`${base}/song/${song.id}?${params.toString()}`);
-	}
-
-	function handlePageSelect(pageNumber: number) {
-		pageFilter = pageNumber;
-		menuView = 'index';
 	}
 
 	function scrollToTop() {
@@ -279,7 +251,6 @@
 					type="search"
 					placeholder={$t('app.search_placeholder')}
 					bind:value={query}
-					bind:this={searchRef}
 				/>
 				{#if query}
 					<button
@@ -444,88 +415,6 @@
 			</div>
 		{/if}
 	</div>
-
-	<!-- <div
-		class="space-y-5 rounded-3xl border border-white/60 bg-[linear-gradient(160deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.86)_100%)] p-4 shadow-[0_25px_70px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-6"
-		use:fadeSlide={{ axis: 'y', from: 30, delay: 0.05 }}
-	>
-
-		<div class="space-y-4">
-			<input
-        id="page-search"
-        class="w-full rounded-xl border border-surface-200/60 bg-surface-100/80 px-3 py-2 text-sm text-surface-700 outline-none placeholder:text-surface-400"
-        type="text"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        placeholder={$t('app.page_search.placeholder')}
-        bind:value={pageSearch}
-        aria-label={$t('app.page_search.placeholder')}
-      />
-
-			{#if menuView === 'favourites'}
-				{#if favouriteSongs.length === 0}
-					<p
-						class="rounded-xl border border-surface-200/60 bg-surface-50/80 px-4 py-4 text-sm text-on-surface-subtle"
-					>
-						{$t('app.no_favourites')}
-					</p>
-				{:else}
-					<ul class="grid gap-3 sm:grid-cols-2">
-						{#each favouriteSongs as favSong (favSong.id + '-' + favSong.language)}
-							<li>
-								<button
-									class="w-full rounded-xl border border-surface-200/60 bg-surface-100/70 px-4 py-3 text-left text-sm font-semibold text-on-surface transition hover:border-primary-400 hover:text-primary-500"
-									on:click={() => openSong(favSong)}
-									type="button"
-								>
-									<span class="block text-base font-semibold text-on-surface">{favSong.title}</span>
-									<span class="text-xs uppercase tracking-[0.28em] text-on-surface-subtle">
-										{$t('app.page_label')}
-										{favSong.page}
-									</span>
-								</button>
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			{:else}
-				<div class="space-y-4">
-					{#each pageGroups as group (group.label)}
-            {@const pages = pagesForGroup(group)}
-            {#if pages.length}
-              <div class="space-y-2">
-                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-surface-500">{group.label}</p>
-                <div class="flex flex-wrap gap-2">
-                  {#each pages as pageNumber}
-                    <button
-                      class={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-                        pageFilter === pageNumber
-                          ? 'border-transparent bg-primary-500 text-on-surface shadow-sm'
-                          : 'border-surface-200/60 bg-surface-100/70 text-surface-600 hover:border-primary-400 hover:text-primary-500'
-                      }`}
-                      type="button"
-                      on:click={() => handlePageSelect(pageNumber)}
-                    >
-                      <span>{$t('app.page_label')} {pageNumber}</span>
-                      <span
-                        class={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                          pageFilter === pageNumber
-                            ? 'bg-primary-500/20 text-on-surface shadow-inner shadow-primary-500/20'
-                            : 'bg-primary-500/10 text-primary-500'
-                        }`}
-                      >
-                        {(groupedByPage[pageNumber] ?? []).length}
-                      </span>
-                    </button>
-                  {/each}
-                </div>
-              </div>
-            {/if}
-          {/each}
-				</div>
-			{/if}
-		</div>
-	</div> -->
 
 	{#if filteredSongs.length === 0}
 		<div

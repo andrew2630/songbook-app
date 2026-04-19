@@ -15,8 +15,7 @@ describe('listFilters', () => {
 			menuView: 'favourites',
 			pageFilter: 12,
 			sortMode: 'recent',
-			sourceFilter: 'pielgrzym',
-			pageSearch: ''
+			sourceFilter: 'pielgrzym'
 		});
 	});
 

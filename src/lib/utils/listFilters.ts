@@ -8,7 +8,6 @@ export interface ListFilterState {
 	pageFilter: number | null;
 	sortMode: SongSortMode;
 	sourceFilter: SongSourceFilter;
-	pageSearch: string;
 }
 
 export const DEFAULT_LIST_FILTER_STATE: ListFilterState = {
@@ -16,8 +15,7 @@ export const DEFAULT_LIST_FILTER_STATE: ListFilterState = {
 	menuView: 'index',
 	pageFilter: null,
 	sortMode: 'page',
-	sourceFilter: 'all',
-	pageSearch: ''
+	sourceFilter: 'all'
 };
 
 export function readListFilterStateFromSearch(search: string): ListFilterState {
@@ -44,8 +42,7 @@ export function readListFilterStateFromSearch(search: string): ListFilterState {
 			nextSourceFilter === 'pielgrzym' ||
 			nextSourceFilter === 'all'
 				? nextSourceFilter
-				: DEFAULT_LIST_FILTER_STATE.sourceFilter,
-		pageSearch: DEFAULT_LIST_FILTER_STATE.pageSearch
+				: DEFAULT_LIST_FILTER_STATE.sourceFilter
 	};
 }
 

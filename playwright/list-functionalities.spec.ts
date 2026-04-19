@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 	await page.goto('/');
 });
 
-test('supports search, preview expansion, sharing and favourites on the song list', async ({
+test('supports search, card preview expansion and compact list mode on the song list', async ({
 	page
 }) => {
 	const alphaCard = page.locator('article').filter({ hasText: 'Alpha Grace' });
@@ -25,28 +25,18 @@ test('supports search, preview expansion, sharing and favourites on the song lis
 
 	await page.locator('#song-search').fill('');
 	await expect(alphaCard).toBeVisible();
+	await expect(alphaCard.getByText('Amazing grace, how sweet the sound')).toBeVisible();
 
 	await alphaCard.getByRole('button', { name: 'Preview lyrics' }).click();
 	await expect(alphaCard.getByText('Was blind but now I see')).toBeVisible();
 	await alphaCard.getByRole('button', { name: 'Hide preview' }).click();
 	await expect(alphaCard.getByText('Was blind but now I see')).toHaveCount(0);
 
-	await alphaCard.getByRole('button', { name: 'Copy share link' }).click();
-	await expect(alphaCard.getByRole('button', { name: 'Link copied!' })).toBeVisible();
-	await expect
-		.poll(() =>
-			page.evaluate(() => (window as Window & { __copiedSongUrl?: string }).__copiedSongUrl ?? '')
-		)
-		.toContain('/song/1?lang=EN');
+	await page.getByRole('button', { name: 'Hide preview lines' }).click();
+	await expect(alphaCard.getByText('Amazing grace, how sweet the sound')).toHaveCount(0);
+	await expect(alphaCard.getByRole('button', { name: 'Preview lyrics' })).toHaveCount(0);
 
-	await alphaCard.getByRole('button', { name: 'Add to favourites' }).click();
-	await expect(alphaCard.getByRole('button', { name: 'Remove from favourites' })).toBeVisible();
-
-	await page
-		.locator('#song-filters-panel')
-		.getByRole('button', { name: 'Favourites', exact: true })
-		.click();
-	await expect(alphaCard).toBeVisible();
-	await expect(pilgrimCard).toHaveCount(0);
-	await expect(riverCard).toHaveCount(0);
+	await page.getByRole('button', { name: 'Show preview lines' }).click();
+	await expect(alphaCard.getByText('Amazing grace, how sweet the sound')).toBeVisible();
+	await expect(alphaCard.getByRole('button', { name: 'Preview lyrics' })).toBeVisible();
 });

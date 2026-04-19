@@ -45,10 +45,7 @@ test('supports detail view modes, text zoom, favourites and compact-header searc
 
 	await page.getByRole('button', { name: 'Back to song list' }).click();
 	await expect(page).toHaveURL('http://127.0.0.1:4173/');
-	await expect(
-		page
-			.locator('article')
-			.filter({ hasText: 'Alpha Grace' })
-			.getByRole('button', { name: 'Remove from favourites' })
-	).toBeVisible();
+	await page.getByRole('button', { name: 'Favourites', exact: true }).click();
+	await expect(page.locator('article').filter({ hasText: 'Alpha Grace' })).toBeVisible();
+	await expect(page.locator('article').filter({ hasText: 'Pilgrim Hope' })).toHaveCount(0);
 });
