@@ -97,43 +97,43 @@
 
 <div>
 	<article
-		class="song-preview-card glass-panel--soft rounded-3xl p-4 transition-[transform,box-shadow] duration-180 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgb(var(--panel-shadow-rgb)/0.14)] sm:p-6"
+		class="song-preview-card glass-panel--soft rounded-[1.7rem] p-4 transition-[transform,box-shadow] duration-180 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgb(var(--panel-shadow-rgb)/0.14)] sm:rounded-[1.95rem] sm:p-5"
 	>
-		<div class="flex flex-col gap-5">
-			<div class="flex flex-col gap-3.5 lg:flex-row lg:items-start lg:justify-between">
-				<div class="space-y-3">
-					<div class="space-y-2">
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+				<div class="space-y-2.5">
+					<div class="space-y-1.5">
 						<h3 class="text-lg font-semibold text-on-surface sm:text-xl">{song.title}</h3>
 						{#if lastUpdatedLabel}
-							<p class="text-xs text-on-surface-subtle">
+							<p class="text-[11px] text-on-surface-subtle">
 								{$t('app.updated_label')}: {lastUpdatedLabel}
 							</p>
 						{/if}
 					</div>
-					<div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-subtle">
+					<div class="flex flex-wrap items-center gap-1.5 text-xs text-on-surface-subtle">
 						<span
-							class="inline-flex items-center gap-2 rounded-full border border-primary-100/70 bg-primary-50/90 px-3 py-1 font-medium text-primary-600"
+							class="inline-flex items-center gap-1.5 rounded-full border border-primary-100/70 bg-primary-50/90 px-2.5 py-1 font-medium text-primary-600"
 						>
 							{$t('app.page_label')}
 							{song.page}
 						</span>
 						<span
-							class="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-on-surface-soft"
+							class="glass-chip inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-on-surface-soft"
 						>
 							{$t('app.source_label')}
 							{displaySourceLabel(song.source)}
 						</span>
 						<span
-							class="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-on-surface-soft"
+							class="glass-chip inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-on-surface-soft"
 						>
 							{$t('app.external_index')}
 							{song.externalIndex}
 						</span>
 					</div>
 				</div>
-				<div class="flex flex-wrap justify-end gap-2 text-sm">
+				<div class="flex flex-wrap items-center justify-end gap-2 text-sm">
 					<button
-						class="btn-gold inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold transition"
+						class="btn-gold inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
 						on:click={() => dispatch('open', song)}
 						type="button"
 					>
@@ -150,13 +150,11 @@
 							title={expanded ? $t('app.hide_preview') : $t('app.preview')}
 						>
 							{#if expanded}
-								<EyeOff class="h-5 w-5" />
+								<EyeOff class="h-4 w-4" />
 							{:else}
-								<Eye class="h-5 w-5" />
+								<Eye class="h-4 w-4" />
 							{/if}
-							<span class="sr-only">
-								{expanded ? $t('app.hide_preview') : $t('app.preview')}
-							</span>
+							<span class="sr-only">{expanded ? $t('app.hide_preview') : $t('app.preview')}</span>
 						</button>
 					{/if}
 					<button
@@ -235,7 +233,7 @@
         </div> -->
 
 			<div
-				class="space-y-3 leading-relaxed text-on-surface"
+				class="space-y-2.5 leading-relaxed text-on-surface"
 				style={`font-size: ${previewTextSizeRem}rem;`}
 			>
 				{#each previewItems as item}
@@ -248,7 +246,7 @@
 					{/if}
 				{/each}
 				{#if remainingLineCount && !expanded}
-					<p class="text-xs italic text-surface-500">
+					<p class="text-[11px] italic text-surface-500">
 						{$t('app.preview_remaining', { values: { count: remainingLineCount } })}
 					</p>
 				{/if}
@@ -256,7 +254,7 @@
 
 			{#if remainingLineCount && expanded}
 				<div
-					class="space-y-3 leading-relaxed text-on-surface"
+					class="space-y-2.5 leading-relaxed text-on-surface"
 					style={`font-size: ${previewTextSizeRem}rem;`}
 					transition:fade
 				>
