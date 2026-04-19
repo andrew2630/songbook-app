@@ -32,7 +32,9 @@ export function readListFilterStateFromSearch(search: string): ListFilterState {
 		query: nextQuery ?? DEFAULT_LIST_FILTER_STATE.query,
 		menuView: nextMenuView === 'favourites' ? 'favourites' : DEFAULT_LIST_FILTER_STATE.menuView,
 		pageFilter:
-			nextPageFilter && /^\d+$/.test(nextPageFilter) ? Number(nextPageFilter) : DEFAULT_LIST_FILTER_STATE.pageFilter,
+			nextPageFilter && /^\d+$/.test(nextPageFilter)
+				? Number(nextPageFilter)
+				: DEFAULT_LIST_FILTER_STATE.pageFilter,
 		sortMode:
 			nextSortMode === 'alpha' || nextSortMode === 'recent' || nextSortMode === 'page'
 				? nextSortMode

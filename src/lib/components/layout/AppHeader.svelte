@@ -127,7 +127,8 @@
 							class="glass-pill inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface sm:gap-2 sm:px-3 sm:text-[11px] sm:tracking-[0.2em]"
 						>
 							<Languages class="h-3 w-3 text-primary-500" aria-hidden="true" />
-							<label class="sr-only" for="compact-language-select">{$t('app.language_label')}</label>
+							<label class="sr-only" for="compact-language-select">{$t('app.language_label')}</label
+							>
 							<select
 								id="compact-language-select"
 								class="cursor-pointer appearance-none bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface outline-none focus-visible:text-primary-600 sm:text-[11px] sm:tracking-[0.2em]"

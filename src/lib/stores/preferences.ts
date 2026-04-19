@@ -9,6 +9,7 @@ const VIEW_KEY = 'songbook-view-mode';
 const FAV_KEY = 'songbook-favourites';
 const THEME_KEY = 'songbook-theme';
 const TEXT_SIZE_KEY = 'songbook-text-size';
+const LIST_PREVIEW_KEY = 'songbook-list-preview-visible';
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const LIGHT_THEME_NAME = 'songbook-dawn';
 const DARK_THEME_NAME = 'songbook-dusk';
@@ -29,6 +30,7 @@ const isThemePreference = (value: unknown): value is ThemePreference =>
 	value === 'light' || value === 'dark' || value === 'system';
 const isFavouriteList = (value: unknown): value is string[] =>
 	Array.isArray(value) && value.every((item) => typeof item === 'string');
+const isBoolean = (value: unknown): value is boolean => typeof value === 'boolean';
 
 function readStoredValue<T>(key: string, fallback: T, validator?: Validator<T>): T {
 	if (!browser) return fallback;
@@ -81,6 +83,7 @@ export const songTextScale = createPersistedStore<number>(
 	DEFAULT_SONG_TEXT_SCALE,
 	isSongTextScale
 );
+export const listPreviewVisible = createPersistedStore<boolean>(LIST_PREVIEW_KEY, true, isBoolean);
 
 function resolveTheme(preference: ThemePreference) {
 	if (!browser) return 'light';

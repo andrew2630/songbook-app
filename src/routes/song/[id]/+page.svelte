@@ -191,22 +191,22 @@
 	<div class="py-20 text-center text-sm text-on-surface-muted">{$t('app.syncing')}</div>
 {:else if song}
 	<article
-		class="glass-panel--soft relative mx-auto max-w-4xl space-y-5 overflow-hidden rounded-[2rem] p-5 sm:space-y-6 sm:rounded-[2.35rem] sm:p-7 lg:p-8"
+		class="glass-panel--soft relative mx-auto max-w-4xl space-y-4 overflow-hidden rounded-[1.65rem] p-4 sm:space-y-5 sm:rounded-[1.9rem] sm:p-5 lg:p-6"
 	>
 		<div class="pointer-events-none absolute inset-0 -z-10">
 			<div
-				class="absolute -top-28 left-8 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.24),rgba(255,255,255,0))] blur-[130px]"
+				class="absolute -top-20 left-8 h-44 w-44 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-primary)/0.18),rgba(255,255,255,0))] blur-[110px]"
 			></div>
 			<div
-				class="absolute bottom-[-12%] right-[-8%] h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.28),rgba(255,255,255,0))] blur-[150px]"
+				class="absolute bottom-[-12%] right-[-8%] h-52 w-52 rounded-full bg-[radial-gradient(circle_at_center,rgb(var(--hero-glow-secondary)/0.22),rgba(255,255,255,0))] blur-[130px]"
 			></div>
 		</div>
 
-		<header class="relative space-y-4 text-left">
+		<header class="relative space-y-3 text-left">
 			<div class="flex items-start justify-between gap-3 sm:items-center">
 				<div class="flex min-w-0 flex-wrap items-center gap-2">
 					<button
-						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
+						class="btn-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-soft sm:text-[11px] sm:tracking-[0.22em]"
 						type="button"
 						on:click={goBack}
 					>
@@ -235,22 +235,26 @@
 								: $t('app.add_favourite')}
 						</span>
 					</button>
-					<TextZoomControl />
+					<TextZoomControl align="right" />
 				</div>
 			</div>
 
-			<div class="space-y-2.5">
-				<div class="space-y-1.5">
-					<h1 class="text-balance text-3xl font-semibold text-on-surface sm:text-4xl lg:text-[2.9rem]">
+			<div class="space-y-2">
+				<div class="space-y-1">
+					<h1
+						class="text-balance text-[2rem] font-semibold leading-tight text-on-surface sm:text-[2.45rem] lg:text-[2.75rem]"
+					>
 						{song.title}
 					</h1>
 					{#if lastUpdatedLabel}
-						<p class="text-[11px] uppercase tracking-[0.2em] text-on-surface-subtle">
+						<p
+							class="text-[10px] uppercase tracking-[0.18em] text-on-surface-subtle sm:text-[11px]"
+						>
 							{$t('app.updated_label')}: {lastUpdatedLabel}
 						</p>
 					{/if}
 				</div>
-				<div class="flex flex-wrap gap-2 text-xs text-on-surface-subtle">
+				<div class="flex flex-wrap gap-1.5 text-xs text-on-surface-subtle">
 					<span
 						class="rounded-full bg-primary-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-500"
 					>
@@ -269,7 +273,7 @@
 			</div>
 
 			<div
-				class="segmented-toggle inline-flex flex-wrap items-center gap-1.5 rounded-full p-1"
+				class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-full p-[3px] sm:p-1"
 				role="tablist"
 				aria-label={$t('app.view_song')}
 			>
@@ -299,7 +303,7 @@
 		</header>
 
 		<section
-			class={`relative space-y-3 rounded-[1.55rem] border border-surface-200/50 bg-surface-50/45 p-4 text-left leading-relaxed shadow-inner shadow-primary-500/6 sm:rounded-[1.8rem] sm:p-6 ${
+			class={`relative space-y-3 rounded-[1.3rem] border border-surface-200/40 bg-surface-50/35 p-3.5 text-left leading-relaxed shadow-inner shadow-primary-500/4 sm:rounded-[1.55rem] sm:p-5 ${
 				activeViewMode === 'chords' ? 'lg:grid lg:grid-cols-[160px,1fr] lg:gap-6 lg:space-y-0' : ''
 			}`}
 			style={`font-size: ${songTextSizeRem}rem;`}

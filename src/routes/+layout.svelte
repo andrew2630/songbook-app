@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { browser } from '$app/environment';
+	import { env as publicEnv } from '$env/dynamic/public';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { onDestroy, onMount } from 'svelte';
@@ -59,7 +60,7 @@
 			window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
 			window.addEventListener('appinstalled', handleAppInstalled);
 
-			if ('serviceWorker' in navigator) {
+			if ('serviceWorker' in navigator && publicEnv.PUBLIC_DISABLE_SERVICE_WORKER !== 'true') {
 				const serviceWorkerPath = `${base}/service-worker.js`
 					.replace(/\/+/g, '/')
 					.replace(/^(?!\/)/, '/');

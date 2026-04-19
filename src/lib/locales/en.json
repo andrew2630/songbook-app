@@ -72,6 +72,8 @@
 		"text_size_decrease": "Decrease text size",
 		"text_size_reset": "Reset text size to 100%",
 		"text_size_increase": "Increase text size",
+		"show_preview_lines": "Show preview lines",
+		"hide_preview_lines": "Hide preview lines",
 		"copy_link": "Copy share link",
 		"copied_link": "Link copied!",
 		"copy_failed": "Copy failed",

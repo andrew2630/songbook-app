@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { favourites, language, toggleFavourite } from '$lib/stores/preferences';
+	import { favourites, language, listPreviewVisible } from '$lib/stores/preferences';
 	import {
 		filterSongs,
 		searchableSongs,
@@ -15,7 +15,18 @@
 	import { buildPageIndex, songsByPage } from '$lib/utils/pageIndex';
 	import SongCard from '$lib/components/song/SongCard.svelte';
 	import { onMount, tick } from 'svelte';
-	import { ArrowUp, Heart, LayoutList, RotateCcw, Search } from 'lucide-svelte';
+	import {
+		ArrowUp,
+		ArrowUpDown,
+		BookOpen,
+		Eye,
+		EyeOff,
+		Heart,
+		LayoutList,
+		RotateCcw,
+		Rows3,
+		Search
+	} from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
 	import {
 		buildListUrlFromState,
@@ -252,14 +263,14 @@
 	}
 </script>
 
-<section class="space-y-5 pb-14 sm:space-y-7">
+<section class="space-y-4 pb-12 sm:space-y-5">
 	<div
 		id="song-filters-panel"
-		class="glass-panel--soft space-y-4 rounded-[1.7rem] p-3.5 sm:space-y-4 sm:rounded-[2rem] sm:p-5"
+		class="glass-panel--soft space-y-3.5 rounded-[1.55rem] p-3 sm:space-y-4 sm:rounded-[1.8rem] sm:p-4"
 	>
-		<div class="space-y-3">
+		<div class="space-y-2.5">
 			<div
-				class="glass-input flex items-center gap-3 rounded-[1.2rem] px-4 py-2.5 sm:rounded-[1.45rem] sm:py-3"
+				class="glass-input flex items-center gap-3 rounded-[1.1rem] px-3.5 py-2.5 sm:rounded-[1.25rem]"
 			>
 				<Search class="h-4 w-4 text-primary-500" />
 				<input
@@ -281,31 +292,35 @@
 				{/if}
 			</div>
 
-			<div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+			<div class="flex flex-col gap-2.5">
 				<div class="flex items-start justify-between gap-3">
-					<div class="flex min-w-0 flex-wrap gap-1.5 sm:gap-2">
+					<div class="flex min-w-0 flex-wrap gap-1.5">
 						<button
-							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
+							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold ${
 								menuView === 'index' ? 'btn-gold' : 'btn-secondary'
 							}`}
 							on:click={() => (menuView = 'index')}
 							type="button"
+							aria-label={$t('app.toggle_index')}
 						>
 							<LayoutList class="h-4 w-4" />
-							{$t('app.toggle_index')}
+							<span class="hidden sm:inline">{$t('app.toggle_index')}</span>
+							<span class="sr-only sm:hidden">{$t('app.toggle_index')}</span>
 						</button>
 						<button
-							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold sm:px-3.5 ${
+							class={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold ${
 								menuView === 'favourites' ? 'btn-gold' : 'btn-secondary'
 							}`}
 							on:click={() => (menuView = 'favourites')}
 							type="button"
+							aria-label={$t('app.toggle_favourites')}
 						>
 							<Heart class="h-4 w-4" />
-							{$t('app.toggle_favourites')}
+							<span class="hidden sm:inline">{$t('app.toggle_favourites')}</span>
+							<span class="sr-only sm:hidden">{$t('app.toggle_favourites')}</span>
 						</button>
 						<button
-							class="btn-secondary hidden items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted hover:text-primary-500 sm:inline-flex sm:px-3.5 sm:text-[11px] sm:tracking-[0.22em]"
+							class="btn-secondary hidden items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted hover:text-primary-500 sm:inline-flex sm:text-[11px] sm:tracking-[0.22em]"
 							on:click={handleClearFilters}
 							type="button"
 						>
@@ -313,6 +328,22 @@
 						</button>
 					</div>
 					<div class="inline-flex shrink-0 items-center gap-2">
+						<button
+							class={`hidden items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:inline-flex sm:text-[11px] sm:tracking-[0.22em] ${
+								$listPreviewVisible ? 'btn-secondary text-on-surface-muted' : 'btn-gold'
+							}`}
+							on:click={() => listPreviewVisible.update((value) => !value)}
+							type="button"
+							aria-pressed={$listPreviewVisible}
+						>
+							{#if $listPreviewVisible}
+								<EyeOff class="h-4 w-4" />
+								{$t('app.hide_preview_lines')}
+							{:else}
+								<Eye class="h-4 w-4" />
+								{$t('app.show_preview_lines')}
+							{/if}
+						</button>
 						<button
 							class="icon-button sm:hidden"
 							on:click={handleClearFilters}
@@ -323,20 +354,38 @@
 							<RotateCcw class="h-4 w-4" />
 							<span class="sr-only">{$t('app.reset_filters')}</span>
 						</button>
+						<button
+							class={`icon-button sm:hidden ${$listPreviewVisible ? '' : 'btn-gold'}`}
+							on:click={() => listPreviewVisible.update((value) => !value)}
+							type="button"
+							aria-pressed={$listPreviewVisible}
+							aria-label={$listPreviewVisible
+								? $t('app.hide_preview_lines')
+								: $t('app.show_preview_lines')}
+							title={$listPreviewVisible
+								? $t('app.hide_preview_lines')
+								: $t('app.show_preview_lines')}
+						>
+							<Rows3 class="h-4 w-4" />
+						</button>
 						<TextZoomControl />
 					</div>
 				</div>
 
-				<div class="flex flex-col gap-2.5 lg:min-w-[20rem] lg:items-end">
-					<label class="flex items-center gap-2.5 text-sm font-medium text-surface-600">
+				<div class="grid gap-2 sm:grid-cols-2">
+					<label
+						class="glass-pill flex items-center gap-2 rounded-[1.1rem] px-3 py-2 text-sm font-medium text-on-surface"
+					>
+						<ArrowUpDown class="h-4 w-4 shrink-0 text-primary-500" />
 						<span
-							class="text-[10px] font-semibold uppercase tracking-[0.18em] text-surface-500 sm:text-[11px] sm:tracking-[0.2em]"
+							class="sr-only sm:not-sr-only sm:text-[11px] sm:font-semibold sm:uppercase sm:tracking-[0.18em] sm:text-on-surface-muted"
 						>
 							{$t('app.sort.label')}
 						</span>
 						<select
-							class="rounded-[1.15rem] border border-surface-200/60 bg-surface-100/70 px-3 py-2 text-sm font-semibold text-surface-700 outline-none sm:rounded-full"
+							class="min-w-0 flex-1 cursor-pointer appearance-none bg-transparent text-sm font-semibold text-on-surface outline-none"
 							bind:value={sortMode}
+							aria-label={$t('app.sort.label')}
 						>
 							{#each sortOptions as option}
 								<option value={option.value}>{$t(option.label)}</option>
@@ -344,34 +393,30 @@
 						</select>
 					</label>
 
-					<div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
-						<div class="flex flex-wrap items-center gap-2">
-							<span
-								class="text-[10px] font-semibold uppercase tracking-[0.18em] text-on-surface-muted sm:text-[11px] sm:tracking-[0.2em]"
-							>
-								{$t('app.source.label')}
-							</span>
-							<div
-								class="segmented-toggle inline-flex flex-wrap items-center gap-1 rounded-[1.4rem] p-[3px] sm:rounded-full sm:p-1"
-							>
-								{#each sourceOptions as option}
-									<button
-										class="segmented-toggle__button inline-flex items-center rounded-[1.05rem] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] sm:rounded-full sm:px-3 sm:text-xs sm:tracking-[0.18em]"
-										type="button"
-										aria-pressed={sourceFilter === option.value}
-										on:click={() => (sourceFilter = option.value)}
-									>
-										{$t(option.label)}
-									</button>
-								{/each}
-							</div>
-						</div>
-					</div>
+					<label
+						class="glass-pill flex items-center gap-2 rounded-[1.1rem] px-3 py-2 text-sm font-medium text-on-surface"
+					>
+						<BookOpen class="h-4 w-4 shrink-0 text-primary-500" />
+						<span
+							class="sr-only sm:not-sr-only sm:text-[11px] sm:font-semibold sm:uppercase sm:tracking-[0.18em] sm:text-on-surface-muted"
+						>
+							{$t('app.source.label')}
+						</span>
+						<select
+							class="min-w-0 flex-1 cursor-pointer appearance-none bg-transparent text-sm font-semibold text-on-surface outline-none"
+							bind:value={sourceFilter}
+							aria-label={$t('app.source.label')}
+						>
+							{#each sourceOptions as option}
+								<option value={option.value}>{$t(option.label)}</option>
+							{/each}
+						</select>
+					</label>
 				</div>
 			</div>
 		</div>
 
-		<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-on-surface-muted sm:text-sm">
+		<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-on-surface-muted">
 			<p class="text-on-surface-soft">
 				<span class="font-semibold text-on-surface">{filteredSongs.length}</span>
 				<span class="mx-1 text-on-surface-muted">/</span>
@@ -388,10 +433,10 @@
 		</div>
 
 		{#if filterBadges.length}
-			<div class="flex flex-wrap gap-2">
+			<div class="flex flex-wrap gap-1.5">
 				{#each filterBadges as badge}
 					<span
-						class="inline-flex items-center gap-2 rounded-full border border-surface-200/55 bg-surface-100/55 px-3 py-1 text-xs font-medium text-on-surface-soft"
+						class="inline-flex items-center gap-2 rounded-full border border-surface-200/45 bg-surface-100/40 px-2.5 py-1 text-[11px] font-medium text-on-surface-soft"
 					>
 						{badge}
 					</span>
@@ -489,13 +534,12 @@
 			{$t('app.empty_state')}
 		</div>
 	{:else}
-		<div class="space-y-4">
+		<div class="space-y-3">
 			{#each visibleSongs as song (song.id + '-' + song.language)}
 				<SongCard
 					{song}
-					isFavourite={$favourites.includes(`${song.id}-${song.language}`)}
+					showPreview={$listPreviewVisible}
 					on:open={(event) => openSong(event.detail)}
-					on:toggleFavourite={(event) => toggleFavourite(event.detail)}
 				/>
 			{/each}
 

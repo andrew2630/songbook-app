@@ -1,10 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const nodeExec =
-	process.platform === 'win32'
-		? '"C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe"'
-		: 'node';
-const viteExec = '"node_modules/vite/bin/vite.js"';
+const npmRun =
+	process.platform === 'win32' ? '"C:\\Program Files\\nodejs\\npm.cmd" run' : 'npm run';
 
 export default defineConfig({
 	testDir: './playwright',
@@ -17,7 +14,7 @@ export default defineConfig({
 		trace: 'on-first-retry'
 	},
 	webServer: {
-		command: `${nodeExec} ${viteExec} build && ${nodeExec} ${viteExec} preview --host 127.0.0.1 --port 4173`,
+		command: `${npmRun} build && ${npmRun} preview -- --host 127.0.0.1 --port 4173`,
 		url: 'http://127.0.0.1:4173',
 		env: {
 			BASE_PATH: '',

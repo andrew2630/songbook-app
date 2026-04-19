@@ -72,6 +72,8 @@
 		"text_size_decrease": "Pomniejsz tekst",
 		"text_size_reset": "Przywróć 100%",
 		"text_size_increase": "Powiększ tekst",
+		"show_preview_lines": "Pokaż podgląd tekstu",
+		"hide_preview_lines": "Ukryj podgląd tekstu",
 		"copy_link": "Kopiuj link do udostępnienia",
 		"copied_link": "Skopiowano link!",
 		"copy_failed": "Nie udało się skopiować",

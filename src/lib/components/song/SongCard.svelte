@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { base } from '$app/paths';
-	import { onDestroy, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { t } from 'svelte-i18n';
-	import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Heart, Link2 } from 'lucide-svelte';
+	import { ExternalLink, Eye, EyeOff } from 'lucide-svelte';
 	import type { Song } from '$lib/types/song';
 	import { songTextScale } from '$lib/stores/preferences';
 	import { getSourceTranslationKey } from '$lib/utils/sourceLabel';
@@ -17,17 +15,13 @@
 	} from '$lib/utils/songContent';
 
 	export let song: Song;
-	export let isFavourite = false;
+	export let showPreview = true;
 
 	const dispatch = createEventDispatcher<{
 		open: Song;
-		toggleFavourite: string;
 	}>();
 
 	let expanded = false;
-	let copyState: 'idle' | 'copied' | 'error' = 'idle';
-	let copyTimeout: ReturnType<typeof setTimeout> | null = null;
-	let shareUrl = '';
 
 	const PREVIEW_LENGTH = 3;
 
@@ -51,37 +45,9 @@
 	$: remainingLineCount = remainingItems.filter(
 		(item) => getSongItemText(item).trim().length
 	).length;
-	$: previewTextSizeRem = getSongTextSizeRem($songTextScale, 0.97);
+	$: previewTextSizeRem = getSongTextSizeRem($songTextScale, 0.94);
 	$: previewSpacerHeightRem = getSongTextSpacerHeightRem($songTextScale, 0.5);
-	$: lastUpdatedLabel = song.lastUpdatedAt
-		? new Date(song.lastUpdatedAt).toLocaleDateString(undefined, {
-				day: 'numeric',
-				month: 'short',
-				year: 'numeric'
-			})
-		: null;
-	$: shareUrl = browser
-		? new URL(`${base}/song/${song.id}?lang=${song.language}`, window.location.origin).toString()
-		: '';
-
-	onDestroy(() => {
-		if (copyTimeout) clearTimeout(copyTimeout);
-	});
-
-	async function copyShareLink() {
-		if (!browser || !shareUrl) return;
-		try {
-			await navigator.clipboard.writeText(shareUrl);
-			copyState = 'copied';
-		} catch (error) {
-			console.error('Failed to copy song link', error);
-			copyState = 'error';
-		}
-		if (copyTimeout) clearTimeout(copyTimeout);
-		copyTimeout = setTimeout(() => {
-			copyState = 'idle';
-		}, 2000);
-	}
+	$: canExpandPreview = showPreview && remainingLineCount > 0;
 
 	function alignmentClass(alignment: Song['items'][number]['alignment']) {
 		if (alignment === 'CENTER') return 'text-center';
@@ -97,50 +63,49 @@
 
 <div>
 	<article
-		class="song-preview-card glass-panel--soft rounded-[1.7rem] p-4 transition-[transform,box-shadow] duration-180 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgb(var(--panel-shadow-rgb)/0.14)] sm:rounded-[1.95rem] sm:p-5"
+		class="song-preview-card glass-panel--soft rounded-[1.45rem] p-3.5 transition-[transform,box-shadow] duration-180 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgb(var(--panel-shadow-rgb)/0.12)] sm:rounded-[1.7rem] sm:p-4"
 	>
-		<div class="flex flex-col gap-4">
-			<div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-				<div class="space-y-2.5">
-					<div class="space-y-1.5">
-						<h3 class="text-lg font-semibold text-on-surface sm:text-xl">{song.title}</h3>
-						{#if lastUpdatedLabel}
-							<p class="text-[11px] text-on-surface-subtle">
-								{$t('app.updated_label')}: {lastUpdatedLabel}
-							</p>
-						{/if}
-					</div>
+		<div class={`flex flex-col ${showPreview ? 'gap-3.5' : 'gap-3'}`}>
+			<div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+				<div class="min-w-0 space-y-2">
+					<h3 class="text-base font-semibold leading-tight text-on-surface sm:text-lg">
+						{song.title}
+					</h3>
 					<div class="flex flex-wrap items-center gap-1.5 text-xs text-on-surface-subtle">
 						<span
-							class="inline-flex items-center gap-1.5 rounded-full border border-primary-100/70 bg-primary-50/90 px-2.5 py-1 font-medium text-primary-600"
+							class="inline-flex items-center gap-1 rounded-full border border-primary-100/70 bg-primary-50/85 px-2.5 py-1 font-medium text-primary-600"
 						>
 							{$t('app.page_label')}
 							{song.page}
 						</span>
 						<span
-							class="glass-chip inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-on-surface-soft"
+							class="glass-chip inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-on-surface-soft"
 						>
-							{$t('app.source_label')}
+							<span class="hidden sm:inline">{$t('app.source_label')}</span>
 							{displaySourceLabel(song.source)}
 						</span>
 						<span
-							class="glass-chip inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-on-surface-soft"
+							class="glass-chip inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-on-surface-soft"
 						>
 							{$t('app.external_index')}
 							{song.externalIndex}
 						</span>
 					</div>
 				</div>
-				<div class="flex flex-wrap items-center justify-end gap-2 text-sm">
+				<div
+					class="col-start-2 row-start-1 flex flex-wrap items-center gap-2 self-start justify-end"
+				>
 					<button
-						class="btn-gold inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
+						class="btn-gold inline-flex min-h-10 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
 						on:click={() => dispatch('open', song)}
 						type="button"
+						aria-label={$t('app.go_to_song')}
 					>
 						<ExternalLink class="h-4 w-4" />
-						{$t('app.go_to_song')}
+						<span class="hidden sm:inline">{$t('app.go_to_song')}</span>
+						<span class="sr-only sm:hidden">{$t('app.go_to_song')}</span>
 					</button>
-					{#if remainingLineCount}
+					{#if canExpandPreview}
 						<button
 							class="icon-button"
 							on:click={() => (expanded = !expanded)}
@@ -157,57 +122,6 @@
 							<span class="sr-only">{expanded ? $t('app.hide_preview') : $t('app.preview')}</span>
 						</button>
 					{/if}
-					<button
-						class={`icon-button ${isFavourite ? 'btn-gold' : ''}`}
-						on:click={() => dispatch('toggleFavourite', `${song.id}-${song.language}`)}
-						type="button"
-						aria-pressed={isFavourite}
-						aria-label={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-						title={isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-					>
-						<Heart class={`h-5 w-5 transition ${isFavourite ? 'fill-current' : ''}`} />
-						<span class="sr-only">
-							{isFavourite ? $t('app.remove_favourite') : $t('app.add_favourite')}
-						</span>
-					</button>
-					<button
-						class={`icon-button ${
-							copyState === 'copied'
-								? 'icon-button--success'
-								: copyState === 'error'
-									? 'icon-button--danger'
-									: ''
-						}`}
-						on:click={copyShareLink}
-						type="button"
-						aria-label={copyState === 'copied'
-							? $t('app.copied_link')
-							: copyState === 'error'
-								? $t('app.copy_failed')
-								: $t('app.copy_link')}
-						title={copyState === 'copied'
-							? $t('app.copied_link')
-							: copyState === 'error'
-								? $t('app.copy_failed')
-								: $t('app.copy_link')}
-					>
-						{#if copyState === 'copied'}
-							<Check class="h-5 w-5" />
-						{:else if copyState === 'error'}
-							<AlertCircle class="h-5 w-5" />
-						{:else}
-							<Link2 class="h-5 w-5" />
-						{/if}
-						<span class="sr-only" aria-live="polite">
-							{#if copyState === 'copied'}
-								{$t('app.copied_link')}
-							{:else if copyState === 'error'}
-								{$t('app.copy_failed')}
-							{:else}
-								{$t('app.copy_link')}
-							{/if}
-						</span>
-					</button>
 				</div>
 			</div>
 
@@ -232,33 +146,12 @@
           </div>
         </div> -->
 
-			<div
-				class="space-y-2.5 leading-relaxed text-on-surface"
-				style={`font-size: ${previewTextSizeRem}rem;`}
-			>
-				{#each previewItems as item}
-					{#if getSongItemText(item).trim().length}
-						<p class={itemClass(item)}>
-							{getSongItemText(item)}
-						</p>
-					{:else}
-						<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
-					{/if}
-				{/each}
-				{#if remainingLineCount && !expanded}
-					<p class="text-[11px] italic text-surface-500">
-						{$t('app.preview_remaining', { values: { count: remainingLineCount } })}
-					</p>
-				{/if}
-			</div>
-
-			{#if remainingLineCount && expanded}
+			{#if showPreview}
 				<div
-					class="space-y-2.5 leading-relaxed text-on-surface"
+					class="space-y-2 leading-relaxed text-on-surface"
 					style={`font-size: ${previewTextSizeRem}rem;`}
-					transition:fade
 				>
-					{#each remainingItems as item}
+					{#each previewItems as item}
 						{#if getSongItemText(item).trim().length}
 							<p class={itemClass(item)}>
 								{getSongItemText(item)}
@@ -267,16 +160,31 @@
 							<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
 						{/if}
 					{/each}
+					{#if canExpandPreview && !expanded}
+						<p class="text-[11px] italic text-surface-500">
+							{$t('app.preview_remaining', { values: { count: remainingLineCount } })}
+						</p>
+					{/if}
 				</div>
-			{/if}
 
-			<p class="sr-only" aria-live="polite">
-				{#if copyState === 'copied'}
-					{$t('app.copied_link')}
-				{:else if copyState === 'error'}
-					{$t('app.copy_failed')}
+				{#if canExpandPreview && expanded}
+					<div
+						class="space-y-2 leading-relaxed text-on-surface"
+						style={`font-size: ${previewTextSizeRem}rem;`}
+						transition:fade
+					>
+						{#each remainingItems as item}
+							{#if getSongItemText(item).trim().length}
+								<p class={itemClass(item)}>
+									{getSongItemText(item)}
+								</p>
+							{:else}
+								<div aria-hidden="true" style={`height: ${previewSpacerHeightRem}rem;`}></div>
+							{/if}
+						{/each}
+					</div>
 				{/if}
-			</p>
+			{/if}
 		</div>
 	</article>
 </div>

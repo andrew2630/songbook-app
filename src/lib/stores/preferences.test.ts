@@ -77,6 +77,7 @@ describe('preferences store', () => {
 		localStorage.setItem('songbook-favourites', JSON.stringify(['7-EN']));
 		localStorage.setItem('songbook-theme', JSON.stringify('dark'));
 		localStorage.setItem('songbook-text-size', JSON.stringify(2));
+		localStorage.setItem('songbook-list-preview-visible', JSON.stringify(false));
 
 		const preferences = await loadPreferences(true);
 
@@ -85,6 +86,7 @@ describe('preferences store', () => {
 		expect(get(preferences.favourites)).toEqual(['7-EN']);
 		expect(get(preferences.theme)).toBe('dark');
 		expect(get(preferences.songTextScale)).toBe(2);
+		expect(get(preferences.listPreviewVisible)).toBe(false);
 		expect(localeSet).toHaveBeenCalledWith('en');
 		expect(document.documentElement.lang).toBe('en');
 		expect(document.documentElement.dataset.theme).toBe('songbook-dusk');
@@ -104,6 +106,7 @@ describe('preferences store', () => {
 		localStorage.setItem('songbook-favourites', JSON.stringify([1, 2]));
 		localStorage.setItem('songbook-theme', JSON.stringify('sepia'));
 		localStorage.setItem('songbook-text-size', JSON.stringify(99));
+		localStorage.setItem('songbook-list-preview-visible', JSON.stringify('maybe'));
 
 		const preferences = await loadPreferences(true);
 
@@ -112,6 +115,7 @@ describe('preferences store', () => {
 		expect(get(preferences.favourites)).toEqual([]);
 		expect(get(preferences.theme)).toBe('system');
 		expect(get(preferences.songTextScale)).toBe(0);
+		expect(get(preferences.listPreviewVisible)).toBe(true);
 		expect(localeSet).toHaveBeenCalledWith('pl');
 		expect(errorSpy).toHaveBeenCalled();
 
@@ -130,6 +134,19 @@ describe('preferences store', () => {
 		preferences.toggleFavourite('2-PL');
 		expect(get(preferences.favourites)).toEqual([]);
 		expect(get(preferences.isFavourite)('2-PL')).toBe(false);
+	});
+
+	it('persists list preview visibility', async () => {
+		installThemeMediaQuery(false);
+		const preferences = await loadPreferences(true);
+
+		preferences.listPreviewVisible.set(false);
+		expect(get(preferences.listPreviewVisible)).toBe(false);
+		expect(localStorage.getItem('songbook-list-preview-visible')).toBe(JSON.stringify(false));
+
+		preferences.listPreviewVisible.set(true);
+		expect(get(preferences.listPreviewVisible)).toBe(true);
+		expect(localStorage.getItem('songbook-list-preview-visible')).toBe(JSON.stringify(true));
 	});
 
 	it('updates system theme when the media query changes', async () => {
