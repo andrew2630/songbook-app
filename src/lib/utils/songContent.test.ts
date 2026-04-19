@@ -3,7 +3,9 @@ import type { SongItem } from '$lib/types/song';
 import {
 	getSongItemText,
 	hasMeaningfulSongItemContent,
+	isAdditionalSongItem,
 	isChordLikeSongItem,
+	isTechnicalSongItem,
 	looksLikeChordLine,
 	parseSongLanguage,
 	shouldDisplaySongItem,
@@ -63,6 +65,13 @@ describe('songContent', () => {
 	it('keeps explicit chord rows meaningful even when they only contain spacing', () => {
 		expect(hasMeaningfulSongItemContent(createItem({ type: 'TEXT', text: '   ' }))).toBe(false);
 		expect(hasMeaningfulSongItemContent(createItem({ type: 'CHORDS', text: '   ' }))).toBe(true);
+	});
+
+	it('classifies additional and technical rows by normalized type', () => {
+		expect(isAdditionalSongItem(' additional ' as unknown as SongItem['type'])).toBe(true);
+		expect(isTechnicalSongItem('technical' as unknown as SongItem['type'])).toBe(true);
+		expect(isAdditionalSongItem('TEXT')).toBe(false);
+		expect(isTechnicalSongItem(null)).toBe(false);
 	});
 
 	it('switches visibility rules between basic and chords view', () => {
